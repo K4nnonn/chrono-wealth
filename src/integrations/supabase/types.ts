@@ -56,26 +56,89 @@ export type Database = {
       plaid_data: {
         Row: {
           access_token: string | null
+          accounts: Json | null
+          assets: Json | null
           created_at: string | null
           data: Json | null
           id: string
+          identity: Json | null
+          income: Json | null
           item_id: string | null
+          last_updated: string | null
+          liabilities: Json | null
+          status: string | null
+          transactions: Json | null
           user_id: string
         }
         Insert: {
           access_token?: string | null
+          accounts?: Json | null
+          assets?: Json | null
           created_at?: string | null
           data?: Json | null
           id?: string
+          identity?: Json | null
+          income?: Json | null
           item_id?: string | null
+          last_updated?: string | null
+          liabilities?: Json | null
+          status?: string | null
+          transactions?: Json | null
           user_id: string
         }
         Update: {
           access_token?: string | null
+          accounts?: Json | null
+          assets?: Json | null
           created_at?: string | null
           data?: Json | null
           id?: string
+          identity?: Json | null
+          income?: Json | null
           item_id?: string | null
+          last_updated?: string | null
+          liabilities?: Json | null
+          status?: string | null
+          transactions?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plaid_institutions: {
+        Row: {
+          access_token: string
+          created_at: string
+          cursor: string | null
+          id: string
+          institution_id: string
+          institution_name: string
+          is_active: boolean | null
+          item_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string
+          cursor?: string | null
+          id?: string
+          institution_id: string
+          institution_name: string
+          is_active?: boolean | null
+          item_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          cursor?: string | null
+          id?: string
+          institution_id?: string
+          institution_name?: string
+          is_active?: boolean | null
+          item_id?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []

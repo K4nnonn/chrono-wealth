@@ -30,17 +30,38 @@ export const useProfile = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [financialData, setFinancialData] = useState<FinancialData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasPlaidData, setHasPlaidData] = useState(false);
 
   useEffect(() => {
     if (user) {
       fetchProfile();
       fetchFinancialData();
+      checkPlaidData();
     } else {
       setProfile(null);
       setFinancialData(null);
+      setHasPlaidData(false);
       setLoading(false);
     }
   }, [user]);
+
+  const checkPlaidData = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('plaid_data')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .limit(1);
+
+      if (error && error.code !== 'PGRST116') throw error;
+      setHasPlaidData((data?.length || 0) > 0);
+    } catch (error) {
+      console.error('Error checking Plaid data:', error);
+    }
+  };
 
   const fetchProfile = async () => {
     if (!user) return;
@@ -122,11 +143,13 @@ export const useProfile = () => {
     profile,
     financialData,
     loading,
+    hasPlaidData,
     updateProfile,
     updateFinancialData,
     refetch: () => {
       fetchProfile();
       fetchFinancialData();
+      checkPlaidData();
     }
   };
 };

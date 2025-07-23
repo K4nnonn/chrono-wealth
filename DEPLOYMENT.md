@@ -28,7 +28,15 @@ In your Vercel dashboard, add these environment variables:
 VITE_SUPABASE_URL=https://aqjcnnrijtivfcidrckr.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxamNubnJpanRpdmZjaWRyY2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDE3MTAsImV4cCI6MjA2ODg3NzcxMH0.iL1p9zZZrM4zvzqwQ5IqTUIqY6_MbssSbvsIMACuLoQ
 OPENAI_API_KEY=your_openai_api_key_here
+PLAID_CLIENT_ID=your_plaid_client_id_here
+PLAID_SECRET=your_plaid_secret_key_here
+PLAID_ENV=sandbox
 ```
+
+**For Plaid Integration:**
+- `PLAID_CLIENT_ID`: Get from [Plaid Dashboard](https://dashboard.plaid.com/team/keys)
+- `PLAID_SECRET`: Get from [Plaid Dashboard](https://dashboard.plaid.com/team/keys)  
+- `PLAID_ENV`: Use 'sandbox' for testing, 'development' for development, 'production' for live
 
 ### Step 3: Domain Configuration
 1. In Vercel dashboard, go to your project
@@ -59,6 +67,9 @@ touch .env.local
 VITE_SUPABASE_URL=https://aqjcnnrijtivfcidrckr.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxamNubnJpanRpdmZjaWRyY2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzMDE3MTAsImV4cCI6MjA2ODg3NzcxMH0.iL1p9zZZrM4zvzqwQ5IqTUIqY6_MbssSbvsIMACuLoQ
 OPENAI_API_KEY=your_openai_api_key_here
+PLAID_CLIENT_ID=your_plaid_client_id_here
+PLAID_SECRET=your_plaid_secret_key_here
+PLAID_ENV=sandbox
 ```
 
 ### Development Commands

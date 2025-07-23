@@ -7,7 +7,10 @@
   "devCommand": "npm run dev",
   "env": {
     "VITE_SUPABASE_URL": "@supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key"
+    "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "PLAID_CLIENT_ID": "@plaid_client_id",
+    "PLAID_SECRET": "@plaid_secret",
+    "PLAID_ENV": "@plaid_env"
   },
   "functions": {
     "app/api/**/*.ts": {
