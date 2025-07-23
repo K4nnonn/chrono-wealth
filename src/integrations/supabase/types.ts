@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      financial_goals: {
+        Row: {
+          category: string | null
+          created_at: string
+          current_amount: number | null
+          id: string
+          name: string
+          priority: number | null
+          target_amount: number
+          target_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          current_amount?: number | null
+          id?: string
+          name: string
+          priority?: number | null
+          target_amount: number
+          target_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          current_amount?: number | null
+          id?: string
+          name?: string
+          priority?: number | null
+          target_amount?: number
+          target_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       plaid_data: {
         Row: {
           access_token: string | null
@@ -37,6 +76,123 @@ export type Database = {
           data?: Json | null
           id?: string
           item_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          ai_voice_enabled: boolean | null
+          created_at: string
+          dark_mode: boolean | null
+          email: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          notifications_email: boolean | null
+          notifications_push: boolean | null
+          onboarding_completed: boolean | null
+          preferred_currency: string | null
+          risk_profile: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_voice_enabled?: boolean | null
+          created_at?: string
+          dark_mode?: boolean | null
+          email?: string | null
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          notifications_email?: boolean | null
+          notifications_push?: boolean | null
+          onboarding_completed?: boolean | null
+          preferred_currency?: string | null
+          risk_profile?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_voice_enabled?: boolean | null
+          created_at?: string
+          dark_mode?: boolean | null
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          notifications_email?: boolean | null
+          notifications_push?: boolean | null
+          onboarding_completed?: boolean | null
+          preferred_currency?: string | null
+          risk_profile?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      simulations: {
+        Row: {
+          created_at: string
+          id: string
+          is_baseline: boolean | null
+          name: string
+          scenario_data: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_baseline?: boolean | null
+          name: string
+          scenario_data: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_baseline?: boolean | null
+          name?: string
+          scenario_data?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_financial_data: {
+        Row: {
+          annual_salary: number | null
+          created_at: string
+          emergency_fund_months: number | null
+          has_dependents: boolean | null
+          has_variable_income: boolean | null
+          id: string
+          monthly_rent: number | null
+          monthly_subscriptions: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          annual_salary?: number | null
+          created_at?: string
+          emergency_fund_months?: number | null
+          has_dependents?: boolean | null
+          has_variable_income?: boolean | null
+          id?: string
+          monthly_rent?: number | null
+          monthly_subscriptions?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          annual_salary?: number | null
+          created_at?: string
+          emergency_fund_months?: number | null
+          has_dependents?: boolean | null
+          has_variable_income?: boolean | null
+          id?: string
+          monthly_rent?: number | null
+          monthly_subscriptions?: number | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
