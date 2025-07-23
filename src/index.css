@@ -8,51 +8,53 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* FutureFund Design System - Modern Financial Interface */
-    --background: 220 20% 98%;
-    --foreground: 230 15% 15%;
+    /* FlowSightFi Design System - Futuristic Calm meets Financial Precision */
+    --background: 200 25% 97%;
+    --foreground: 200 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 230 15% 15%;
+    --card: 190 30% 98%;
+    --card-foreground: 200 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 230 15% 15%;
+    --popover: 190 30% 98%;
+    --popover-foreground: 200 15% 15%;
 
-    /* Primary: Deep financial blue with confidence */
-    --primary: 230 60% 25%;
+    /* Primary: Deep Teal - Oceanic depth with confidence */
+    --primary: 192 66% 28%;
     --primary-foreground: 0 0% 98%;
-    --primary-glow: 230 70% 55%;
+    --primary-glow: 186 45% 55%;
 
-    /* Secondary: Soft trust-building purple */
-    --secondary: 250 15% 92%;
-    --secondary-foreground: 230 60% 25%;
+    /* Secondary: Misty Aqua - Calm, flowing energy */
+    --secondary: 184 35% 88%;
+    --secondary-foreground: 192 66% 28%;
 
-    /* Muted: Calm neutrals for supporting content */
-    --muted: 220 15% 95%;
-    --muted-foreground: 230 10% 45%;
+    /* Muted: Soft oceanic neutrals */
+    --muted: 190 20% 94%;
+    --muted-foreground: 195 15% 45%;
 
-    /* Accent: Warm growth green for positive forecasts */
-    --accent: 150 60% 92%;
-    --accent-foreground: 150 80% 25%;
-    --accent-success: 150 80% 35%;
+    /* Accent: Warm Amber - Sunrise optimism */
+    --accent: 42 100% 75%;
+    --accent-foreground: 42 80% 25%;
+    --accent-success: 186 45% 55%;
 
-    /* Destructive: Gentle warning system */
-    --destructive: 350 65% 88%;
-    --destructive-foreground: 350 80% 35%;
+    /* Destructive: Gentle coral warning */
+    --destructive: 15 65% 88%;
+    --destructive-foreground: 15 80% 35%;
 
     /* Interface elements */
-    --border: 220 15% 90%;
-    --input: 220 15% 96%;
-    --ring: 230 60% 60%;
+    --border: 190 20% 88%;
+    --input: 190 25% 95%;
+    --ring: 186 45% 60%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Beautiful gradients for FutureFund */
+    /* Fluid gradients for FlowSightFi */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-hero: linear-gradient(135deg, hsl(230 60% 25%) 0%, hsl(250 70% 45%) 50%, hsl(150 60% 55%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(220 20% 99%));
-    --gradient-success: linear-gradient(135deg, hsl(150 60% 95%), hsl(150 70% 85%));
-    --gradient-forecast: linear-gradient(90deg, hsl(var(--primary-glow)) 0%, hsl(150 60% 55%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(192 66% 28%) 0%, hsl(186 45% 55%) 50%, hsl(42 100% 75%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(190 25% 99%));
+    --gradient-success: linear-gradient(135deg, hsl(186 45% 95%), hsl(186 55% 85%));
+    --gradient-forecast: linear-gradient(90deg, hsl(var(--primary-glow)) 0%, hsl(42 100% 75%) 100%);
+    --gradient-flow: linear-gradient(180deg, hsl(186 45% 55%) 0%, hsl(192 66% 28%) 100%);
+    --gradient-horizon: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(186 45% 55%) 50%, hsl(42 100% 75%) 100%);
     
     /* Advanced shadows for depth */
     --shadow-soft: 0 2px 12px -4px hsl(var(--primary) / 0.1);

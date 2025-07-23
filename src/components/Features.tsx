@@ -58,10 +58,10 @@ const Features = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="text-center space-y-6 mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            Financial Foresight at Your Fingertips
+            Financial Clarity That Flows
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Where traditional apps show you what happened, FutureFund reveals what could happen next — empowering you to change course before it's too late.
+            Navigate your financial streams with confidence. FlowSightFi reveals where your money flows and how to guide it toward your goals.
           </p>
         </div>
 
@@ -112,12 +112,12 @@ const Features = () => {
               </div>
               
               <div className="space-y-3">
-                <div className="font-medium text-primary">FutureFund</div>
+                <div className="font-medium text-primary">FlowSightFi</div>
                 <div className="text-sm space-y-2">
-                  <div className="text-accent-success">Predict what you'll spend</div>
-                  <div className="text-accent-success">Forecast future scenarios</div>
-                  <div className="text-accent-success">AI-powered planning</div>
-                  <div className="text-accent-success">Proactive insights</div>
+                  <div className="text-accent-success">Predict financial flows</div>
+                  <div className="text-accent-success">Navigate future scenarios</div>
+                  <div className="text-accent-success">AI-powered navigation</div>
+                  <div className="text-accent-success">Calm, clear insights</div>
                 </div>
               </div>
             </div>

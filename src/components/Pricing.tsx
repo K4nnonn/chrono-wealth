@@ -154,7 +154,7 @@ const Pricing = () => {
             <div className="grid md:grid-cols-3 gap-6 text-sm">
               <div className="space-y-2">
                 <div className="font-medium text-foreground">White Label API</div>
-                <div className="text-muted-foreground">Embed FutureFund's forecasting in your app</div>
+                <div className="text-muted-foreground">Embed FlowSightFi's forecasting in your app</div>
               </div>
               <div className="space-y-2">
                 <div className="font-medium text-foreground">Custom Branding</div>

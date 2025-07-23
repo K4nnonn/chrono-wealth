@@ -24,11 +24,11 @@ const Footer = () => {
                 <div className="w-8 h-8 bg-gradient-forecast rounded-lg flex items-center justify-center">
                   <Brain className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-2xl font-bold">FutureFund</span>
+                <span className="text-2xl font-bold">FlowSightFi</span>
               </div>
               
               <p className="text-primary-foreground/80 leading-relaxed">
-                The first predictive financial OS that helps you see what's coming, not just what's already happened.
+                Navigate your financial future with clarity and confidence through AI-powered insights that flow with your life.
               </p>
               
               <div className="flex items-center gap-4">
@@ -138,7 +138,7 @@ const Footer = () => {
 
             {/* Copyright */}
             <div className="text-sm text-primary-foreground/60">
-              © 2025 FutureFund. All rights reserved.
+              © 2025 FlowSightFi. All rights reserved.
             </div>
           </div>
 
@@ -165,7 +165,7 @@ const Footer = () => {
           {/* Disclaimer */}
           <div className="mt-6 text-center text-xs text-primary-foreground/40 max-w-4xl mx-auto">
             <p>
-              FutureFund provides AI-powered financial forecasts and simulations for informational purposes only. 
+              FlowSightFi provides AI-powered financial forecasts and simulations for informational purposes only. 
               All projections are estimates based on historical data and should not be considered financial advice. 
               Past performance does not guarantee future results. Please consult with a qualified financial advisor 
               for personalized financial planning.

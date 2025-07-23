@@ -22,15 +22,15 @@ const Hero = () => {
               </div>
               
               <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
-                Future<span className="text-transparent bg-gradient-to-r from-primary-glow to-accent-success bg-clip-text">Fund</span>
+                Flow<span className="text-transparent bg-gradient-to-r from-primary-glow to-accent bg-clip-text">Sight</span>Fi
               </h1>
               
               <p className="text-xl lg:text-2xl text-white/80 max-w-xl">
-                Know what's coming, not just what's already happened.
+                See Your Financial Future—Clearly, Confidently, Calmly.
               </p>
               
               <p className="text-lg text-white/70 max-w-2xl">
-                The first predictive financial OS that helps you track, forecast, and improve your financial future across bills, investments, crypto, and income using AI-powered simulations.
+                Navigate your financial journey with AI-powered forecasting that flows with your life. Track, simulate, and optimize across all your financial streams.
               </p>
             </div>
 
@@ -63,7 +63,7 @@ const Hero = () => {
               <Card className="p-6 bg-gradient-card shadow-glow border-white/20">
                 <img 
                   src={heroDashboard} 
-                  alt="FutureFund Dashboard Preview" 
+                  alt="FlowSightFi Dashboard Preview" 
                   className="w-full h-auto rounded-lg shadow-card"
                 />
               </Card>
