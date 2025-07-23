@@ -171,6 +171,14 @@ const Navigation = () => {
               <Settings className="w-5 h-5" />
               Settings
             </Link>
+            
+            <Button
+              variant="ghost"
+              onClick={() => {/* Add sign out here */}}
+              className="w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-left"
+            >
+              Sign Out
+            </Button>
           </div>
         </div>
       </aside>
