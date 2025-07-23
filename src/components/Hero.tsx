@@ -16,7 +16,7 @@ const Hero = () => {
 
   const handleSignUp = () => {
     setShowEmailModal(false);
-    navigate('/login');
+    navigate('/auth?mode=signup');
   };
 
   return (

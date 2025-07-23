@@ -28,17 +28,10 @@ function App() {
           <div className="min-h-screen bg-background">
             <Routes>
               {/* Public routes */}
+              <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
-              
-              {/* Protected routes */}
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Navigation />
-                  <Index />
-                </ProtectedRoute>
-              } />
               
               <Route path="/dashboard" element={
                 <ProtectedRoute>
