@@ -1,10 +1,33 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, TrendingUp, Shield, Brain } from "lucide-react";
 import heroDashboard from "@/assets/hero-dashboard.jpg";
+import { EmailCaptureModal } from "@/components/EmailCaptureModal";
 
 const Hero = () => {
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleGetAccess = () => {
+    setShowEmailModal(true);
+  };
+
+  const handleSignUp = () => {
+    setShowEmailModal(false);
+    navigate('/login');
+  };
+
   return (
+    <>
+      <EmailCaptureModal 
+        isOpen={showEmailModal}
+        onClose={() => setShowEmailModal(false)}
+        onSignUp={handleSignUp}
+        title="Get Early Access"
+        description="Join FlowSightFi and start seeing your financial future today."
+      />
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -35,7 +58,11 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 shadow-glow group">
+              <Button 
+                size="lg" 
+                className="bg-white text-primary hover:bg-white/90 shadow-glow group"
+                onClick={handleGetAccess}
+              >
                 Get Early Access
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -85,6 +112,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

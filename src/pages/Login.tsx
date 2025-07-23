@@ -1,16 +1,79 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Brain, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { Brain, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 
 const Login = () => {
+  const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { signIn, signUp, user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        const { error } = await signIn(email, password);
+        if (error) {
+          toast({
+            title: "Login failed",
+            description: error.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Welcome back!",
+            description: "You've been signed in successfully.",
+          });
+          navigate('/dashboard');
+        }
+      } else {
+        const { error } = await signUp(email, password, firstName, lastName);
+        if (error) {
+          toast({
+            title: "Signup failed",
+            description: error.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Account created!",
+            description: "Please check your email for verification.",
+          });
+          navigate('/onboarding');
+        }
+      }
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
@@ -26,14 +89,44 @@ const Login = () => {
           </Link>
           
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-            <p className="text-white/70">Sign in to see your financial future</p>
+            <h1 className="text-2xl font-bold text-white">
+              {isLogin ? "Welcome back" : "Get started"}
+            </h1>
+            <p className="text-white/70">
+              {isLogin ? "Sign in to see your financial future" : "Create your account and see your financial future"}
+            </p>
           </div>
         </div>
 
-        {/* Login Form */}
+        {/* Auth Form */}
         <Card className="p-6 bg-white/10 backdrop-blur-md border-white/20">
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-white">First Name</Label>
+                  <Input
+                    id="firstName"
+                    placeholder="First name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="bg-white/10 border-white/30 text-white placeholder:text-white/60"
+                    required={!isLogin}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-white">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    placeholder="Last name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="bg-white/10 border-white/30 text-white placeholder:text-white/60"
+                    required={!isLogin}
+                  />
+                </div>
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-white">Email</Label>
               <div className="relative">
@@ -73,8 +166,13 @@ const Login = () => {
               </div>
             </div>
 
-            <Button className="w-full bg-white text-primary hover:bg-white/90">
-              Sign In
+            <Button 
+              type="submit" 
+              className="w-full bg-white text-primary hover:bg-white/90"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {isLogin ? "Sign In" : "Create Account"}
             </Button>
           </form>
 
@@ -106,10 +204,13 @@ const Login = () => {
 
         <div className="text-center">
           <p className="text-white/60 text-sm">
-            Don't have an account?{" "}
-            <Link to="/onboarding" className="text-white hover:underline">
-              Sign up
-            </Link>
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+            <button 
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-white hover:underline"
+            >
+              {isLogin ? "Sign up" : "Sign in"}
+            </button>
           </p>
         </div>
 

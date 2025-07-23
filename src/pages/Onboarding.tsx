@@ -7,7 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Brain, DollarSign, Home, GraduationCap, Shield, ArrowRight, ArrowLeft } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useProfile } from "@/hooks/useProfile";
+import { supabase } from "@/integrations/supabase/client";
+import { Brain, DollarSign, Home, GraduationCap, Shield, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 
 const steps = [
   { title: "Income & Job Info", description: "Tell us about your income sources" },
@@ -19,6 +22,7 @@ const steps = [
 
 const Onboarding = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     salary: "",
     employer: "",
@@ -34,12 +38,88 @@ const Onboarding = () => {
   });
   
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { updateProfile, updateFinancialData } = useProfile();
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
+      await completeOnboarding();
+    }
+  };
+
+  const completeOnboarding = async () => {
+    setLoading(true);
+    try {
+      // Save financial data
+      await updateFinancialData({
+        annual_salary: formData.salary ? parseFloat(formData.salary) : null,
+        monthly_rent: formData.rent ? parseFloat(formData.rent) : null,
+        monthly_subscriptions: formData.subscriptions ? parseFloat(formData.subscriptions) : null,
+        has_variable_income: formData.bonuses,
+        has_dependents: formData.hasKids,
+        emergency_fund_months: Math.floor(formData.emergencyFund / 25) + 1 // Convert risk to months
+      });
+
+      // Save profile preferences
+      await updateProfile({
+        onboarding_completed: true,
+        risk_profile: formData.emergencyFund < 25 ? 'conservative' : formData.emergencyFund > 75 ? 'aggressive' : 'moderate',
+        dark_mode: formData.darkMode,
+        notifications_email: formData.notifications
+      });
+
+      // Save goals
+      if (formData.goals.length > 0) {
+        const { data: user } = await supabase.auth.getUser();
+        if (user.user) {
+          const goalPromises = formData.goals.map(goalId => {
+            const goalNames = {
+              house: "Buy a Home",
+              retirement: "Retirement",
+              education: "Education Fund",
+              emergency: "Emergency Fund", 
+              travel: "Travel Fund",
+              debt: "Pay Off Debt"
+            };
+            
+            const targetAmounts = {
+              house: 300000,
+              retirement: 1000000,
+              education: 50000,
+              emergency: 10000,
+              travel: 15000,
+              debt: 25000
+            };
+
+            return supabase.from('financial_goals').insert({
+              user_id: user.user.id,
+              name: goalNames[goalId as keyof typeof goalNames] || goalId,
+              target_amount: targetAmounts[goalId as keyof typeof targetAmounts] || 10000,
+              category: goalId
+            });
+          });
+          
+          await Promise.all(goalPromises);
+        }
+      }
+
+      toast({
+        title: "Welcome to FlowSightFi!",
+        description: "Your profile has been set up successfully.",
+      });
+
       navigate("/dashboard");
+    } catch (error) {
+      console.error('Error completing onboarding:', error);
+      toast({
+        title: "Setup error",
+        description: "There was an issue saving your data. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -279,7 +359,12 @@ const Onboarding = () => {
               <div />
             )}
             
-            <Button onClick={nextStep} className="bg-white text-primary hover:bg-white/90">
+            <Button 
+              onClick={nextStep} 
+              className="bg-white text-primary hover:bg-white/90"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {currentStep === steps.length - 1 ? "Generate My Timeline" : "Next"}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
