@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, RadialBarChart, RadialBar, ComposedChart } from 'recharts';
 import { useFinancialForecasting } from '@/hooks/useFinancialForecasting';
 import { formatCurrency } from '@/lib/utils';
 import { 
@@ -29,449 +24,333 @@ export const AdvancedForecasting: React.FC = () => {
     currentMetrics 
   } = useFinancialForecasting();
 
-  const [whatIfInputs, setWhatIfInputs] = useState({
-    incomeChange: 0,
-    expenseChange: 0,
-    additionalSavings: 0
-  });
-
-  const [activeScenario, setActiveScenario] = useState<'current' | 'optimistic' | 'conservative' | 'crisis'>('current');
-
   // Generate all scenarios
   const currentScenario = analyzeScenario('current');
   const optimisticScenario = analyzeScenario('optimistic');
   const conservativeScenario = analyzeScenario('conservative');
   const crisisScenario = analyzeScenario('crisis');
 
-  const insights = generateForecastInsights();
-  const whatIfResult = calculateWhatIfScenario(whatIfInputs);
-
-  const getScenarioColor = (scenario: string) => {
-    switch (scenario) {
-      case 'optimistic': return '#22C55E';
-      case 'conservative': return '#F59E0B';
-      case 'crisis': return '#EF4444';
-      default: return '#5665FF';
-    }
-  };
-
-  const scenarioData = [
-    { name: 'Current', data: currentScenario, color: '#5665FF' },
-    { name: 'Optimistic', data: optimisticScenario, color: '#22C55E' },
-    { name: 'Conservative', data: conservativeScenario, color: '#F59E0B' },
-    { name: 'Crisis', data: crisisScenario, color: '#EF4444' }
+  // Create sophisticated dashboard data
+  const savingsRateData = [
+    { month: 'Jan', rate: 15 }, { month: 'Feb', rate: 18 }, { month: 'Mar', rate: 22 },
+    { month: 'Apr', rate: 25 }, { month: 'May', rate: 28 }, { month: 'Jun', rate: 24 }
   ];
 
+  const expenseBreakdown = [
+    { name: 'Housing', value: 35, color: '#5665FF' },
+    { name: 'Food', value: 15, color: '#22C55E' },
+    { name: 'Transport', value: 12, color: '#F59E0B' },
+    { name: 'Entertainment', value: 8, color: '#EF4444' },
+    { name: 'Other', value: 30, color: '#8B5CF6' }
+  ];
+
+  const monthlyGrowthData = currentScenario.projections.slice(0, 12).map(proj => ({
+    month: proj.month,
+    income: proj.income,
+    expenses: proj.expenses,
+    savings: proj.savings,
+    netWorth: proj.netWorth
+  }));
+
   return (
-    <div className="space-y-6">
-      {/* Current Financial Pulse */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
-            Financial Pulse - Current State
-          </CardTitle>
-          <CardDescription>Real-time analysis of your financial position</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-primary">{formatCurrency(currentMetrics.monthlyIncome)}</p>
-              <p className="text-sm text-muted-foreground">Monthly Income</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
+      {/* Top Metrics Row */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-blue-100 text-sm font-medium">Monthly Income</p>
+                <p className="text-3xl font-bold">{formatCurrency(currentMetrics.monthlyIncome)}</p>
+                <p className="text-blue-200 text-xs">+12% from last month</p>
+              </div>
+              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
+                <DollarSign className="h-6 w-6" />
+              </div>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-destructive">{formatCurrency(currentMetrics.monthlyExpenses)}</p>
-              <p className="text-sm text-muted-foreground">Monthly Expenses</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-emerald-100 text-sm font-medium">Monthly Savings</p>
+                <p className="text-3xl font-bold">{formatCurrency(currentMetrics.monthlySavings)}</p>
+                <p className="text-emerald-200 text-xs">{(currentMetrics.savingsRate * 100).toFixed(1)}% savings rate</p>
+              </div>
+              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
+                <TrendingUp className="h-6 w-6" />
+              </div>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-success">{formatCurrency(currentMetrics.monthlySavings)}</p>
-              <p className="text-sm text-muted-foreground">Monthly Savings</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-purple-100 text-sm font-medium">Net Worth</p>
+                <p className="text-3xl font-bold">{formatCurrency(currentMetrics.currentNetWorth)}</p>
+                <p className="text-purple-200 text-xs">+8.2% this year</p>
+              </div>
+              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
+                <Target className="h-6 w-6" />
+              </div>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold">{(currentMetrics.savingsRate * 100).toFixed(1)}%</p>
-              <p className="text-sm text-muted-foreground">Savings Rate</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-orange-100 text-sm font-medium">Goal Progress</p>
+                <p className="text-3xl font-bold">67%</p>
+                <p className="text-orange-200 text-xs">45 days to milestone</p>
+              </div>
+              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
+                <Calendar className="h-6 w-6" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Chart Dashboard Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Main Financial Timeline */}
+        <Card className="lg:col-span-2 bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Financial Timeline
+            </CardTitle>
+            <CardDescription>Your projected financial future</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[350px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={monthlyGrowthData}>
+                  <defs>
+                    <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#5665FF" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#5665FF" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e4e7" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value/1000}k`} />
+                  <Tooltip 
+                    formatter={(value: number) => [formatCurrency(value)]}
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: 'none', 
+                      borderRadius: '12px',
+                      boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="netWorth"
+                    stroke="#5665FF"
+                    strokeWidth={3}
+                    fill="url(#netWorthGradient)"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="income"
+                    stroke="#22C55E"
+                    strokeWidth={2}
+                    dot={{ fill: '#22C55E', strokeWidth: 2, r: 4 }}
+                  />
+                  <Bar dataKey="savings" fill="#8B5CF6" opacity={0.6} />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Savings Rate Progress */}
+        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-bold">Savings Rate Trend</CardTitle>
+            <CardDescription>Monthly improvement tracking</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[200px] mb-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={savingsRateData}>
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis axisLine={false} tickLine={false} />
+                  <Tooltip 
+                    formatter={(value: number) => [`${value}%`, 'Savings Rate']}
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: 'none', 
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  <Bar dataKey="rate" fill="#5665FF" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Expense Breakdown Donut */}
+            <div className="h-[120px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={expenseBreakdown}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={30}
+                    outerRadius={50}
+                    paddingAngle={2}
+                  >
+                    {expenseBreakdown.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value: number) => [`${value}%`, 'Expenses']} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Bottom Grid - Multi-chart Analysis */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Cash Flow Analysis */}
+        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-bold">Cash Flow</CardTitle>
+            <CardDescription>Income vs Expenses</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={monthlyGrowthData.slice(0, 6)}>
+                  <defs>
+                    <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#22C55E" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#22C55E" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#EF4444" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#EF4444" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value/1000}k`} />
+                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                  <Area
+                    type="monotone"
+                    dataKey="income"
+                    stackId="1"
+                    stroke="#22C55E"
+                    fill="url(#incomeGrad)"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="expenses"
+                    stackId="2"
+                    stroke="#EF4444"
+                    fill="url(#expenseGrad)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Scenario Comparison */}
+        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-bold">Scenario Analysis</CardTitle>
+            <CardDescription>Future projections</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={currentScenario.projections.slice(0, 12)}>
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value/1000}k`} />
+                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                  <Line
+                    type="monotone"
+                    dataKey="netWorth"
+                    stroke="#5665FF"
+                    strokeWidth={3}
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="emergencyFund"
+                    stroke="#22C55E"
+                    strokeWidth={2}
+                    strokeDasharray="5,5"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Goal Achievement Progress */}
+        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-bold">Goal Achievement</CardTitle>
+            <CardDescription>Progress tracking</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[120px] mb-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadialBarChart cx="50%" cy="50%" innerRadius="50%" outerRadius="90%" data={[{ value: 67, fill: '#5665FF' }]}>
+                  <RadialBar dataKey="value" cornerRadius={10} fill="#5665FF" />
+                </RadialBarChart>
+              </ResponsiveContainer>
+              <div className="text-center -mt-16">
+                <p className="text-2xl font-bold text-primary">67%</p>
+                <p className="text-sm text-muted-foreground">Complete</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <p className="text-lg font-bold text-success">$67k</p>
+                <p className="text-xs text-muted-foreground">Current</p>
+              </div>
+              <div>
+                <p className="text-lg font-bold text-primary">$100k</p>
+                <p className="text-xs text-muted-foreground">Target</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Bottom Action Panel */}
+      <Card className="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold mb-2">AI-Powered Recommendations</h3>
+              <p className="text-blue-100">Based on your financial patterns, we recommend increasing your emergency fund by $200/month</p>
+            </div>
+            <div className="flex gap-3">
+              <Button variant="secondary" size="sm">Learn More</Button>
+              <Button variant="outline" size="sm" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                Start Optimization
+              </Button>
             </div>
           </div>
         </CardContent>
       </Card>
-
-      <Tabs defaultValue="projections" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="projections">Future Projections</TabsTrigger>
-          <TabsTrigger value="scenarios">Scenario Analysis</TabsTrigger>
-          <TabsTrigger value="whatif">What-If Calculator</TabsTrigger>
-          <TabsTrigger value="insights">AI Insights</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="projections" className="space-y-6">
-          {/* Net Worth Projection Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Net Worth Projection - Next 24 Months</CardTitle>
-              <CardDescription>
-                Track how your wealth will grow under different scenarios
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={currentScenario.projections}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="month" 
-                      tick={{ fontSize: 12 }}
-                    />
-                    <YAxis 
-                      tickFormatter={(value) => formatCurrency(value)}
-                      tick={{ fontSize: 12 }}
-                    />
-                    <Tooltip 
-                      formatter={(value: number) => [formatCurrency(value), 'Net Worth']}
-                      labelFormatter={(label) => `Month: ${label}`}
-                    />
-                    
-                    <Line
-                      dataKey="netWorth"
-                      stroke="#5665FF"
-                      strokeWidth={3}
-                      dot={false}
-                      name="Current Scenario"
-                    />
-                    <Line
-                      dataKey="emergencyFund"
-                      stroke="#22C55E"
-                      strokeWidth={2}
-                      strokeDasharray="5,5"
-                      dot={false}
-                      name="Emergency Fund"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              
-              <div className="flex flex-wrap gap-4 mt-4">
-                {scenarioData.map((scenario) => (
-                  <div key={scenario.name} className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
-                      style={{ backgroundColor: scenario.color }}
-                    />
-                    <span className="text-sm font-medium">{scenario.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {formatCurrency(scenario.data.summary.finalNetWorth)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Savings Rate Trends */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Monthly Cash Flow Trends</CardTitle>
-                <CardDescription>Income vs Expenses over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={currentScenario.projections}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                      <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: 12 }} />
-                      <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                      <Area
-                        type="monotone"
-                        dataKey="income"
-                        stackId="1"
-                        stroke="#22C55E"
-                        fill="#22C55E"
-                        fillOpacity={0.6}
-                        name="Income"
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="expenses"
-                        stackId="2"
-                        stroke="#EF4444"
-                        fill="#EF4444"
-                        fillOpacity={0.6}
-                        name="Expenses"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Goal Progress Over Time</CardTitle>
-                <CardDescription>Track your progress towards financial milestones</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={currentScenario.projections.slice(0, 12)}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                      <YAxis tick={{ fontSize: 12 }} />
-                      <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} />
-                      <Bar dataKey="goalProgress" fill="#5665FF" name="Goal Progress %" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="scenarios" className="space-y-6">
-          {/* Scenario Comparison */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {scenarioData.map((scenario) => (
-              <Card 
-                key={scenario.name}
-                className={`cursor-pointer transition-all duration-300 ${
-                  activeScenario === scenario.name.toLowerCase() 
-                    ? 'ring-2 ring-primary shadow-glow' 
-                    : 'hover:shadow-card'
-                }`}
-                onClick={() => setActiveScenario(scenario.name.toLowerCase() as any)}
-              >
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg flex items-center justify-between">
-                    {scenario.name}
-                    <Badge 
-                      variant="outline" 
-                      style={{ borderColor: scenario.color, color: scenario.color }}
-                    >
-                      {scenario.name === 'Current' ? 'Active' : 'Projection'}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Final Net Worth</p>
-                    <p className="text-xl font-bold" style={{ color: scenario.color }}>
-                      {formatCurrency(scenario.data.summary.finalNetWorth)}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">Goal Achievement</p>
-                    <p className="font-semibold">
-                      {scenario.data.summary.goalAchievementMonths > 24 
-                        ? '>24 months' 
-                        : `${scenario.data.summary.goalAchievementMonths} months`
-                      }
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-muted-foreground">Risk Score</p>
-                    <div className="flex items-center gap-2">
-                      <Progress value={scenario.data.summary.riskScore} className="flex-1" />
-                      <span className="text-sm font-medium">{scenario.data.summary.riskScore.toFixed(0)}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Detailed Scenario Analysis */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Scenario Deep Dive: {activeScenario.charAt(0).toUpperCase() + activeScenario.slice(1)}</CardTitle>
-              <CardDescription>Detailed month-by-month breakdown</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={scenarioData.find(s => s.name.toLowerCase() === activeScenario)?.data.projections.slice(0, 12)}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                    <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: 12 }} />
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                    <Bar dataKey="savings" fill={getScenarioColor(activeScenario)} name="Monthly Savings" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="whatif" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calculator className="w-5 h-5" />
-                What-If Calculator
-              </CardTitle>
-              <CardDescription>
-                See how changes to your finances would impact your future
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="space-y-2">
-                  <Label htmlFor="income-change">Monthly Income Change</Label>
-                  <Input
-                    id="income-change"
-                    type="number"
-                    placeholder="0"
-                    value={whatIfInputs.incomeChange || ''}
-                    onChange={(e) => setWhatIfInputs(prev => ({
-                      ...prev,
-                      incomeChange: Number(e.target.value)
-                    }))}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="expense-change">Monthly Expense Change</Label>
-                  <Input
-                    id="expense-change"
-                    type="number"
-                    placeholder="0"
-                    value={whatIfInputs.expenseChange || ''}
-                    onChange={(e) => setWhatIfInputs(prev => ({
-                      ...prev,
-                      expenseChange: Number(e.target.value)
-                    }))}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="additional-savings">Additional Monthly Savings</Label>
-                  <Input
-                    id="additional-savings"
-                    type="number"
-                    placeholder="0"
-                    value={whatIfInputs.additionalSavings || ''}
-                    onChange={(e) => setWhatIfInputs(prev => ({
-                      ...prev,
-                      additionalSavings: Number(e.target.value)
-                    }))}
-                  />
-                </div>
-              </div>
-
-              {/* What-If Results */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 p-4 bg-gradient-card rounded-lg">
-                <div className="text-center">
-                  <p className="text-lg font-bold text-primary">{formatCurrency(whatIfResult.newMonthlySavings)}</p>
-                  <p className="text-sm text-muted-foreground">New Monthly Savings</p>
-                  <div className="flex items-center justify-center gap-1 mt-1">
-                    {whatIfResult.improvementVsCurrent > 0 ? (
-                      <TrendingUp className="w-3 h-3 text-success" />
-                    ) : whatIfResult.improvementVsCurrent < 0 ? (
-                      <TrendingDown className="w-3 h-3 text-destructive" />
-                    ) : null}
-                    <span className="text-xs">
-                      {whatIfResult.improvementVsCurrent > 0 ? '+' : ''}
-                      {formatCurrency(whatIfResult.improvementVsCurrent)}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="text-center">
-                  <p className="text-lg font-bold">{(whatIfResult.newSavingsRate * 100).toFixed(1)}%</p>
-                  <p className="text-sm text-muted-foreground">New Savings Rate</p>
-                </div>
-                
-                <div className="text-center">
-                  <p className="text-lg font-bold text-success">{formatCurrency(whatIfResult.futureNetWorth)}</p>
-                  <p className="text-sm text-muted-foreground">Net Worth (1 Year)</p>
-                </div>
-                
-                <div className="text-center">
-                  <p className="text-lg font-bold text-warning">
-                    {typeof whatIfResult.monthsToGoal === 'string' 
-                      ? whatIfResult.monthsToGoal 
-                      : `${whatIfResult.monthsToGoal}mo`
-                    }
-                  </p>
-                  <p className="text-sm text-muted-foreground">To $100k Goal</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="insights" className="space-y-6">
-          <div className="grid gap-4">
-            {insights.map((insight, index) => (
-              <Card key={index} className="border-l-4 border-l-primary">
-                <CardContent className="pt-4">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1">
-                      {insight.includes('🚨') && <AlertTriangle className="w-4 h-4 text-destructive" />}
-                      {insight.includes('💪') && <Target className="w-4 h-4 text-success" />}
-                      {insight.includes('👍') && <TrendingUp className="w-4 h-4 text-primary" />}
-                      {insight.includes('⚠️') && <AlertTriangle className="w-4 h-4 text-warning" />}
-                      {insight.includes('🎯') && <Target className="w-4 h-4 text-primary" />}
-                      {insight.includes('🛡️') && <Shield className="w-4 h-4 text-primary" />}
-                      {insight.includes('📈') && <TrendingUp className="w-4 h-4 text-success" />}
-                    </div>
-                    <p className="text-sm leading-relaxed">{insight}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Action Items */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Recommended Actions
-              </CardTitle>
-              <CardDescription>Prioritized steps to improve your financial trajectory</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {currentMetrics.savingsRate < 0.1 && (
-                  <div className="flex items-center gap-3 p-3 bg-warning/10 rounded-lg">
-                    <AlertTriangle className="w-5 h-5 text-warning" />
-                    <div>
-                      <p className="font-medium">Increase Savings Rate</p>
-                      <p className="text-sm text-muted-foreground">
-                        Target saving 10-20% of income for financial stability
-                      </p>
-                    </div>
-                  </div>
-                )}
-                
-                {currentScenario.summary.emergencyFundCoverage < 1 && (
-                  <div className="flex items-center gap-3 p-3 bg-primary/10 rounded-lg">
-                    <Shield className="w-5 h-5 text-primary" />
-                    <div>
-                      <p className="font-medium">Build Emergency Fund</p>
-                      <p className="text-sm text-muted-foreground">
-                        Aim for 6 months of expenses in emergency savings
-                      </p>
-                    </div>
-                  </div>
-                )}
-                
-                <div className="flex items-center gap-3 p-3 bg-success/10 rounded-lg">
-                  <TrendingUp className="w-5 h-5 text-success" />
-                  <div>
-                    <p className="font-medium">Optimize Investment Strategy</p>
-                    <p className="text-sm text-muted-foreground">
-                      Consider diversified portfolio for long-term growth
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
     </div>
   );
 };
