@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ForecastCard } from "@/components/ui/forecast-card";
-import { GoalPill } from "@/components/ui/goal-pill";
+import ForecastCard from "@/components/ui/forecast-card";
+import GoalPill from "@/components/ui/goal-pill";
 import { TimelineChart } from "@/components/TimelineChart";
 import { PulseBar } from "@/components/PulseBar";
 import { QuickActionFab } from "@/components/QuickActionFab";
@@ -173,3 +173,5 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+export default Dashboard;
