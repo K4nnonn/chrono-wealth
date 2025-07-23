@@ -8,35 +8,59 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* FutureFund Design System - Modern Financial Interface */
+    --background: 220 20% 98%;
+    --foreground: 230 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 230 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 230 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Deep financial blue with confidence */
+    --primary: 230 60% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 230 70% 55%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Soft trust-building purple */
+    --secondary: 250 15% 92%;
+    --secondary-foreground: 230 60% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Calm neutrals for supporting content */
+    --muted: 220 15% 95%;
+    --muted-foreground: 230 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Warm growth green for positive forecasts */
+    --accent: 150 60% 92%;
+    --accent-foreground: 150 80% 25%;
+    --accent-success: 150 80% 35%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Destructive: Gentle warning system */
+    --destructive: 350 65% 88%;
+    --destructive-foreground: 350 80% 35%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Interface elements */
+    --border: 220 15% 90%;
+    --input: 220 15% 96%;
+    --ring: 230 60% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Beautiful gradients for FutureFund */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-hero: linear-gradient(135deg, hsl(230 60% 25%) 0%, hsl(250 70% 45%) 50%, hsl(150 60% 55%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(220 20% 99%));
+    --gradient-success: linear-gradient(135deg, hsl(150 60% 95%), hsl(150 70% 85%));
+    --gradient-forecast: linear-gradient(90deg, hsl(var(--primary-glow)) 0%, hsl(150 60% 55%) 100%);
+    
+    /* Advanced shadows for depth */
+    --shadow-soft: 0 2px 12px -4px hsl(var(--primary) / 0.1);
+    --shadow-card: 0 4px 20px -8px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+    
+    /* Smooth transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
