@@ -191,58 +191,7 @@ export const Dashboard = () => {
               </div>
 
               {/* Enhanced Financial Timeline with Advanced Forecasting */}
-              <div className="grid gap-6 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <Card className="border-0 shadow-card bg-gradient-card">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5 text-primary" />
-                        Advanced Financial Forecasting
-                      </CardTitle>
-                      <CardDescription>AI-powered projections and scenario analysis</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <AdvancedForecasting />
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="space-y-4">
-                  <InsightCard
-                    title="Emergency Fund Optimization"
-                    insight="Based on your spending patterns, increasing your emergency fund by $200/month would reach the recommended 6-month coverage 4 months earlier."
-                    impact="medium"
-                    category="Savings Strategy"
-                    action={{
-                      label: "Optimize Savings",
-                      onClick: () => console.log('Optimize savings clicked')
-                    }}
-                  />
-
-                  <InsightCard
-                    title="Debt Consolidation Opportunity"
-                    insight="Consolidating your high-interest debts could save you $150/month in interest payments."
-                    impact="high"
-                    category="Debt Management"
-                    action={{
-                      label: "Learn More",
-                      onClick: () => console.log('Debt consolidation clicked')
-                    }}
-                  />
-
-                  <StatusCard
-                    title="Goal Achievement Forecast"
-                    description={`At your current savings rate, you'll reach your $100k goal in ${
-                      monthlySavings > 0 ? Math.ceil((100000 - (financialData?.annual_salary || 0) * 0.1) / monthlySavings) : 'Never'
-                    } months.`}
-                    status={monthlySavings > 1000 ? 'healthy' : monthlySavings > 500 ? 'warning' : 'critical'}
-                    action={{
-                      label: "Optimize Timeline",
-                      onClick: () => console.log('Optimize timeline clicked')
-                    }}
-                  />
-                </div>
-              </div>
+              <AdvancedForecasting />
 
               {/* Quick Actions */}
               <div className="grid gap-4 md:grid-cols-3">

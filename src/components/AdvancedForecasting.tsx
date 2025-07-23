@@ -53,7 +53,7 @@ export const AdvancedForecasting: React.FC = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
+    <div className="space-y-8 p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 rounded-2xl">
       {/* Top Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
