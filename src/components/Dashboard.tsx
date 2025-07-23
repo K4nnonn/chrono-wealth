@@ -1,255 +1,175 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertCircle, 
-  Calendar,
-  DollarSign,
-  PiggyBank,
-  CreditCard,
-  Wallet
-} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ForecastCard } from "@/components/ui/forecast-card";
+import { GoalPill } from "@/components/ui/goal-pill";
+import { TimelineChart } from "@/components/TimelineChart";
+import { PulseBar } from "@/components/PulseBar";
+import { QuickActionFab } from "@/components/QuickActionFab";
+import { FinancialHealthDashboard } from "@/components/FinancialHealthDashboard";
+import { AIFinancialChat } from "@/components/AIFinancialChat";
+import { useProfile } from "@/hooks/useProfile";
+import { supabase } from "@/integrations/supabase/client";
+import { DollarSign, TrendingUp, Target, Calendar } from "lucide-react";
 
-const Dashboard = () => {
+interface Goal {
+  id: string;
+  name: string;
+  target_amount: number;
+  current_amount: number;
+  target_date: string;
+  category: string;
+}
+
+export const Dashboard = () => {
+  const navigate = useNavigate();
+  const { profile, financialData } = useProfile();
+  const [goals, setGoals] = useState<Goal[]>([]);
+
+  useEffect(() => {
+    fetchGoals();
+  }, []);
+
+  const fetchGoals = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('financial_goals')
+        .select('*')
+        .order('priority', { ascending: true });
+
+      if (error) throw error;
+      setGoals(data || []);
+    } catch (error) {
+      console.error('Error fetching goals:', error);
+    }
+  };
+
+  const monthlyIncome = financialData?.annual_salary ? (financialData.annual_salary / 12) : 0;
+  const monthlyExpenses = (financialData?.monthly_rent || 0) + (financialData?.monthly_subscriptions || 0);
+  const monthlySavings = monthlyIncome - monthlyExpenses;
+
+  const getPulseStatus = () => {
+    if (monthlySavings < 0) return { status: 'critical' as const, message: 'Cash flow negative - immediate attention needed' };
+    if (monthlySavings < 500) return { status: 'warning' as const, message: 'Low savings rate - consider optimizing expenses' };
+    if (monthlySavings > 2000) return { status: 'success' as const, message: 'Excellent financial health - on track for all goals' };
+    return { status: 'normal' as const, message: 'Stable financial position - room for optimization' };
+  };
+
   return (
-    <section className="py-24 bg-background">
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="text-center space-y-6 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            Your Financial Future, Visualized
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            See exactly where your money is headed with AI-powered forecasts that adapt to your spending patterns and life changes.
-          </p>
-        </div>
+    <div className="min-h-screen bg-background">
+      <PulseBar {...getPulseStatus()} />
 
-        {/* Demo Dashboard */}
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Top Stats Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="p-6 bg-gradient-success">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-accent-foreground/70">Net Worth Forecast</p>
-                  <p className="text-2xl font-bold text-accent-foreground">$52,340</p>
-                  <div className="flex items-center gap-1 text-xs text-accent-success">
-                    <TrendingUp className="w-3 h-3" />
-                    +12.5% from last month
-                  </div>
-                </div>
-                <PiggyBank className="w-8 h-8 text-accent-success" />
-              </div>
-            </Card>
+      <Tabs defaultValue="overview" className="container mx-auto p-6">
+        <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="health-score">Health Score</TabsTrigger>
+          <TabsTrigger value="goals">Goals</TabsTrigger>
+          <TabsTrigger value="ai-advisor">AI Advisor</TabsTrigger>
+        </TabsList>
 
-            <Card className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Monthly Savings</p>
-                  <p className="text-2xl font-bold text-foreground">$1,247</p>
-                  <div className="flex items-center gap-1 text-xs text-accent-success">
-                    <TrendingUp className="w-3 h-3" />
-                    On track for goals
-                  </div>
-                </div>
-                <Wallet className="w-8 h-8 text-primary" />
-              </div>
-            </Card>
-
-            <Card className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Bills Due Soon</p>
-                  <p className="text-2xl font-bold text-foreground">$2,156</p>
-                  <div className="flex items-center gap-1 text-xs text-orange-600">
-                    <Calendar className="w-3 h-3" />
-                    3 bills in 5 days
-                  </div>
-                </div>
-                <CreditCard className="w-8 h-8 text-primary" />
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-destructive/5 border-destructive/20">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-destructive-foreground/70">Risk Alert</p>
-                  <p className="text-2xl font-bold text-destructive-foreground">Low Buffer</p>
-                  <div className="flex items-center gap-1 text-xs text-destructive-foreground">
-                    <AlertCircle className="w-3 h-3" />
-                    12 days left
-                  </div>
-                </div>
-                <AlertCircle className="w-8 h-8 text-destructive-foreground" />
-              </div>
-            </Card>
+        <TabsContent value="overview" className="space-y-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">
+              Welcome back{profile?.first_name ? `, ${profile.first_name}` : ''}
+            </h1>
+            <p className="text-muted-foreground">Here's your financial overview</p>
           </div>
 
-          {/* Main Dashboard Content */}
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Forecast Chart */}
-            <Card className="lg:col-span-2 p-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold text-foreground">6-Month Cash Flow Forecast</h3>
-                  <Badge variant="secondary" className="bg-primary/10 text-primary">
-                    AI Powered
-                  </Badge>
-                </div>
-                
-                {/* Mock Chart */}
-                <div className="h-64 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border-2 border-dashed border-muted flex items-center justify-center">
-                  <div className="text-center space-y-2">
-                    <TrendingUp className="w-12 h-12 text-primary mx-auto" />
-                    <p className="text-muted-foreground">Interactive forecast chart</p>
-                    <p className="text-sm text-muted-foreground">Hover to see detailed predictions</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Next Month</p>
-                    <p className="text-lg font-semibold text-accent-success">+$1,840</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">3 Months</p>
-                    <p className="text-lg font-semibold text-accent-success">+$4,920</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">6 Months</p>
-                    <p className="text-lg font-semibold text-accent-success">+$8,760</p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* AI Insights */}
-            <Card className="p-6 space-y-6">
-              <h3 className="text-xl font-semibold text-foreground">AI Insights</h3>
-              
-              <div className="space-y-4">
-                <div className="p-4 bg-accent rounded-lg border border-accent-success/20">
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent-success rounded-full mt-2"></div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-accent-foreground">Optimization Opportunity</p>
-                      <p className="text-xs text-accent-foreground/80">You could save $340/month by switching to a high-yield savings account.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-primary">Goal Progress</p>
-                      <p className="text-xs text-muted-foreground">You're 2 months ahead of your vacation savings goal!</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-orange-700">Bill Reminder</p>
-                      <p className="text-xs text-orange-600">Netflix subscription renews in 3 days ($15.99)</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Button className="w-full bg-gradient-primary">
-                Ask AI About My Finances
-              </Button>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <ForecastCard
+              title="Monthly Income"
+              value={monthlyIncome}
+              change={5.2}
+              confidence={95}
+              icon={DollarSign}
+              trend="up"
+            />
+            <ForecastCard
+              title="Monthly Savings"
+              value={monthlySavings}
+              change={8.5}
+              confidence={92}
+              icon={TrendingUp}
+              trend={monthlySavings > 0 ? "up" : "down"}
+            />
+            <ForecastCard
+              title="Active Goals"
+              value={goals.length}
+              change={0}
+              confidence={100}
+              icon={Target}
+              trend="stable"
+              isNumber
+            />
+            <ForecastCard
+              title="Next Milestone"
+              value={45}
+              change={-12}
+              confidence={78}
+              icon={Calendar}
+              trend="up"
+              suffix=" days"
+              isNumber
+            />
           </div>
 
-          {/* Bottom Row */}
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Goals */}
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold text-foreground mb-4">Financial Goals</h3>
-              
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-foreground">Emergency Fund</span>
-                    <span className="text-sm text-muted-foreground">$4,200 / $6,000</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-success w-[70%] rounded-full"></div>
-                  </div>
-                  <p className="text-xs text-accent-success">On track to complete by March 2025</p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-foreground">Vacation Fund</span>
-                    <span className="text-sm text-muted-foreground">$1,800 / $3,000</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-primary w-[60%] rounded-full"></div>
-                  </div>
-                  <p className="text-xs text-primary">2 months ahead of schedule!</p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-foreground">New Car Down Payment</span>
-                    <span className="text-sm text-muted-foreground">$850 / $5,000</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-forecast w-[17%] rounded-full"></div>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Estimated completion: December 2025</p>
-                </div>
+          <Card className="p-6 bg-background-card">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold">Financial Timeline</h2>
+                <p className="text-muted-foreground">Your projected financial future</p>
               </div>
-            </Card>
+            </div>
+            <TimelineChart />
+          </Card>
+        </TabsContent>
 
-            {/* Scenario Simulator */}
-            <Card className="p-6 bg-gradient-card">
-              <h3 className="text-xl font-semibold text-foreground mb-4">Crisis Simulator</h3>
-              
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Model different scenarios to see how they'd impact your financial future.
-                </p>
-                
-                <div className="grid gap-3">
-                  <Button variant="outline" size="sm" className="justify-start">
-                    🚨 What if I lose my job?
-                  </Button>
-                  <Button variant="outline" size="sm" className="justify-start">
-                    📈 What if I get a 20% raise?
-                  </Button>
-                  <Button variant="outline" size="sm" className="justify-start">
-                    🏠 What if I move to a cheaper city?
-                  </Button>
-                  <Button variant="outline" size="sm" className="justify-start">
-                    💡 Custom scenario...
-                  </Button>
-                </div>
+        <TabsContent value="health-score">
+          <FinancialHealthDashboard />
+        </TabsContent>
 
-                <div className="mt-4 p-4 bg-white rounded-lg border">
-                  <p className="text-xs text-muted-foreground mb-2">Last simulation:</p>
-                  <p className="text-sm font-medium text-foreground">"20% salary increase"</p>
-                  <p className="text-xs text-accent-success">Result: $47K additional savings over 2 years</p>
-                </div>
-              </div>
-            </Card>
+        <TabsContent value="goals" className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Financial Goals</h2>
+            <Button onClick={() => navigate('/goals')}>Manage All</Button>
           </div>
-        </div>
+          
+          {goals.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {goals.map((goal) => (
+                <GoalPill
+                  key={goal.id}
+                  title={goal.name}
+                  progress={(goal.current_amount / goal.target_amount) * 100}
+                  target={goal.target_amount}
+                  current={goal.current_amount}
+                  category={goal.category}
+                />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-8 text-center bg-background-card">
+              <Target className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium mb-2">No goals yet</h3>
+              <p className="text-muted-foreground mb-4">Set your first financial goal</p>
+              <Button onClick={() => navigate('/goals')}>Add Your First Goal</Button>
+            </Card>
+          )}
+        </TabsContent>
 
-        <div className="text-center mt-12">
-          <Button size="lg" className="bg-gradient-primary hover:shadow-glow">
-            Try Interactive Demo
-          </Button>
-        </div>
-      </div>
-    </section>
+        <TabsContent value="ai-advisor">
+          <AIFinancialChat className="max-w-4xl mx-auto" />
+        </TabsContent>
+      </Tabs>
+
+      <QuickActionFab
+        onSimulate={() => navigate('/simulate')}
+        onAddGoal={() => navigate('/goals')}
+        onOpenAI={() => navigate('/planner')}
+        onCrisisMode={() => navigate('/crisis')}
+      />
+    </div>
   );
 };
-
-export default Dashboard;
