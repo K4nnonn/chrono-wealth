@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ForecastCard from "@/components/ui/forecast-card";
-import GoalPill from "@/components/ui/goal-pill";
 import { TimelineChart } from "@/components/TimelineChart";
 import { PulseBar } from "@/components/PulseBar";
 import { QuickActionFab } from "@/components/QuickActionFab";
@@ -78,41 +76,45 @@ export const Dashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ForecastCard
-              title="Monthly Income"
-              value={monthlyIncome}
-              change={5.2}
-              confidence={95}
-              icon={DollarSign}
-              trend="up"
-            />
-            <ForecastCard
-              title="Monthly Savings"
-              value={monthlySavings}
-              change={8.5}
-              confidence={92}
-              icon={TrendingUp}
-              trend={monthlySavings > 0 ? "up" : "down"}
-            />
-            <ForecastCard
-              title="Active Goals"
-              value={goals.length}
-              change={0}
-              confidence={100}
-              icon={Target}
-              trend="stable"
-              isNumber
-            />
-            <ForecastCard
-              title="Next Milestone"
-              value={45}
-              change={-12}
-              confidence={78}
-              icon={Calendar}
-              trend="up"
-              suffix=" days"
-              isNumber
-            />
+            <div className="p-4 bg-background-card rounded-lg border">
+              <div className="flex items-center gap-3">
+                <DollarSign className="w-5 h-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">${monthlyIncome.toLocaleString()}</div>
+                  <div className="text-sm text-muted-foreground">Monthly Income</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-background-card rounded-lg border">
+              <div className="flex items-center gap-3">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">${monthlySavings.toLocaleString()}</div>
+                  <div className="text-sm text-muted-foreground">Monthly Savings</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-background-card rounded-lg border">
+              <div className="flex items-center gap-3">
+                <Target className="w-5 h-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">{goals.length}</div>
+                  <div className="text-sm text-muted-foreground">Active Goals</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-background-card rounded-lg border">
+              <div className="flex items-center gap-3">
+                <Calendar className="w-5 h-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">45 days</div>
+                  <div className="text-sm text-muted-foreground">Next Milestone</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <Card className="p-6 bg-background-card">
@@ -139,14 +141,24 @@ export const Dashboard = () => {
           {goals.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {goals.map((goal) => (
-                <GoalPill
-                  key={goal.id}
-                  title={goal.name}
-                  progress={(goal.current_amount / goal.target_amount) * 100}
-                  target={goal.target_amount}
-                  current={goal.current_amount}
-                  category={goal.category}
-                />
+                <div key={goal.id} className="p-4 bg-background-card rounded-lg border">
+                  <div className="space-y-2">
+                    <h3 className="font-medium">{goal.name}</h3>
+                    <div className="flex justify-between text-sm">
+                      <span>${goal.current_amount.toLocaleString()}</span>
+                      <span>${goal.target_amount.toLocaleString()}</span>
+                    </div>
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <div 
+                        className="bg-primary h-2 rounded-full"
+                        style={{ width: `${Math.min((goal.current_amount / goal.target_amount) * 100, 100)}%` }}
+                      />
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {Math.round((goal.current_amount / goal.target_amount) * 100)}% complete
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           ) : (

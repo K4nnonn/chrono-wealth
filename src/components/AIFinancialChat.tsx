@@ -6,15 +6,13 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
-import { supabase } from '@/integrations/supabase/client';
-import { Bot, User, Send, Loader2, MessageCircle } from 'lucide-react';
+import { Bot, User, Send, Loader2 } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
-  functionResult?: any;
   confidence?: number;
 }
 
@@ -65,25 +63,33 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
     setError(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('financial-ai-chat', {
-        body: {
+      // Use Vercel Edge Function instead of Supabase
+      const response = await fetch('/api/financial-ai-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           message: inputMessage,
           userProfile: {
             profile,
             financialData
           },
           currentScores
-        }
+        })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
 
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: data.reply,
         timestamp: new Date(),
-        functionResult: data.functionResult,
         confidence: data.confidence
       };
 
@@ -160,15 +166,6 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
                   }`}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  
-                  {message.functionResult && (
-                    <div className="mt-2 p-2 bg-background/20 rounded text-xs">
-                      <Badge variant="secondary" className="mb-1">
-                        {message.functionResult.type}
-                      </Badge>
-                      <p>{JSON.stringify(message.functionResult, null, 2)}</p>
-                    </div>
-                  )}
                 </div>
                 
                 <div className="flex items-center gap-2 mt-1">
@@ -208,7 +205,7 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
         <div ref={messagesEndRef} />
       </ScrollArea>
 
-      {/* Suggested Questions (when no messages) */}
+      {/* Suggested Questions */}
       {messages.length === 1 && (
         <div className="p-4 border-t">
           <p className="text-xs text-muted-foreground mb-2">Try asking:</p>
