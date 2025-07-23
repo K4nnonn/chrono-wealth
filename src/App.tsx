@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Pricing from "./pages/Pricing";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ function App() {
               {/* Public routes */}
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/pricing" element={<Pricing />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               

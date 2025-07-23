@@ -1,195 +1,193 @@
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Sparkles, Crown, Zap } from "lucide-react";
-
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    description: "Perfect for getting started with financial forecasting",
-    features: [
-      "Connect up to 2 bank accounts",
-      "Basic dashboard insights",
-      "30-day forecast view",
-      "Transaction categorization",
-      "Mobile app access"
-    ],
-    cta: "Get Started Free",
-    variant: "outline" as const,
-    icon: Zap,
-    gradient: "bg-gradient-card"
-  },
-  {
-    name: "Pro",
-    price: "$9.99",
-    period: "per month",
-    description: "Advanced AI forecasting for serious financial planning",
-    features: [
-      "Everything in Free",
-      "Unlimited account connections",
-      "AI-powered forecasts",
-      "Goal tracking & planning",
-      "Smart nudges & alerts",
-      "Crypto portfolio tracking",
-      "Crisis scenario modeling",
-      "Priority support"
-    ],
-    cta: "Start Pro Trial",
-    variant: "default" as const,
-    popular: true,
-    icon: Sparkles,
-    gradient: "bg-gradient-primary"
-  },
-  {
-    name: "Max",
-    price: "$19.99",
-    period: "per month", 
-    description: "Complete financial OS with AI copilot and advanced features",
-    features: [
-      "Everything in Pro",
-      "AI Financial Copilot",
-      "Advanced crisis simulator",
-      "Scenario logging & tracking",
-      "Custom forecast models",
-      "Investment optimization",
-      "Tax planning insights",
-      "White-label access",
-      "Dedicated account manager"
-    ],
-    cta: "Unlock Maximum",
-    variant: "secondary" as const,
-    icon: Crown,
-    gradient: "bg-gradient-hero"
-  }
-];
+import { Check, Crown, Zap, TrendingUp, Shield, Brain, Target, BarChart3 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
+  const { user } = useAuth();
+  const { subscribed, subscription_tier, createCheckout, loading } = useSubscription();
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (!user) {
+      navigate('/auth?mode=signup');
+      return;
+    }
+    
+    if (subscribed) {
+      navigate('/dashboard');
+      return;
+    }
+    
+    createCheckout();
+  };
+
+  const features = [
+    {
+      icon: Brain,
+      title: "AI Financial Advisor",
+      description: "Get personalized insights powered by advanced AI"
+    },
+    {
+      icon: TrendingUp,
+      title: "Real-time Forecasting",
+      description: "See your financial future with precise projections"
+    },
+    {
+      icon: Shield,
+      title: "Crisis Simulations",
+      description: "Test your resilience against economic scenarios"
+    },
+    {
+      icon: Target,
+      title: "Smart Goal Tracking",
+      description: "Set and achieve financial milestones"
+    },
+    {
+      icon: BarChart3,
+      title: "Advanced Analytics",
+      description: "Deep insights into your spending and saving patterns"
+    },
+    {
+      icon: Zap,
+      title: "Bank Integrations",
+      description: "Securely connect all your financial accounts"
+    }
+  ];
+
   return (
-    <section className="py-24 bg-muted/30">
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="text-center space-y-6 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            Choose Your Financial Future
+    <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
+            Simple, Transparent Pricing
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Start free and upgrade as your financial planning needs grow. Every plan includes bank-level security and real-time data.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Get access to all premium features with our comprehensive Starter plan. 
+            No hidden fees, no complex tiers.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan, index) => (
-            <Card 
-              key={index} 
-              className={`relative p-8 hover:shadow-card transition-all duration-300 ${
-                plan.popular ? 'ring-2 ring-primary scale-105' : ''
-              }`}
-            >
-              {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-primary text-white">
-                  Most Popular
-                </Badge>
-              )}
-
-              <div className="space-y-6">
-                {/* Header */}
-                <div className="text-center space-y-4">
-                  <div className={`w-16 h-16 mx-auto rounded-full ${plan.gradient} flex items-center justify-center`}>
-                    <plan.icon className="w-8 h-8 text-white" />
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-2xl font-bold text-foreground">{plan.name}</h3>
-                    <p className="text-muted-foreground">{plan.description}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                      <span className="text-muted-foreground">/{plan.period}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Features */}
-                <div className="space-y-3">
-                  {plan.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3 h-3 text-accent-success" />
-                      </div>
-                      <span className="text-sm text-muted-foreground">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* CTA */}
-                <Button 
-                  variant={plan.variant} 
-                  size="lg" 
-                  className={`w-full ${
-                    plan.popular ? 'bg-gradient-primary hover:shadow-glow' : ''
-                  }`}
-                >
-                  {plan.cta}
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        {/* Enterprise Section */}
-        <Card className="mt-16 p-8 lg:p-12 bg-gradient-card text-center">
-          <div className="space-y-6 max-w-3xl mx-auto">
-            <div className="space-y-4">
-              <h3 className="text-3xl font-bold text-foreground">
-                Enterprise & White Label
-              </h3>
-              <p className="text-xl text-muted-foreground">
-                Custom solutions for banks, fintechs, HR platforms, and financial advisors
-              </p>
+        <div className="max-w-2xl mx-auto">
+          <Card className="border-2 border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10" />
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-gradient-primary text-white border-0">
+                <Crown className="w-3 h-3 mr-1" />
+                Most Popular
+              </Badge>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6 text-sm">
-              <div className="space-y-2">
-                <div className="font-medium text-foreground">White Label API</div>
-                <div className="text-muted-foreground">Embed FlowSightFi's forecasting in your app</div>
+            <CardHeader className="text-center relative">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
+                <Crown className="w-8 h-8 text-white" />
               </div>
-              <div className="space-y-2">
-                <div className="font-medium text-foreground">Custom Branding</div>
-                <div className="text-muted-foreground">Full customization for your brand</div>
+              <CardTitle className="text-3xl font-bold">Starter Plan</CardTitle>
+              <CardDescription className="text-lg">
+                Everything you need for comprehensive financial planning
+              </CardDescription>
+              <div className="mt-6">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-5xl font-bold">$5.99</span>
+                  <div className="text-left">
+                    <div className="text-muted-foreground">/month</div>
+                    <div className="text-sm text-muted-foreground">billed monthly</div>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-2">
-                <div className="font-medium text-foreground">Dedicated Support</div>
-                <div className="text-muted-foreground">Priority integration assistance</div>
-              </div>
-            </div>
+            </CardHeader>
 
-            <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
-              Contact Sales Team
-            </Button>
-          </div>
-        </Card>
+            <CardContent className="space-y-6 relative">
+              <div className="space-y-4">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-3 h-3 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <feature.icon className="w-4 h-4 text-primary" />
+                        <span className="font-medium">{feature.title}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-        {/* Trust Section */}
-        <div className="mt-16 text-center space-y-6">
-          <div className="text-sm text-muted-foreground">
-            Trusted by thousands of users to forecast their financial future
-          </div>
-          
-          <div className="flex items-center justify-center gap-8 text-xs text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent-success rounded-full"></div>
-              SOC2 Compliant
+              <div className="pt-6">
+                {subscribed && subscription_tier === 'Starter' ? (
+                  <div className="text-center space-y-4">
+                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                      ✓ Currently Active
+                    </Badge>
+                    <Button 
+                      onClick={() => navigate('/dashboard')} 
+                      className="w-full" 
+                      size="lg"
+                    >
+                      Go to Dashboard
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    onClick={handleGetStarted}
+                    disabled={loading}
+                    className="w-full bg-gradient-primary hover:shadow-glow"
+                    size="lg"
+                  >
+                    {loading ? (
+                      <>Loading...</>
+                    ) : user ? (
+                      subscribed ? 'Go to Dashboard' : 'Start Free Trial'
+                    ) : (
+                      'Get Started Now'
+                    )}
+                  </Button>
+                )}
+              </div>
+
+              <div className="text-center text-sm text-muted-foreground">
+                <p>✓ Cancel anytime</p>
+                <p>✓ 30-day money-back guarantee</p>
+                <p>✓ Secure payments by Stripe</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="mt-16 text-center">
+          <h3 className="text-2xl font-bold mb-8">Why Choose Chrono-Wealth?</h3>
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="text-center space-y-4">
+              <div className="w-12 h-12 mx-auto bg-gradient-primary rounded-full flex items-center justify-center">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold">AI-Powered Intelligence</h4>
+              <p className="text-muted-foreground">
+                Our advanced AI analyzes your finances and provides personalized recommendations
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent-success rounded-full"></div>
-              Bank-Level Encryption
+            <div className="text-center space-y-4">
+              <div className="w-12 h-12 mx-auto bg-gradient-primary rounded-full flex items-center justify-center">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold">Bank-Level Security</h4>
+              <p className="text-muted-foreground">
+                Your data is protected with enterprise-grade encryption and security
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent-success rounded-full"></div>
-              GDPR Ready
+            <div className="text-center space-y-4">
+              <div className="w-12 h-12 mx-auto bg-gradient-primary rounded-full flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold">Proven Results</h4>
+              <p className="text-muted-foreground">
+                Users improve their financial health by an average of 40% in 6 months
+              </p>
             </div>
           </div>
         </div>

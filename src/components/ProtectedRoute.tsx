@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import { SubscriptionGuard } from './SubscriptionGuard';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -32,5 +33,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to={`/auth?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
 
-  return <>{children}</>;
+  return (
+    <SubscriptionGuard>
+      {children}
+    </SubscriptionGuard>
+  );
 };
