@@ -14,6 +14,7 @@ import { PlaidDashboard } from "@/components/PlaidDashboard";
 import { PlaidLink } from "@/components/PlaidLink";
 import { MetricCard, StatusCard, InsightCard } from "@/components/ui/enhanced-cards";
 import { CallToActionSection } from "@/components/CallToActionSection";
+import { AdvancedForecasting } from "@/components/AdvancedForecasting";
 import { 
   DollarSign, 
   TrendingUp, 
@@ -189,20 +190,22 @@ export const Dashboard = () => {
                 />
               </div>
 
-              {/* Insights Section */}
-              <div className="grid gap-6 lg:grid-cols-2">
-                <Card className="border-0 shadow-card bg-gradient-card">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <BarChart3 className="w-5 h-5 text-primary" />
-                      Financial Timeline
-                    </CardTitle>
-                    <CardDescription>Your financial journey over time</CardDescription>
-                  </CardHeader>
-                  <CardContent className="h-[300px]">
-                    <TimelineChart />
-                  </CardContent>
-                </Card>
+              {/* Enhanced Financial Timeline with Advanced Forecasting */}
+              <div className="grid gap-6 lg:grid-cols-3">
+                <div className="lg:col-span-2">
+                  <Card className="border-0 shadow-card bg-gradient-card">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <BarChart3 className="w-5 h-5 text-primary" />
+                        Advanced Financial Forecasting
+                      </CardTitle>
+                      <CardDescription>AI-powered projections and scenario analysis</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <AdvancedForecasting />
+                    </CardContent>
+                  </Card>
+                </div>
 
                 <div className="space-y-4">
                   <InsightCard
@@ -224,6 +227,18 @@ export const Dashboard = () => {
                     action={{
                       label: "Learn More",
                       onClick: () => console.log('Debt consolidation clicked')
+                    }}
+                  />
+
+                  <StatusCard
+                    title="Goal Achievement Forecast"
+                    description={`At your current savings rate, you'll reach your $100k goal in ${
+                      monthlySavings > 0 ? Math.ceil((100000 - (financialData?.annual_salary || 0) * 0.1) / monthlySavings) : 'Never'
+                    } months.`}
+                    status={monthlySavings > 1000 ? 'healthy' : monthlySavings > 500 ? 'warning' : 'critical'}
+                    action={{
+                      label: "Optimize Timeline",
+                      onClick: () => console.log('Optimize timeline clicked')
                     }}
                   />
                 </div>
