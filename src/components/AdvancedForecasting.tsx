@@ -115,7 +115,7 @@ export const AdvancedForecasting: React.FC = () => {
             <CardContent>
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart>
+                  <LineChart data={currentScenario.projections}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="month" 
@@ -130,18 +130,21 @@ export const AdvancedForecasting: React.FC = () => {
                       labelFormatter={(label) => `Month: ${label}`}
                     />
                     
-                    {scenarioData.map((scenario) => (
-                      <Line
-                        key={scenario.name}
-                        dataKey="netWorth"
-                        data={scenario.data.projections}
-                        stroke={scenario.color}
-                        strokeWidth={scenario.name === 'Current' ? 3 : 2}
-                        strokeDasharray={scenario.name === 'Current' ? '0' : '5,5'}
-                        dot={false}
-                        name={scenario.name}
-                      />
-                    ))}
+                    <Line
+                      dataKey="netWorth"
+                      stroke="#5665FF"
+                      strokeWidth={3}
+                      dot={false}
+                      name="Current Scenario"
+                    />
+                    <Line
+                      dataKey="emergencyFund"
+                      stroke="#22C55E"
+                      strokeWidth={2}
+                      strokeDasharray="5,5"
+                      dot={false}
+                      name="Emergency Fund"
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -163,43 +166,65 @@ export const AdvancedForecasting: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Monthly Cash Flow Projection */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Monthly Cash Flow Trends</CardTitle>
-              <CardDescription>Income vs Expenses over time</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={currentScenario.projections}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                    <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: 12 }} />
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                    <Area
-                      type="monotone"
-                      dataKey="income"
-                      stackId="1"
-                      stroke="#22C55E"
-                      fill="#22C55E"
-                      fillOpacity={0.6}
-                      name="Income"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="expenses"
-                      stackId="2"
-                      stroke="#EF4444"
-                      fill="#EF4444"
-                      fillOpacity={0.6}
-                      name="Expenses"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Savings Rate Trends */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Monthly Cash Flow Trends</CardTitle>
+                <CardDescription>Income vs Expenses over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={currentScenario.projections}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                      <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fontSize: 12 }} />
+                      <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                      <Area
+                        type="monotone"
+                        dataKey="income"
+                        stackId="1"
+                        stroke="#22C55E"
+                        fill="#22C55E"
+                        fillOpacity={0.6}
+                        name="Income"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="expenses"
+                        stackId="2"
+                        stroke="#EF4444"
+                        fill="#EF4444"
+                        fillOpacity={0.6}
+                        name="Expenses"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Goal Progress Over Time</CardTitle>
+                <CardDescription>Track your progress towards financial milestones</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={currentScenario.projections.slice(0, 12)}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                      <YAxis tick={{ fontSize: 12 }} />
+                      <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} />
+                      <Bar dataKey="goalProgress" fill="#5665FF" name="Goal Progress %" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="scenarios" className="space-y-6">
