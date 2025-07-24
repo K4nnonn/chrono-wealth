@@ -140,14 +140,14 @@ const Pricing = () => {
           {/* Professional Plan - The Target Choice */}
           <Card className="border-2 border-primary/50 shadow-2xl hover:shadow-glow transition-all duration-300 relative overflow-hidden scale-105 z-10">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent-success/5" />
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
               <Badge className="bg-gradient-to-r from-primary to-accent-success text-white border-0 px-6 py-2">
                 <Crown className="w-4 h-4 mr-2" />
                 MOST POPULAR • 89% CHOOSE THIS
               </Badge>
             </div>
             
-            <CardHeader className="text-center relative pt-8">
+            <CardHeader className="text-center relative pt-12">
               <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-primary to-accent-success rounded-full flex items-center justify-center shadow-glow">
                 <Brain className="w-8 h-8 text-white" />
               </div>
