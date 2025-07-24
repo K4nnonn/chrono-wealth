@@ -200,8 +200,76 @@ export const Dashboard = () => {
               <PlatformTrajectoryMatrix 
                 timeHorizon={timeHorizon}
                 onTimeHorizonChange={setTimeHorizon}
-                className="w-full"
               />
+
+              {/* Additional sophisticated cards would go here */}
+              <div className="grid gap-6 md:grid-cols-2">
+                {/* Savings Momentum Gauge */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-accent-success" />
+                      Savings Momentum Gauge
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-start gap-3 p-3 bg-accent-success/10 border border-accent-success/20 rounded-lg">
+                      <Sparkles className="w-4 h-4 text-accent-success flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">⏱️ You save mostly in salary-deposit week—what if we automated transfers to the 1st?</p>
+                        <div className="flex gap-2 mt-2">
+                          <Button variant="outline" size="sm" className="h-6 text-xs">Show math</Button>
+                          <Button variant="ghost" size="sm" className="h-6 text-xs">Got it</Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-center py-8">
+                      <div className="text-3xl font-bold text-accent-success mb-2">38.2%</div>
+                       <div className="text-sm">Current 30-day rate</div>
+                       <div className="mt-4 text-xs">
+                         Pattern: "Back-Half Saver" — surplus appears in last 10 days
+                       </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Money Map Seismograph */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Zap className="w-5 h-5 text-accent-coral" />
+                      Money Map Seismograph
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-start gap-3 p-3 bg-accent-coral/10 border border-accent-coral/20 rounded-lg">
+                      <Sparkles className="w-4 h-4 text-accent-coral flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">🍔 Weekend dining wipes out 43% of weekday discipline.</p>
+                        <div className="flex gap-2 mt-2">
+                          <Button variant="outline" size="sm" className="h-6 text-xs">Show impact</Button>
+                          <Button variant="ghost" size="sm" className="h-6 text-xs">Got it</Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-center py-8">
+                      <div className="relative w-32 h-32 mx-auto">
+                        <div className="absolute inset-0 rounded-full border-4 border-accent-coral/20" />
+                        <div className="absolute inset-2 rounded-full border-4 border-accent-coral/40 animate-pulse" />
+                        <div className="absolute inset-4 rounded-full border-4 border-accent-coral animate-pulse" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                           <div className="text-center">
+                             <div className="text-sm font-bold">Dining</div>
+                             <div className="text-xs">High Volatility</div>
+                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </TabsContent>
 
             {/* Other tabs with sophisticated content */}
