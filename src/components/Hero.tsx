@@ -66,7 +66,7 @@ const Hero = () => {
                 Get Early Access
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
+              <Button variant="outline" size="lg" className="border-primary/30 text-foreground hover:bg-primary/10 bg-background/80 backdrop-blur-sm">
                 Watch Demo
               </Button>
             </div>
