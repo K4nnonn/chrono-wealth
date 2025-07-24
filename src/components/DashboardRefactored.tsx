@@ -47,13 +47,13 @@ interface HeroTileProps {
 
 const HeroTile: React.FC<HeroTileProps> = ({ label, value, icon: Icon, variant, sentiment }) => {
   const isNegative = sentiment === 'negative';
+  const isPositive = sentiment === 'positive';
   
   return (
     <div 
       className={`
-        w-60 h-25 p-7 rounded-xl shadow-platform
-        ${isNegative ? 'bg-[#FBEAEA]' : 'bg-white'}
-        flex flex-col justify-between
+        hero-tile
+        ${isNegative ? 'tile-negative' : isPositive ? 'tile-positive' : ''}
       `}
     >
       <div className="flex items-center justify-between mb-3">
@@ -62,13 +62,13 @@ const HeroTile: React.FC<HeroTileProps> = ({ label, value, icon: Icon, variant, 
       
       <div>
         <div className={`
-          text-2xl font-bold mb-1
+          tile-value mb-1
           ${sentiment === 'positive' ? 'text-mint' : 
             sentiment === 'negative' ? 'text-rose' : 'text-navy'}
         `}>
           {value}
         </div>
-        <div className="text-xs font-medium text-[#67728A]">
+        <div className="tile-label">
           {label}
         </div>
       </div>
@@ -158,13 +158,11 @@ export const DashboardRefactored = () => {
       <PlatformInsightMarquee insights={insights} />
       
       {/* H-2: Macro Ribbon - Full width, center-aligned */}
-      <div className="w-full bg-[#F7F9FB] border-b border-[#E5E9F0] py-1 px-3">
-        <div className="text-center">
-          <PlatformMacroRibbon 
-            assumptions={macroAssumptions}
-            onAdjust={setMacroAssumptions}
-          />
-        </div>
+      <div className="w-full bg-[#F7F9FB] border-b border-[#E5E9F0] text-center" style={{padding: '4px 12px', fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: '#67728A'}}>
+        <PlatformMacroRibbon 
+          assumptions={macroAssumptions}
+          onAdjust={setMacroAssumptions}
+        />
       </div>
 
       {/* 12-Column Grid Layout */}
@@ -183,9 +181,9 @@ export const DashboardRefactored = () => {
           </p>
         </div>
 
-        {/* Hero KPI Tiles - Columns 2-11 */}
+        {/* Hero KPI Tiles - Columns 2-11 (ten columns wide) */}
         <div className="dashboard-hero-tiles">
-          <div className="flex justify-between space-x-6">
+          <div className="flex justify-between">
             <HeroTile
               label="Monthly Income"
               value={`$${monthlyIncome.toLocaleString()}`}
@@ -229,40 +227,68 @@ export const DashboardRefactored = () => {
             >
               <TabsTrigger 
                 value="trajectory" 
-                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-wide tab-underline"
+                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-[0.04em] tab-underline relative"
                 role="tab"
                 aria-selected={activeTab === 'trajectory'}
                 tabIndex={0}
+                data-state={activeTab === 'trajectory' ? 'active' : 'inactive'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveTab('trajectory');
+                  }
+                }}
               >
                 <Eye className="w-4 h-4" />
                 <span>Trajectory</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="momentum" 
-                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-wide tab-underline"
+                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-[0.04em] tab-underline relative"
                 role="tab"
                 aria-selected={activeTab === 'momentum'}
                 tabIndex={0}
+                data-state={activeTab === 'momentum' ? 'active' : 'inactive'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveTab('momentum');
+                  }
+                }}
               >
                 <Activity className="w-4 h-4" />
                 <span>Momentum</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="intelligence" 
-                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-wide tab-underline"
+                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-[0.04em] tab-underline relative"
                 role="tab"
                 aria-selected={activeTab === 'intelligence'}
                 tabIndex={0}
+                data-state={activeTab === 'intelligence' ? 'active' : 'inactive'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveTab('intelligence');
+                  }
+                }}
               >
                 <Brain className="w-4 h-4" />
                 <span>Intelligence</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="journeys" 
-                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-wide tab-underline"
+                className="rounded-lg font-medium flex flex-col gap-1 text-xs uppercase tracking-[0.04em] tab-underline relative"
                 role="tab"
                 aria-selected={activeTab === 'journeys'}
                 tabIndex={0}
+                data-state={activeTab === 'journeys' ? 'active' : 'inactive'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveTab('journeys');
+                  }
+                }}
               >
                 <Route className="w-4 h-4" />
                 <span>Journeys</span>
@@ -278,16 +304,21 @@ export const DashboardRefactored = () => {
                 onShowMath={() => setShowMathModal(true)}
               />
 
-              {/* Two-column layout for large screens */}
-              <div className="grid gap-8 lg:grid-cols-2">
-                <SavingsMomentumGauge 
-                  momentum={38.2}
-                  timeHorizon={timeHorizon}
-                />
-                
-                <MoneyMapSeismograph 
-                  timeHorizon={timeHorizon}
-                />
+              {/* Two-column layout: Trajectory 8 cols, Momentum + Seismograph stacked 4 cols for >1200px */}
+              <div className="grid gap-8 xl:grid-cols-12">
+                <div className="xl:col-span-8">
+                  {/* Trajectory matrix already full width above */}
+                </div>
+                <div className="xl:col-span-4 space-y-8">
+                  <SavingsMomentumGauge 
+                    momentum={38.2}
+                    timeHorizon={timeHorizon}
+                  />
+                  
+                  <MoneyMapSeismograph 
+                    timeHorizon={timeHorizon}
+                  />
+                </div>
               </div>
             </TabsContent>
 

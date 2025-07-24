@@ -1,6 +1,8 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface ShowMathModalProps {
   isOpen: boolean;
@@ -13,6 +15,26 @@ export const ShowMathModal: React.FC<ShowMathModalProps> = ({
   onClose,
   timeHorizon
 }) => {
+  const { toast } = useToast();
+
+  const monteCarloInputs = {
+    seed: 42,
+    nPaths: 5000,
+    horizonDays: timeHorizon * 365,
+    startNetWorth: 50000,
+    dailySurplusMu: 85 / 30,
+    dailySurplusSigma: 70 / 30,
+    dailyReturnMu: 0.072 / 252,
+    dailyReturnSigma: 0.15 / Math.sqrt(252)
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(JSON.stringify(monteCarloInputs, null, 2));
+    toast({
+      title: "Copied to clipboard",
+      description: "Monte Carlo parameters copied for transparency",
+    });
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
@@ -112,6 +134,22 @@ export const ShowMathModal: React.FC<ShowMathModalProps> = ({
               for 25% of total variance in the first 2 years, decreasing as market factors dominate 
               in longer horizons.
             </p>
+          </div>
+
+          {/* Copy to Clipboard Button */}
+          <div className="bg-muted/30 p-4 rounded-lg">
+            <h3 className="font-semibold mb-3">Transparency</h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              Copy the raw JSON input used for the Monte-Carlo simulation for full transparency and reproducibility.
+            </p>
+            <Button 
+              variant="outline" 
+              onClick={copyToClipboard}
+              className="flex items-center gap-2"
+            >
+              <Copy className="w-4 h-4" />
+              Copy Monte Carlo Parameters
+            </Button>
           </div>
 
           <div className="flex justify-end pt-4">

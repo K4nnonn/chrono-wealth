@@ -159,7 +159,8 @@ export const FanChart: React.FC<FanChartProps> = ({
       .attr('mask', 'url(#fade-mask)')
       .attr('stroke', 'none')
       .attr('d', fanArea)
-      .style('opacity', showConfidenceBand ? 1 : 0);
+      .style('opacity', showConfidenceBand ? 1 : 0)
+      .style('pointer-events', 'none');
 
     // Hatched inner band (25% width around median for user-controlled variance)
     const behaviorArea = d3.area<number>()

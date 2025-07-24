@@ -76,7 +76,7 @@ export const SavingsMomentumGauge: React.FC<SavingsMomentumGaugeProps> = ({
         .attr('stroke', 'none');
     }
 
-    // Needle
+    // Needle: 2px mint line; rotate to angle = (momentum/25)*90deg
     const needleAngle = (momentum / 25) * (Math.PI / 2);
     const needleLength = radius - 20;
     const needleX = centerX + needleLength * Math.cos(needleAngle);
@@ -87,28 +87,29 @@ export const SavingsMomentumGauge: React.FC<SavingsMomentumGaugeProps> = ({
       .attr('y1', centerY)
       .attr('x2', needleX)
       .attr('y2', needleY)
-      .attr('stroke', '#2ED3A1')
+      .attr('stroke', 'var(--c-mint)')
       .attr('stroke-width', 2)
-      .attr('stroke-linecap', 'round');
+      .attr('stroke-linecap', 'round')
+      .style('transform-origin', '50% 50%');
 
     // Center dot
     svg.append('circle')
       .attr('cx', centerX)
       .attr('cy', centerY)
       .attr('r', 4)
-      .attr('fill', '#0E1D47');
+      .attr('fill', 'var(--c-navy)');
 
   }, [momentum]);
 
   return (
     <Card className="w-full h-full">
-      <CardHeader className="pb-4">
+      <CardHeader style={{padding: '28px 28px 16px 28px'}}>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Activity className="w-5 h-5 text-accent-success" />
           Savings Momentum Gauge
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4" style={{padding: '0 28px 28px 28px'}}>
         <div className="flex items-start gap-3 p-3 bg-accent-success/10 border border-accent-success/20 rounded-lg">
           <Sparkles className="w-4 h-4 text-accent-success flex-shrink-0 mt-0.5" />
           <div className="flex-1">
@@ -130,13 +131,13 @@ export const SavingsMomentumGauge: React.FC<SavingsMomentumGaugeProps> = ({
             aria-label={`Savings momentum gauge showing ${momentum.toFixed(1)}% momentum`}
           />
           
-          <div className="text-5xl font-bold text-accent-success mb-2">
+          <div className="text-5xl font-bold text-accent-success mb-2" style={{fontSize: '48px', fontWeight: 700}}>
             {Math.abs(momentum).toFixed(1)}%
           </div>
           <div className="text-sm text-muted-foreground">
             Current 30-day rate
           </div>
-          <div className="mt-4 text-xs italic font-medium text-[#67728A]">
+          <div className="mt-4 text-xs text-[#67728A]" style={{fontStyle: 'italic', fontWeight: 500}}>
             Pattern: "Back-Half Saver" — surplus appears in last 10 days
           </div>
         </div>

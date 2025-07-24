@@ -83,9 +83,10 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
     <TooltipProvider>
       <Card 
         className={cn(
-          'w-full max-w-[720px] bg-white rounded-xl p-7 shadow-[0_0_12px_rgba(0,0,0,0.04)]',
+          'w-full max-w-[720px] bg-white rounded-xl shadow-[0_0_12px_rgba(0,0,0,0.04)]',
           className
         )} 
+        style={{padding: '28px'}}
         data-testid="trajectory-matrix"
       >
         {/* Headline Row */}
@@ -197,11 +198,12 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
                 <button
                   className="w-7 h-7 rounded-full bg-[#F0F4F7] hover:bg-[#D8E1E8] flex items-center justify-center transition-colors"
                   onClick={() => {
-                    setShowConfidenceBand(!showConfidenceBand);
+                    const newState = !showConfidenceBand;
+                    setShowConfidenceBand(newState);
                     // Toggle band opacity only, keep median line visible
                     const fanBands = document.querySelectorAll('.fanBand, .hatchBand');
                     fanBands.forEach(band => {
-                      (band as HTMLElement).style.opacity = showConfidenceBand ? '0' : '1';
+                      (band as HTMLElement).style.opacity = newState ? '1' : '0';
                     });
                   }}
                   role="button"
@@ -230,34 +232,77 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
         {/* Stats Strip */}
         <div className="grid grid-cols-3 gap-3">
           <div 
-            className="text-center p-3 bg-[#FAFAFC] border border-[#E5E9F0] rounded-lg cursor-pointer transition-all hover:shadow-md group"
-            onMouseEnter={() => {/* Highlight P10 band */}}
-            onMouseLeave={() => {/* Remove highlight */}}
+            className="text-center p-3 rounded-lg cursor-pointer transition-all hover:shadow-md group"
+            style={{background: '#FAFAFC', border: '1px solid #E5E9F0', borderRadius: '8px'}}
+            onMouseEnter={() => {
+              // Highlight P10 band edge
+              const bands = document.querySelectorAll('.fanBand');
+              bands.forEach(band => {
+                (band as HTMLElement).style.strokeWidth = '4px';
+                (band as HTMLElement).style.stroke = 'var(--c-rose)';
+              });
+            }}
+            onMouseLeave={() => {
+              // Remove highlight
+              const bands = document.querySelectorAll('.fanBand');
+              bands.forEach(band => {
+                (band as HTMLElement).style.strokeWidth = '0';
+                (band as HTMLElement).style.stroke = 'none';
+              });
+            }}
           >
             <div className="text-sm font-normal text-[#67728A] mb-1">Conservative (P10)</div>
-            <div className="text-2xl font-bold text-rose">
+            <div className="text-2xl font-bold" style={{color: 'var(--c-rose)'}}>
               ${probabilities.p10.toLocaleString()}
             </div>
           </div>
           
           <div 
-            className="text-center p-3 bg-[#FAFAFC] border border-[#E5E9F0] rounded-lg cursor-pointer transition-all hover:shadow-md group"
-            onMouseEnter={() => {/* Highlight P50 line */}}
-            onMouseLeave={() => {/* Remove highlight */}}
+            className="text-center p-3 rounded-lg cursor-pointer transition-all hover:shadow-md group"
+            style={{background: '#FAFAFC', border: '1px solid #E5E9F0', borderRadius: '8px'}}
+            onMouseEnter={() => {
+              // Highlight P50 median line
+              const lines = document.querySelectorAll('path[stroke="#0E1D47"]');
+              lines.forEach(line => {
+                (line as HTMLElement).style.strokeWidth = '4px';
+              });
+            }}
+            onMouseLeave={() => {
+              // Remove highlight
+              const lines = document.querySelectorAll('path[stroke="#0E1D47"]');
+              lines.forEach(line => {
+                (line as HTMLElement).style.strokeWidth = '2px';
+              });
+            }}
           >
             <div className="text-sm font-normal text-[#67728A] mb-1">Expected (P50)</div>
-            <div className="text-2xl font-bold text-navy">
+            <div className="text-2xl font-bold" style={{color: 'var(--c-navy)'}}>
               ${probabilities.p50.toLocaleString()}
             </div>
           </div>
           
           <div 
-            className="text-center p-3 bg-[#FAFAFC] border border-[#E5E9F0] rounded-lg cursor-pointer transition-all hover:shadow-md group"
-            onMouseEnter={() => {/* Highlight P90 band */}}
-            onMouseLeave={() => {/* Remove highlight */}}
+            className="text-center p-3 rounded-lg cursor-pointer transition-all hover:shadow-md group"
+            style={{background: '#FAFAFC', border: '1px solid #E5E9F0', borderRadius: '8px'}}
+            onMouseEnter={() => {
+              // Highlight P90 band edge
+              const bands = document.querySelectorAll('.fanBand');
+              bands.forEach(band => {
+                (band as HTMLElement).style.strokeWidth = '4px';
+                (band as HTMLElement).style.stroke = 'var(--c-mint)';
+              });
+            }}
+            onMouseLeave={() => {
+              // Remove highlight
+              const bands = document.querySelectorAll('.fanBand');
+              bands.forEach(band => {
+                (band as HTMLElement).style.strokeWidth = '0';
+                (band as HTMLElement).style.stroke = 'none';
+              });
+            }}
           >
             <div className="text-sm font-normal text-[#67728A] mb-1">Optimistic (P90)</div>
-            <div className="text-2xl font-bold text-mint">
+            <div className="text-2xl font-bold" style={{color: 'var(--c-mint)'}}>
               ${probabilities.p90.toLocaleString()}
             </div>
           </div>

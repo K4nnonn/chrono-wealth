@@ -87,20 +87,20 @@ export const MoneyMapSeismograph: React.FC<MoneyMapSeismographProps> = ({
       
       categoryNode.append('circle')
         .attr('r', nodeRadius)
-        .attr('fill', shouldPulse ? '#F86C6B' : '#2ED3A1')
+        .attr('fill', shouldPulse ? 'var(--c-rose)' : 'var(--c-mint)')
         .attr('stroke', '#fff')
         .attr('stroke-width', 2)
         .classed('pulse-ring', shouldPulse);
 
-      // Flow line from center to category
-      const lineThickness = 2 + (category.amount / totalAmount) * 8;
+      // Flow line from center to category - proportional thickness
+      const lineThickness = (category.amount / totalAmount) * 12 + 2;
       
       svg.append('line')
         .attr('x1', centerX)
         .attr('y1', centerY)
         .attr('x2', x)
         .attr('y2', y)
-        .attr('stroke', shouldPulse ? '#F86C6B' : '#2ED3A1')
+        .attr('stroke', shouldPulse ? 'var(--c-rose)' : 'var(--c-mint)')
         .attr('stroke-width', lineThickness)
         .attr('opacity', 0.6)
         .attr('stroke-dasharray', shouldPulse ? '5,5' : 'none')
@@ -158,13 +158,13 @@ export const MoneyMapSeismograph: React.FC<MoneyMapSeismographProps> = ({
   return (
     <TooltipProvider>
       <Card className="w-full h-full">
-        <CardHeader className="pb-4">
+        <CardHeader style={{padding: '28px 28px 16px 28px'}}>
           <CardTitle className="flex items-center gap-2 text-lg">
             <Zap className="w-5 h-5 text-accent-coral" />
             Money Map Seismograph
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4" style={{padding: '0 28px 28px 28px'}}>
           <div className="flex items-start gap-3 p-3 bg-accent-coral/10 border border-accent-coral/20 rounded-lg">
             <Sparkles className="w-4 h-4 text-accent-coral flex-shrink-0 mt-0.5" />
             <div className="flex-1">
@@ -187,7 +187,7 @@ export const MoneyMapSeismograph: React.FC<MoneyMapSeismographProps> = ({
             />
             
             <div className="text-center">
-              <div className="text-sm font-bold text-[#F86C6B]">
+              <div className="text-sm font-bold" style={{color: 'var(--c-rose)'}}>
                 {highestVolatilityCategory.name}
               </div>
               <div className="text-xs text-muted-foreground">
