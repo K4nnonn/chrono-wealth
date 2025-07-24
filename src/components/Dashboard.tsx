@@ -105,9 +105,9 @@ export const Dashboard = () => {
         <div className="space-y-4 text-center">
           <div className="flex items-center justify-center gap-3">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-primary bg-clip-text text-transparent">
-              Financial Intelligence Platform
-            </h1>
+          <h1 className="text-4xl font-bold tracking-tight text-primary">
+            Financial Intelligence Platform
+          </h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Where every data point tells a story, every pattern reveals opportunity, 
