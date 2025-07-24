@@ -126,6 +126,101 @@ export const Dashboard = () => {
             </div>
             <TimelineChart />
           </Card>
+
+          {/* Advanced Forecasting Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="p-6 bg-background-card">
+              <h3 className="text-lg font-semibold mb-4">Savings Rate Trend</h3>
+              <div className="h-64 flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">23.5%</div>
+                  <div className="text-sm text-muted-foreground">Average Savings Rate</div>
+                  <div className="mt-4 flex items-center justify-center gap-4 text-xs">
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-primary rounded-full"></div>
+                      <span>Current</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-primary/50 rounded-full"></div>
+                      <span>Target</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-background-card">
+              <h3 className="text-lg font-semibold mb-4">Expense Breakdown</h3>
+              <div className="h-64 flex items-center justify-center">
+                <div className="relative w-48 h-48">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-accent-teal opacity-20"></div>
+                  <div className="absolute inset-4 rounded-full bg-background flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">$2,340</div>
+                      <div className="text-xs text-muted-foreground">Monthly</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-background-card">
+              <h3 className="text-lg font-semibold mb-4">Cash Flow Analysis</h3>
+              <div className="h-64 bg-gradient-to-r from-accent-success/10 to-primary/10 rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-accent-success mb-2">+$1,250</div>
+                  <div className="text-sm text-muted-foreground">Monthly Surplus</div>
+                  <div className="mt-4 grid grid-cols-2 gap-4 text-xs">
+                    <div>
+                      <div className="font-medium">Income</div>
+                      <div className="text-accent-success">$5,500</div>
+                    </div>
+                    <div>
+                      <div className="font-medium">Expenses</div>
+                      <div className="text-accent-coral">$4,250</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 bg-background-card">
+              <h3 className="text-lg font-semibold mb-4">Goal Progress</h3>
+              <div className="h-64 flex items-center justify-center">
+                <div className="w-full max-w-xs">
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>Emergency Fund</span>
+                        <span>75%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div className="bg-primary h-2 rounded-full" style={{width: '75%'}}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>House Down Payment</span>
+                        <span>45%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div className="bg-accent-teal h-2 rounded-full" style={{width: '45%'}}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>Retirement</span>
+                        <span>82%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div className="bg-accent-success h-2 rounded-full" style={{width: '82%'}}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="health-score">
