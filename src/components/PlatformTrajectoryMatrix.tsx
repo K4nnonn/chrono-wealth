@@ -139,8 +139,8 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
         <div className="relative">
           <FanChart
             data={fanChartData}
-            width={680}
-            height={280}
+            width={920}
+            height={400}
             className="w-full"
           />
           
