@@ -121,8 +121,8 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
           </div>
         </div>
 
-        {/* Insight Banner */}
-        <div className="flex items-start gap-3 p-3 mb-5 bg-[#2ED3A1]/20 rounded-l-xl rounded-r border-l-4 border-mint h-10 items-center">
+        {/* Insight Banner - mint 20% opacity */}
+        <div className="flex items-start gap-3 p-3 mb-5 rounded-l-xl rounded-r border-l-4 border-mint h-10 items-center" style={{background: '#2ED3A133'}}>
           <span className="text-xl flex-shrink-0">⚡</span>
           <div className="flex-1">
             <p className="text-sm font-semibold text-navy">
@@ -159,18 +159,25 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
-                      className="absolute top-4 w-6 h-6 rounded-full bg-[#001B82] text-white flex items-center justify-center text-sm font-bold shadow-[0_1px_3px_rgba(0,0,0,0.15)] transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-navy"
-                      style={{ left: `${getMarkerPosition(marker.month)}%`, transform: 'translateX(-50%)' }}
+                      className="absolute top-4 w-6 h-6 rounded-full bg-[#001B82] text-white flex items-center justify-center text-xs font-bold shadow-[0_1px_3px_rgba(0,0,0,0.15)] transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-navy"
+                      style={{ left: `${getMarkerPosition(marker.month)}%`, transform: 'translateX(-50%)', width: '24px', height: '24px' }}
                       tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          // Tooltip will show on focus
+                        }
+                      }}
                     >
                       ✦
                     </button>
                   </TooltipTrigger>
                   <TooltipContent 
-                    className="w-[200px] bg-navy text-white p-3 rounded shadow-[0_4px_8px_rgba(0,0,0,0.15)]"
+                    className="w-[200px] bg-navy text-white p-3 rounded shadow-[0_4px_8px_rgba(0,0,0,0.15)] relative"
                     sideOffset={8}
                   >
-                    <div className="font-bold text-xs mb-1">{marker.event}</div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 -translate-y-1 w-2 h-2 bg-navy rotate-45"></div>
+                    <div className="font-bold text-xs mb-1" style={{fontWeight: 600}}>{marker.event}</div>
                     <div className="text-xs">Impact: {marker.impact > 0 ? '+' : ''}{(marker.impact * 100).toFixed(1)}%</div>
                   </TooltipContent>
                 </Tooltip>
@@ -190,7 +197,16 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
               <TooltipTrigger asChild>
                 <button
                   className="w-7 h-7 rounded-full bg-[#F0F4F7] hover:bg-[#D8E1E8] flex items-center justify-center transition-colors"
-                  onClick={() => setShowConfidenceBand(!showConfidenceBand)}
+                  onClick={() => {
+                    setShowConfidenceBand(!showConfidenceBand);
+                    // Toggle band opacity only, keep median line visible
+                    const fanBands = document.querySelectorAll('.fanBand, .hatchBand');
+                    fanBands.forEach(band => {
+                      (band as HTMLElement).style.opacity = showConfidenceBand ? '0' : '1';
+                    });
+                  }}
+                  role="button"
+                  aria-pressed={showConfidenceBand}
                 >
                   {showConfidenceBand ? (
                     <Eye className="w-4 h-4 text-navy" />

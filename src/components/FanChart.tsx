@@ -48,7 +48,7 @@ export const FanChart: React.FC<FanChartProps> = ({
     // Create defs for gradients and patterns
     const defs = svg.append('defs');
 
-    // Fan gradient (top-to-bottom, darker at bottom)
+    // Fan gradient (mint #2ED3A1 28% → 10%)
     const fanGradient = defs.append('linearGradient')
       .attr('id', 'fan-gradient')
       .attr('x1', '0%').attr('y1', '0%')
@@ -64,7 +64,7 @@ export const FanChart: React.FC<FanChartProps> = ({
       .attr('stop-color', '#2ED3A1')
       .attr('stop-opacity', 0.10);
 
-    // Hatch pattern for behavior-only band
+    // Hatch pattern for user-controlled variance (45° white hatch, 6px spacing, 15% opacity)
     const hatchPattern = defs.append('pattern')
       .attr('id', 'hatch-pattern')
       .attr('patternUnits', 'userSpaceOnUse')
@@ -75,8 +75,7 @@ export const FanChart: React.FC<FanChartProps> = ({
     hatchPattern.append('rect')
       .attr('width', 6)
       .attr('height', 6)
-      .attr('fill', 'white')
-      .attr('opacity', 0.15);
+      .attr('fill', 'transparent');
 
     hatchPattern.append('line')
       .attr('x1', 0).attr('y1', 0)
@@ -85,58 +84,32 @@ export const FanChart: React.FC<FanChartProps> = ({
       .attr('stroke-width', 1)
       .attr('opacity', 0.15);
 
-    // Fade-out gradient masks
+    // Fade-out mask on band edges (first & last 30px)
     const fadeGradient = defs.append('linearGradient')
       .attr('id', 'fade-gradient')
       .attr('x1', '0%').attr('x2', '100%');
+
+    const fadePixels = 30;
+    const fadePercentStart = (fadePixels / innerWidth) * 100;
+    const fadePercentEnd = 100 - fadePercentStart;
 
     fadeGradient.append('stop')
       .attr('offset', '0%')
       .attr('stop-opacity', 0);
 
     fadeGradient.append('stop')
-      .attr('offset', '5%')
+      .attr('offset', `${fadePercentStart}%`)
       .attr('stop-opacity', 1);
 
     fadeGradient.append('stop')
-      .attr('offset', '95%')
+      .attr('offset', `${fadePercentEnd}%`)
       .attr('stop-opacity', 1);
 
     fadeGradient.append('stop')
       .attr('offset', '100%')
       .attr('stop-opacity', 0);
 
-    const g = svg.append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
-
-    // Zero-intercept baseline (soft mint at initial net worth)
-    const initialValue = data.p50[0];
-    g.append('line')
-      .attr('x1', 0)
-      .attr('x2', innerWidth)
-      .attr('y1', yScale(initialValue))
-      .attr('y2', yScale(initialValue))
-      .attr('stroke', '#2ED3A155')
-      .attr('stroke-width', 1);
-
-    // Create area generators
-    const fanArea = d3.area<number>()
-      .x((d, i) => xScale(i))
-      .y0((d, i) => yScale(data.p10[i]))
-      .y1((d, i) => yScale(data.p90[i]))
-      .curve(d3.curveMonotoneX);
-
-    // Draw fan bands with animation
-    const fanBand = g.append('path')
-      .datum(data.p50)
-      .attr('fill', 'url(#fan-gradient)')
-      .attr('mask', 'url(#fade-mask)')
-      .attr('stroke', 'none')
-      .attr('d', fanArea)
-      .style('opacity', showConfidenceBand ? 1 : 0)
-      .style('transition', 'opacity 250ms ease-in-out');
-
-    // Add fade mask
+    // Create fade mask
     defs.append('mask')
       .attr('id', 'fade-mask')
       .append('rect')
@@ -144,26 +117,76 @@ export const FanChart: React.FC<FanChartProps> = ({
       .attr('height', innerHeight)
       .attr('fill', 'url(#fade-gradient)');
 
-    // Behavior-only inner band (inner 25% with hatch)
-    if (showConfidenceBand) {
-      const behaviorArea = d3.area<number>()
-        .x((d, i) => xScale(i))
-        .y0((d, i) => yScale(data.p10[i] + (data.p50[i] - data.p10[i]) * 0.375))
-        .y1((d, i) => yScale(data.p90[i] - (data.p90[i] - data.p50[i]) * 0.375))
-        .curve(d3.curveMonotoneX);
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
 
-      g.append('path')
-        .datum(data.p50)
-        .attr('fill', 'url(#hatch-pattern)')
-        .attr('stroke', 'none')
-        .attr('d', behaviorArea);
-    }
+    // Grid lines (4% opacity, z-index below fan fill)
+    const yTicks = yScale.ticks(6);
+    const xTicks = d3.range(0, data.p10.length, Math.ceil(data.p10.length / 5));
+    
+    yTicks.forEach(tick => {
+      g.append('line')
+        .attr('x1', 0)
+        .attr('x2', innerWidth)
+        .attr('y1', yScale(tick))
+        .attr('y2', yScale(tick))
+        .attr('stroke', 'rgba(0,0,0,0.04)')
+        .attr('stroke-width', 1);
+    });
 
-    // Draw median line (P50) with animation
+    xTicks.forEach(tick => {
+      g.append('line')
+        .attr('x1', xScale(tick))
+        .attr('x2', xScale(tick))
+        .attr('y1', 0)
+        .attr('y2', innerHeight)
+        .attr('stroke', 'rgba(0,0,0,0.04)')
+        .attr('stroke-width', 1);
+    });
+
+    // Create area generators with non-linear curvature (compounding)
+    const fanArea = d3.area<number>()
+      .x((d, i) => xScale(i))
+      .y0((d, i) => yScale(data.p10[i]))
+      .y1((d, i) => yScale(data.p90[i]))
+      .curve(d3.curveCardinal.tension(0.2)); // Non-linear curvature
+
+    // Draw P10-P90 fan band with fade mask
+    const fanBand = g.append('path')
+      .datum(data.p50)
+      .attr('class', 'fanBand')
+      .attr('fill', 'url(#fan-gradient)')
+      .attr('mask', 'url(#fade-mask)')
+      .attr('stroke', 'none')
+      .attr('d', fanArea)
+      .style('opacity', showConfidenceBand ? 1 : 0);
+
+    // Hatched inner band (25% width around median for user-controlled variance)
+    const behaviorArea = d3.area<number>()
+      .x((d, i) => xScale(i))
+      .y0((d, i) => {
+        const range = data.p90[i] - data.p10[i];
+        return yScale(data.p50[i] - range * 0.125); // 25% of range / 2
+      })
+      .y1((d, i) => {
+        const range = data.p90[i] - data.p10[i];
+        return yScale(data.p50[i] + range * 0.125); // 25% of range / 2
+      })
+      .curve(d3.curveCardinal.tension(0.2));
+
+    const hatchBand = g.append('path')
+      .datum(data.p50)
+      .attr('class', 'hatchBand')
+      .attr('fill', 'url(#hatch-pattern)')
+      .attr('stroke', 'none')
+      .attr('d', behaviorArea)
+      .style('opacity', showConfidenceBand ? 1 : 0);
+
+    // Draw median line (P50) - navy (#0E1D47) 2px
     const line = d3.line<number>()
       .x((d, i) => xScale(i))
       .y((d, i) => yScale(data.p50[i]))
-      .curve(d3.curveMonotoneX);
+      .curve(d3.curveCardinal.tension(0.2)); // Non-linear curvature for compounding
 
     const medianPath = g.append('path')
       .datum(data.p50)
@@ -172,23 +195,10 @@ export const FanChart: React.FC<FanChartProps> = ({
       .attr('stroke-width', 2)
       .attr('d', line);
 
-    // Animate median line drawing
-    const totalLength = medianPath.node()?.getTotalLength() || 0;
-    medianPath
-      .attr('stroke-dasharray', totalLength + ' ' + totalLength)
-      .attr('stroke-dashoffset', totalLength)
-      .transition()
-      .delay(250)
-      .duration(400)
-      .ease(d3.easeQuadOut)
-      .attr('stroke-dashoffset', 0);
-
     // X-axis with custom labels
     const xAxis = g.append('g')
       .attr('transform', `translate(0,${innerHeight})`);
 
-    // Custom X-axis ticks
-    const xTicks = d3.range(0, data.p10.length, Math.ceil(data.p10.length / 5));
     xTicks.forEach(tick => {
       xAxis.append('text')
         .attr('x', xScale(tick))
@@ -203,7 +213,6 @@ export const FanChart: React.FC<FanChartProps> = ({
 
     // Y-axis with nice increments
     const yAxis = g.append('g');
-    const yTicks = yScale.ticks(6);
     
     yTicks.forEach(tick => {
       // Tick lines extending inward only
@@ -228,37 +237,32 @@ export const FanChart: React.FC<FanChartProps> = ({
         .text(d3.format('$,.0f')(tick));
     });
 
-    // Grid lines (drawn last with low opacity)
-    yTicks.forEach(tick => {
-      g.append('line')
-        .attr('x1', 0)
-        .attr('x2', innerWidth)
-        .attr('y1', yScale(tick))
-        .attr('y2', yScale(tick))
-        .attr('stroke', '#000000')
-        .attr('stroke-opacity', 0.04)
-        .attr('stroke-width', 1);
-    });
-
-    xTicks.forEach(tick => {
-      g.append('line')
-        .attr('x1', xScale(tick))
-        .attr('x2', xScale(tick))
-        .attr('y1', 0)
-        .attr('y2', innerHeight)
-        .attr('stroke', '#000000')
-        .attr('stroke-opacity', 0.04)
-        .attr('stroke-width', 1);
-    });
-
-    // Initial animation - fan band grows upward
+    // Animation: fan band clipPath height 0→100% over 600ms ease-out-cubic
     fanBand
-      .style('transform-origin', '50% 100%')
-      .style('transform', 'scaleY(0)')
+      .style('clip-path', 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)')
       .transition()
       .duration(600)
       .ease(d3.easeCubicOut)
-      .style('transform', 'scaleY(1)');
+      .style('clip-path', 'polygon(0 100%, 100% 100%, 100% 0%, 0 0%)');
+
+    hatchBand
+      .style('clip-path', 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)')
+      .transition()
+      .delay(200)
+      .duration(600)
+      .ease(d3.easeCubicOut)
+      .style('clip-path', 'polygon(0 100%, 100% 100%, 100% 0%, 0 0%)');
+
+    // Animate median line drawing with stroke-dasharray
+    const totalLength = medianPath.node()?.getTotalLength() || 0;
+    medianPath
+      .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+      .attr('stroke-dashoffset', totalLength)
+      .transition()
+      .delay(400)
+      .duration(800)
+      .ease(d3.easeQuadOut)
+      .attr('stroke-dashoffset', 0);
 
   }, [data, width, height, showConfidenceBand]);
 
