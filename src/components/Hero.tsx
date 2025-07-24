@@ -39,7 +39,7 @@ const Hero = () => {
           {/* Left Content */}
           <div className="text-center lg:text-left space-y-8">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
+              <div className="inline-flex items-center gap-2 bg-primary/20 text-primary border border-primary/30 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
                 <Brain className="w-4 h-4" />
                 AI-Powered Financial Foresight
               </div>
