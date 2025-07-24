@@ -9,6 +9,8 @@ import { SignalStrip } from '@/components/SignalStrip';
 import { PulseTile } from '@/components/PulseTile';
 import { DualAxisTimeline } from '@/components/DualAxisTimeline';
 import { MoneyMap } from '@/components/MoneyMap';
+import { EnhancedTrajectoryMatrix } from '@/components/EnhancedTrajectoryMatrix';
+import { BehavioralInsightEngine } from '@/components/BehavioralInsightEngine';
 import { JourneyCard } from '@/components/JourneyCard';
 import { ContextualActionOrb } from '@/components/ContextualActionOrb';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
@@ -208,6 +210,12 @@ export const Dashboard = () => {
                     variant={pulseStatus === 'success' ? 'success' : pulseStatus === 'critical' ? 'destructive' : 'warning'}
                   />
                 </div>
+
+                {/* Enhanced Trajectory Matrix with Multi-Layer Forecasting */}
+                <EnhancedTrajectoryMatrix />
+
+                {/* Behavioral Intelligence Engine */}
+                <BehavioralInsightEngine />
 
                 {/* Dual-Axis Financial Timeline */}
                 <DualAxisTimeline 
