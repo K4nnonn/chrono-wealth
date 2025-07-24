@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Eye, TrendingUp, Calendar } from 'lucide-react';
+import { Eye, TrendingUp, Calendar, EyeOff } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import FanChart from './FanChart';
 import { runMonteCarloSimulation } from '@/lib/financialCalculations';
 import { TimeHorizon, eventBus, EVENTS } from '@/lib/eventBus';
@@ -85,133 +86,169 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
   };
 
   return (
-    <Card className={cn('shadow-platform', className)} data-testid="trajectory-matrix">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-navy">
-            <Eye className="w-5 h-5" />
+    <TooltipProvider>
+      <Card 
+        className={cn(
+          'w-full max-w-[720px] bg-white rounded-xl p-7 shadow-[0_0_12px_rgba(0,0,0,0.04)]',
+          className
+        )} 
+        data-testid="trajectory-matrix"
+      >
+        {/* Headline Row */}
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-[22px] font-bold text-navy leading-none">
             Trajectory Matrix
-          </CardTitle>
+          </h3>
           
-          {/* Time-Lens Dial */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-navy/60">Horizon:</span>
-            <div className="flex rounded-lg bg-muted p-1">
-              {([1, 3, 5, 10] as TimeHorizon[]).map((horizon) => (
-                <Button
-                  key={horizon}
-                  variant={timeHorizon === horizon ? "default" : "ghost"}
-                  size="sm"
-                  className={cn(
-                    'h-6 px-3 text-xs transition-platform',
-                    timeHorizon === horizon && 'bg-navy text-white shadow-none'
-                  )}
-                  onClick={() => handleHorizonChange(horizon)}
-                >
-                  {horizon}Y
-                </Button>
-              ))}
-            </div>
+          {/* Horizon Selector - Segmented Pills */}
+          <div className="flex bg-[#F0F4F7] rounded-lg p-1" role="tablist">
+            {([1, 3, 5, 10] as TimeHorizon[]).map((horizon) => (
+              <button
+                key={horizon}
+                role="tab"
+                aria-selected={timeHorizon === horizon}
+                className={cn(
+                  'px-3 py-1 text-xs font-medium rounded-md transition-all duration-200',
+                  timeHorizon === horizon 
+                    ? 'bg-navy text-white' 
+                    : 'hover:bg-[#D8E1E8] text-navy'
+                )}
+                onClick={() => handleHorizonChange(horizon)}
+              >
+                {horizon}Y
+              </button>
+            ))}
           </div>
         </div>
 
         {/* Insight Banner */}
-        <div className="flex items-start gap-3 p-3 bg-mint/10 border border-mint/20 rounded-lg">
-          <TrendingUp className="w-4 h-4 text-mint flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-3 p-3 mb-5 bg-[#2ED3A1]/20 rounded-l-xl rounded-r border-l-4 border-mint h-10 items-center">
+          <span className="text-xl flex-shrink-0">⚡</span>
           <div className="flex-1">
-            <p className="text-sm font-medium text-navy">
-              ⚡ Changing grocery habits last quarter shaved 8 months off your {timeHorizon}-year goal.
+            <p className="text-sm font-semibold text-navy">
+              Changing grocery habits last quarter shaved 8 months off your {timeHorizon}-year goal.
             </p>
-            <div className="flex gap-2 mt-2">
-              <Button variant="outline" size="sm" className="h-6 text-xs">
-                Show math
-              </Button>
-              <Button variant="ghost" size="sm" className="h-6 text-xs">
-                Got it
-              </Button>
-            </div>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="h-6 text-xs px-2">
+              Show math
+            </Button>
+            <Button variant="ghost" size="sm" className="h-6 text-xs px-2">
+              Got it
+            </Button>
           </div>
         </div>
-      </CardHeader>
 
-      <CardContent className="space-y-6">
-        {/* Multi-Scenario Bands */}
-        <div className="relative">
-          <FanChart
-            data={fanChartData}
-            width={920}
-            height={400}
-            className="w-full"
-          />
+        {/* Chart Block */}
+        <div className="relative mb-5">
+          <div className="flex justify-center">
+            <FanChart
+              data={fanChartData}
+              width={640}
+              height={280}
+              showConfidenceBand={showConfidenceBand}
+              className="chart-block"
+            />
+          </div>
           
           {/* Behavioral Markers */}
           {behavioralMarkers
             .filter(marker => marker.month <= timeHorizon * 12)
             .map((marker, index) => (
-              <div
-                key={index}
-                className="absolute top-4"
-                style={{ left: `${getMarkerPosition(marker.month)}%` }}
-              >
-                <div className="relative">
-                  <div className="w-6 h-6 rounded-full bg-navy text-white flex items-center justify-center text-xs font-bold">
-                    ✦
-                  </div>
-                  <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-navy text-white text-xs rounded shadow-lg">
-                    <div className="font-medium">{marker.event}</div>
-                    <div className="text-navy/70">
-                      Impact: {marker.impact > 0 ? '+' : ''}{(marker.impact * 100).toFixed(1)}%
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <TooltipProvider key={index}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      className="absolute top-4 w-6 h-6 rounded-full bg-[#001B82] text-white flex items-center justify-center text-sm font-bold shadow-[0_1px_3px_rgba(0,0,0,0.15)] transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-navy"
+                      style={{ left: `${getMarkerPosition(marker.month)}%`, transform: 'translateX(-50%)' }}
+                      tabIndex={0}
+                    >
+                      ✦
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent 
+                    className="w-[200px] bg-navy text-white p-3 rounded shadow-[0_4px_8px_rgba(0,0,0,0.15)]"
+                    sideOffset={8}
+                  >
+                    <div className="font-bold text-xs mb-1">{marker.event}</div>
+                    <div className="text-xs">Impact: {marker.impact > 0 ? '+' : ''}{(marker.impact * 100).toFixed(1)}%</div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ))}
+
+          {/* Micro-copy Caption */}
+          <div className="absolute bottom-2 right-2 text-xs italic text-[#67728A]">
+            Hatched zone = change you control
+          </div>
         </div>
 
-        {/* Confidence Ribbon Toggle */}
-        <div className="flex items-center justify-between">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs"
-            onClick={() => setShowConfidenceBand(!showConfidenceBand)}
-          >
-            <Calendar className="w-3 h-3 mr-1" />
-            {showConfidenceBand ? 'Hide' : 'Show'} Confidence Band
-          </Button>
+        {/* Confidence Band Toggle */}
+        <div className="flex items-center justify-between mb-6">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className="w-7 h-7 rounded-full bg-[#F0F4F7] hover:bg-[#D8E1E8] flex items-center justify-center transition-colors"
+                  onClick={() => setShowConfidenceBand(!showConfidenceBand)}
+                >
+                  {showConfidenceBand ? (
+                    <Eye className="w-4 h-4 text-navy" />
+                  ) : (
+                    <EyeOff className="w-4 h-4 text-navy" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Show/Hide Variance Bands</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           
           {showConfidenceBand && (
-            <div className="text-xs text-navy/60">
+            <div className="text-xs text-navy/60" role="status" aria-live="polite">
               Inner band shows variance from user-controlled actions only
             </div>
           )}
         </div>
 
-        {/* Scenario Outcomes */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center p-3 bg-rose/10 border border-rose/20 rounded-lg">
-            <div className="text-xs text-rose/70 font-medium">Conservative (P10)</div>
-            <div className="text-lg font-bold text-rose">
+        {/* Stats Strip */}
+        <div className="grid grid-cols-3 gap-3">
+          <div 
+            className="text-center p-3 bg-[#FAFAFC] border border-[#E5E9F0] rounded-lg cursor-pointer transition-all hover:shadow-md group"
+            onMouseEnter={() => {/* Highlight P10 band */}}
+            onMouseLeave={() => {/* Remove highlight */}}
+          >
+            <div className="text-sm font-normal text-[#67728A] mb-1">Conservative (P10)</div>
+            <div className="text-2xl font-bold text-[#F86C6B]">
               ${probabilities.p10.toLocaleString()}
             </div>
           </div>
           
-          <div className="text-center p-3 bg-navy/10 border border-navy/20 rounded-lg">
-            <div className="text-xs text-navy/70 font-medium">Expected (P50)</div>
-            <div className="text-lg font-bold text-navy">
+          <div 
+            className="text-center p-3 bg-[#FAFAFC] border border-[#E5E9F0] rounded-lg cursor-pointer transition-all hover:shadow-md group"
+            onMouseEnter={() => {/* Highlight P50 line */}}
+            onMouseLeave={() => {/* Remove highlight */}}
+          >
+            <div className="text-sm font-normal text-[#67728A] mb-1">Expected (P50)</div>
+            <div className="text-2xl font-bold text-navy">
               ${probabilities.p50.toLocaleString()}
             </div>
           </div>
           
-          <div className="text-center p-3 bg-mint/10 border border-mint/20 rounded-lg">
-            <div className="text-xs text-mint/70 font-medium">Optimistic (P90)</div>
-            <div className="text-lg font-bold text-mint">
+          <div 
+            className="text-center p-3 bg-[#FAFAFC] border border-[#E5E9F0] rounded-lg cursor-pointer transition-all hover:shadow-md group"
+            onMouseEnter={() => {/* Highlight P90 band */}}
+            onMouseLeave={() => {/* Remove highlight */}}
+          >
+            <div className="text-sm font-normal text-[#67728A] mb-1">Optimistic (P90)</div>
+            <div className="text-2xl font-bold text-mint">
               ${probabilities.p90.toLocaleString()}
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </Card>
+    </TooltipProvider>
   );
 };
 
