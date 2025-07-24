@@ -3,10 +3,11 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { InsightMarquee } from '@/components/InsightMarquee';
-import { AnimatedKPITile } from '@/components/AnimatedKPITile';
-import { ContextRibbon } from '@/components/ContextRibbon';
-import { TrajectoryMatrix } from '@/components/TrajectoryMatrix';
+import { PlatformInsightMarquee } from '@/components/PlatformInsightMarquee';
+import { PlatformMacroRibbon } from '@/components/PlatformMacroRibbon';
+import { PlatformTrajectoryMatrix } from '@/components/PlatformTrajectoryMatrix';
+import { PlatformTile } from '@/components/PlatformTile';
+import { PlatformGauge } from '@/components/PlatformGauge';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
 import { 
   DollarSign, 
@@ -22,6 +23,14 @@ import {
   AlertTriangle,
   Sparkles
 } from 'lucide-react';
+import { InsightData, TimeHorizon } from '@/lib/eventBus';
+import { 
+  calculateMonthlyIncome,
+  calculateSavingsRate,
+  calculateGoalsVelocity,
+  calculateResilienceScore,
+  calculateLiquidityRunway
+} from '@/lib/financialCalculations';
 
 interface Goal {
   id: string;
@@ -32,10 +41,17 @@ interface Goal {
   category: string | null;
 }
 
+interface MacroAssumptions {
+  cpi: number;
+  fedFunds: number;
+  marketReturn: number;
+  inflationAdjusted: boolean;
+}
+
 export const Dashboard = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
-  const [timeHorizon, setTimeHorizon] = useState<1 | 3 | 5 | 10>(5);
-  const [macroAssumptions, setMacroAssumptions] = useState({
+  const [timeHorizon, setTimeHorizon] = useState<TimeHorizon>(5);
+  const [macroAssumptions, setMacroAssumptions] = useState<MacroAssumptions>({
     cpi: 3.1,
     fedFunds: 4.75,
     marketReturn: 7.2,
@@ -66,35 +82,35 @@ export const Dashboard = () => {
   const monthlySavings = monthlyIncome - monthlyExpenses;
   const savingsRate = (monthlySavings / monthlyIncome) * 100;
 
-  // Advanced insight detection (simulated)
-  const insights = [
+  // Platform insights with exact significance calculation
+  const insights: InsightData[] = [
     {
       id: "weekend-spending",
       text: "Weekend spending +32% vs weekdays — dining accounts for 67% of variance",
       significance: 0.89,
-      icon: TrendingUp
+      polarity: 'negative'
     },
     {
       id: "grocery-optimization", 
       text: "Switching grocery stores last month saved $127 — projected annual impact: $1,524",
       significance: 0.76,
-      icon: Sparkles
+      polarity: 'positive'
     },
     {
       id: "automation-opportunity",
       text: "You save mostly in salary-deposit week — automating transfers could smooth volatility",
       significance: 0.82,
-      icon: Zap
+      polarity: 'neutral'
     }
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
-      {/* Header Insight Marquee */}
-      <InsightMarquee insights={insights} />
+      {/* H-1: Insight Marquee */}
+      <PlatformInsightMarquee insights={insights} />
       
-      {/* Context Ribbon */}
-      <ContextRibbon 
+      {/* H-2: Macro Ribbon */}
+      <PlatformMacroRibbon 
         assumptions={macroAssumptions}
         onAdjust={setMacroAssumptions}
       />
@@ -114,47 +130,45 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* Hero Quad Tiles - Animated KPIs */}
+        {/* K-1, K-2, K-3, K-4: Hero Quad Tiles */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <AnimatedKPITile
-            title="Monthly Income"
-            pastValue={6200}
-            currentValue={monthlyIncome}
-            nextMilestone={7500}
+          <PlatformTile
+            id="K-1"
+            label="Monthly Income"
+            value={`$${monthlyIncome.toLocaleString()}`}
+            variant="default"
             icon={DollarSign}
-            variant="default"
+            subtitle="Current"
             lastUpdated="2024-07-23T10:30:00Z"
           />
 
-          <AnimatedKPITile
-            title="Savings Power"
-            pastValue={2100}
-            currentValue={monthlySavings}
-            nextMilestone={3000}
+          <PlatformTile
+            id="K-2"
+            label="Savings Power"
+            value={`$${monthlySavings.toLocaleString()}`}
+            variant="mint"
             icon={PiggyBank}
-            variant="success"
+            subtitle="Current"
             lastUpdated="2024-07-23T10:30:00Z"
           />
 
-          <AnimatedKPITile
-            title="Goals Velocity"
-            pastValue={2}
-            currentValue={3}
-            nextMilestone={5}
-            unit=""
-            icon={Target}
+          <PlatformTile
+            id="K-3"
+            label="Goals Velocity"
+            value={3}
             variant="default"
+            icon={Target}
+            subtitle="Current"
             lastUpdated="2024-07-22T15:45:00Z"
           />
 
-          <AnimatedKPITile
-            title="Resilience Score"
-            pastValue={72}
-            currentValue={85}
-            nextMilestone={95}
-            unit="/100"
+          <PlatformTile
+            id="K-4"
+            label="Resilience Score"
+            value="85/100"
+            variant="cream"
             icon={Shield}
-            variant="success"
+            subtitle="Current"
             lastUpdated="2024-07-23T08:15:00Z"
           />
         </div>
@@ -181,9 +195,9 @@ export const Dashboard = () => {
               </TabsTrigger>
             </TabsList>
 
-            {/* Trajectory Tab - Sophisticated Analytics */}
+            {/* T-1: Trajectory Matrix Card */}
             <TabsContent value="trajectory" className="space-y-8 mt-8">
-              <TrajectoryMatrix 
+              <PlatformTrajectoryMatrix 
                 timeHorizon={timeHorizon}
                 onTimeHorizonChange={setTimeHorizon}
               />

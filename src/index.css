@@ -3,16 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FlowSightFi Professional Design System - Enterprise Grade */
+/* FlowSightFi Financial Intelligence Platform - Exact Spec Implementation */
 @layer base {
   :root {
-    /* Primary Palette - Mid-Indigo for Trust & Professionalism */
+    /* Core Platform Color Tokens - Exact Specification */
+    --color-navy: #11234A;
+    --color-mint: #2ED3A1;
+    --color-rose: #F86C6B;
+    --color-cream: #F5F9F6;
+
+    /* Extended Palette for UI States */
     --primary: 230 82% 67%; /* #5665FF */
     --primary-glow: 235 85% 75%; /* #6B7AFF */
     --primary-dark: 225 75% 55%; /* #4450E6 */
     --primary-foreground: 0 0% 100%; /* white */
 
-    /* Accent Colors - Carefully Selected for Professional Appeal */
+    /* Platform-Specific Colors */
     --accent-teal: 174 72% 56%; /* #46D3C5 */
     --accent-coral: 15 100% 70%; /* #FF7F6B */
     --accent-success: 142 71% 45%; /* #22C55E */
@@ -40,6 +46,13 @@
     --input: 240 5.9% 90%; /* #E5E7EB */
     --ring: 230 82% 67%; /* primary */
 
+    /* Platform Shadow - Exact Specification */
+    --shadow-platform: 0px 2px 6px rgba(0, 0, 0, 0.04);
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+    --shadow-card: 0 4px 20px -2px hsl(240 10% 3.9% / 0.08);
+    --shadow-soft: 0 2px 8px -2px hsl(240 10% 3.9% / 0.05);
+
     /* Professional Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-success: linear-gradient(135deg, hsl(var(--accent-success)), hsl(174 72% 56%));
@@ -47,16 +60,11 @@
     --gradient-card: linear-gradient(180deg, hsl(var(--background)), hsl(240 4.8% 98%));
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 50%, hsl(var(--accent-teal)) 100%);
 
-    /* Enterprise-Grade Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
-    --shadow-card: 0 4px 20px -2px hsl(240 10% 3.9% / 0.08);
-    --shadow-soft: 0 2px 8px -2px hsl(240 10% 3.9% / 0.05);
-
     /* Smooth Professional Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-elastic: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-platform: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Modern Radius System */
     --radius: 0.75rem; /* 12px - increased for modern feel */
@@ -120,7 +128,7 @@
   }
   
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'cv03', 'cv04', 'cv11';
     font-synthesis: none;
@@ -200,7 +208,11 @@
     background: var(--gradient-hero);
   }
   
-  /* Professional Shadows */
+  /* Platform-Specific Shadows */
+  .shadow-platform {
+    box-shadow: var(--shadow-platform);
+  }
+  
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
   }
@@ -217,7 +229,11 @@
     box-shadow: var(--shadow-soft);
   }
   
-  /* Smooth Transitions */
+  /* Platform Transitions */
+  .transition-platform {
+    transition: var(--transition-platform);
+  }
+  
   .transition-smooth {
     transition: var(--transition-smooth);
   }
@@ -315,34 +331,47 @@
   .text-white\/80 {
     color: rgba(255, 255, 255, 0.95) !important;
   }
-}
-
-/* Component-Specific Animations */
-.pulse-bar-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+  /* Platform Color Utilities */
+  .text-navy {
+    color: var(--color-navy);
   }
-  50% {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.6);
+  
+  .text-mint {
+    color: var(--color-mint);
   }
-}
+  
+  .text-rose {
+    color: var(--color-rose);
+  }
+  
+  .bg-cream {
+    background-color: var(--color-cream);
+  }
+  
+  .bg-mint {
+    background-color: var(--color-mint);
+  }
+  
+  .bg-rose {
+    background-color: var(--color-rose);
+  }
 
-/* Loading Skeleton Animation */
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
+  .bg-navy {
+    background-color: var(--color-navy);
   }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
 
-.skeleton {
-  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
-  background-size: 200px 100%;
-  animation: shimmer 1.5s infinite;
+  /* Reduced Motion Support */
+  @media (prefers-reduced-motion: reduce) {
+    .gauge-needle {
+      transition: none !important;
+    }
+    
+    .fan-chart-gradient {
+      transition: none !important;
+    }
+    
+    .pulse-bar-glow {
+      animation: none !important;
+    }
+  }
 }
