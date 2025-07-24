@@ -3,24 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FlowSightFi Financial Intelligence Platform - Exact Spec Implementation */
+/* FlowSightFi Professional Design System - Enterprise Grade */
 @layer base {
   :root {
-    /* Color tokens - DO NOT use direct hex colors */
-    --c-navy: #0E1D47;
-    --c-mint: #2ED3A1;
-    --c-rose: #F86C6B;
-    --c-cream: #F5F9F6;
-
-    /* Core Platform Color Tokens - Exact Specification */
-
-    /* Extended Palette for UI States */
+    /* Primary Palette - Mid-Indigo for Trust & Professionalism */
     --primary: 230 82% 67%; /* #5665FF */
     --primary-glow: 235 85% 75%; /* #6B7AFF */
     --primary-dark: 225 75% 55%; /* #4450E6 */
     --primary-foreground: 0 0% 100%; /* white */
 
-    /* Platform-Specific Colors */
+    /* Accent Colors - Carefully Selected for Professional Appeal */
     --accent-teal: 174 72% 56%; /* #46D3C5 */
     --accent-coral: 15 100% 70%; /* #FF7F6B */
     --accent-success: 142 71% 45%; /* #22C55E */
@@ -39,7 +31,7 @@
     --secondary: 240 4.8% 95.9%; /* #F8F9FA */
     --secondary-foreground: 240 5.9% 10%; /* #1A1A1B */
     --muted: 240 4.8% 95.9%; /* #F8F9FA */
-    --muted-foreground: 240 10% 25%; /* Much darker for better contrast */
+    --muted-foreground: 240 3.8% 46.1%; /* #6B7280 */
     --accent: 174 72% 56%; /* #46D3C5 */
     --accent-foreground: 0 0% 100%; /* white */
 
@@ -48,13 +40,6 @@
     --input: 240 5.9% 90%; /* #E5E7EB */
     --ring: 230 82% 67%; /* primary */
 
-    /* Platform Shadow - Exact Specification */
-    --shadow-platform: 0px 2px 6px rgba(0, 0, 0, 0.04);
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
-    --shadow-card: 0 4px 20px -2px hsl(240 10% 3.9% / 0.08);
-    --shadow-soft: 0 2px 8px -2px hsl(240 10% 3.9% / 0.05);
-
     /* Professional Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-success: linear-gradient(135deg, hsl(var(--accent-success)), hsl(174 72% 56%));
@@ -62,11 +47,16 @@
     --gradient-card: linear-gradient(180deg, hsl(var(--background)), hsl(240 4.8% 98%));
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 50%, hsl(var(--accent-teal)) 100%);
 
+    /* Enterprise-Grade Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+    --shadow-card: 0 4px 20px -2px hsl(240 10% 3.9% / 0.08);
+    --shadow-soft: 0 2px 8px -2px hsl(240 10% 3.9% / 0.05);
+
     /* Smooth Professional Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-elastic: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --transition-platform: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Modern Radius System */
     --radius: 0.75rem; /* 12px - increased for modern feel */
@@ -97,7 +87,7 @@
     --secondary: 240 3.7% 15.9%; /* #3F3F46 */
     --secondary-foreground: 0 0% 95%; /* #F2F2F2 */
     --muted: 240 3.7% 15.9%; /* #3F3F46 */
-    --muted-foreground: 240 5% 80%; /* Much lighter for dark mode */
+    --muted-foreground: 240 5% 64.9%; /* #9CA3AF */
     --accent: 174 72% 56%; /* #46D3C5 */
     --accent-foreground: 240 10% 7%; /* dark background */
 
@@ -130,7 +120,7 @@
   }
   
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'cv03', 'cv04', 'cv11';
     font-synthesis: none;
@@ -210,11 +200,7 @@
     background: var(--gradient-hero);
   }
   
-  /* Platform-Specific Shadows */
-  .shadow-platform {
-    box-shadow: var(--shadow-platform);
-  }
-  
+  /* Professional Shadows */
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
   }
@@ -231,11 +217,7 @@
     box-shadow: var(--shadow-soft);
   }
   
-  /* Platform Transitions */
-  .transition-platform {
-    transition: var(--transition-platform);
-  }
-  
+  /* Smooth Transitions */
   .transition-smooth {
     transition: var(--transition-smooth);
   }
@@ -302,164 +284,34 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
   }
+}
 
-  /* Improved readability for all text elements */
-  .text-muted-foreground {
-    color: hsl(var(--muted-foreground)) !important;
-  }
+/* Component-Specific Animations */
+.pulse-bar-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
-  /* Ensure minimum opacity for readability */
-  .opacity-50 {
-    opacity: 0.75 !important;
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
   }
+  50% {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.6);
+  }
+}
 
-  .opacity-60 {
-    opacity: 0.8 !important;
+/* Loading Skeleton Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
   }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
 
-  .opacity-70 {
-    opacity: 0.85 !important;
-  }
-
-  /* Fix white text on white background issues */
-  .text-white\/60 {
-    color: rgba(255, 255, 255, 0.85) !important;
-  }
-
-  .text-white\/70 {
-    color: rgba(255, 255, 255, 0.9) !important;
-  }
-
-  .text-white\/80 {
-    color: rgba(255, 255, 255, 0.95) !important;
-  }
-  /* Platform Color Utilities */
-  .text-navy {
-    color: var(--c-navy);
-  }
-  
-  .text-mint {
-    color: var(--c-mint);
-  }
-  
-  .text-rose {
-    color: var(--c-rose);
-  }
-  
-  .bg-cream {
-    background-color: var(--c-cream);
-  }
-  
-  .bg-mint {
-    color: var(--c-mint);
-  }
-  
-  .bg-rose {
-    background-color: var(--c-rose);
-  }
-
-  .bg-navy {
-    background-color: var(--c-navy);
-  }
-
-  /* 12-column grid system - exactly as specified */
-  .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    column-gap: 24px;
-    row-gap: 32px;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-
-  /* Hero KPI tiles - columns 2-11 (ten columns wide) */
-  .dashboard-hero-tiles {
-    grid-column: 2 / 12;
-  }
-
-  /* Main content for cards */
-  .dashboard-main-content {
-    grid-column: 2 / 12;
-  }
-
-  /* Hero tile styling */
-  .hero-tile {
-    width: 240px;
-    height: 100px;
-    border-radius: 12px;
-    background: #FFFFFF;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 16px 20px;
-  }
-
-  .hero-tile.tile-negative {
-    background: #FBEAEA;
-  }
-
-  .hero-tile.tile-positive {
-    background: #E6F9F4;
-  }
-
-  .tile-value {
-    font-size: 28px;
-    font-weight: 700;
-  }
-
-  .tile-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: #67728A;
-  }
-
-  /* Universal card padding - 28px as specified */
-  .card-content {
-    padding: 28px;
-  }
-
-  /* Remove excess margins */
-  .card-container {
-    margin: 0;
-  }
-
-  /* Baseline Grid */
-  .baseline-overlay {
-    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 100% 4px;
-  }
-
-  /* Tab underline animation - mint 2px height */
-  .tab-underline[data-state="active"]::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--c-mint);
-    animation: tab-expand 120ms ease-out;
-  }
-
-  @keyframes tab-expand {
-    from { width: 0; }
-    to { width: 100%; }
-  }
-
-  /* Reduced Motion Support */
-  @media (prefers-reduced-motion: reduce) {
-    .gauge-needle {
-      transition: none !important;
-    }
-    
-    .fan-chart-gradient {
-      transition: none !important;
-    }
-    
-    .pulse-bar-glow {
-      animation: none !important;
-    }
-  }
+.skeleton {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
 }

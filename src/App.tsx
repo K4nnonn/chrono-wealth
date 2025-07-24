@@ -8,7 +8,6 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { Auth } from "@/pages/Auth";
 import Index from "./pages/Index";
 import { Dashboard } from "./pages/Dashboard";
-import { DashboardRefactored } from "./components/DashboardRefactored";
 import Goals from "./pages/Goals";
 import Insights from "./pages/Insights";
 import Planner from "./pages/Planner";
@@ -30,7 +29,7 @@ function App() {
           <div className="min-h-screen bg-background">
             <Routes>
               {/* Public routes */}
-              <Route path="/" element={<DashboardRefactored />} />
+              <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/privacy" element={<Privacy />} />
@@ -38,7 +37,8 @@ function App() {
               
               <Route path="/dashboard" element={
                 <ProtectedRoute>
-                  <DashboardRefactored />
+                  <Navigation />
+                  <Dashboard />
                 </ProtectedRoute>
               } />
               

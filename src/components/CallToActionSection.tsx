@@ -159,25 +159,25 @@ export const CallToActionSection: React.FC = () => {
             <div className="space-y-2">
               <Shield className="w-8 h-8 text-primary mx-auto" />
               <h4 className="font-semibold">Bank-Level Security</h4>
-              <p className="text-sm">256-bit encryption & SOC 2 compliance</p>
+              <p className="text-sm text-muted-foreground">256-bit encryption & SOC 2 compliance</p>
             </div>
             
             <div className="space-y-2">
               <CheckCircle className="w-8 h-8 text-success mx-auto" />
               <h4 className="font-semibold">GDPR Compliant</h4>
-              <p className="text-sm">Your data privacy is our priority</p>
+              <p className="text-sm text-muted-foreground">Your data privacy is our priority</p>
             </div>
             
             <div className="space-y-2">
               <TrendingUp className="w-8 h-8 text-accent-teal mx-auto" />
               <h4 className="font-semibold">Proven Results</h4>
-              <p className="text-sm">94% user improvement in financial health</p>
+              <p className="text-sm text-muted-foreground">94% user improvement in financial health</p>
             </div>
             
             <div className="space-y-2">
               <Clock className="w-8 h-8 text-accent-coral mx-auto" />
               <h4 className="font-semibold">24/7 Support</h4>
-              <p className="text-sm">Always here when you need us</p>
+              <p className="text-sm text-muted-foreground">Always here when you need us</p>
             </div>
           </div>
         </div>
@@ -188,7 +188,7 @@ export const CallToActionSection: React.FC = () => {
             <Lightbulb className="w-5 h-5 text-white" />
             <div className="text-white">
               <p className="font-semibold">Ready to get started?</p>
-              <p className="text-sm text-white/90">Join thousands improving their financial future</p>
+              <p className="text-sm opacity-90">Join thousands improving their financial future</p>
             </div>
             <Button 
               variant="secondary" 

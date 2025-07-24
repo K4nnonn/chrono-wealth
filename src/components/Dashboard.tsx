@@ -3,11 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PlatformInsightMarquee } from '@/components/PlatformInsightMarquee';
-import { PlatformMacroRibbon } from '@/components/PlatformMacroRibbon';
-import { PlatformTrajectoryMatrix } from '@/components/PlatformTrajectoryMatrix';
-import { PlatformTile } from '@/components/PlatformTile';
-import { PlatformGauge } from '@/components/PlatformGauge';
+import { InsightMarquee } from '@/components/InsightMarquee';
+import { AnimatedKPITile } from '@/components/AnimatedKPITile';
+import { ContextRibbon } from '@/components/ContextRibbon';
+import { TrajectoryMatrix } from '@/components/TrajectoryMatrix';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
 import { 
   DollarSign, 
@@ -23,14 +22,6 @@ import {
   AlertTriangle,
   Sparkles
 } from 'lucide-react';
-import { InsightData, TimeHorizon } from '@/lib/eventBus';
-import { 
-  calculateMonthlyIncome,
-  calculateSavingsRate,
-  calculateGoalsVelocity,
-  calculateResilienceScore,
-  calculateLiquidityRunway
-} from '@/lib/financialCalculations';
 
 interface Goal {
   id: string;
@@ -41,17 +32,10 @@ interface Goal {
   category: string | null;
 }
 
-interface MacroAssumptions {
-  cpi: number;
-  fedFunds: number;
-  marketReturn: number;
-  inflationAdjusted: boolean;
-}
-
 export const Dashboard = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
-  const [timeHorizon, setTimeHorizon] = useState<TimeHorizon>(5);
-  const [macroAssumptions, setMacroAssumptions] = useState<MacroAssumptions>({
+  const [timeHorizon, setTimeHorizon] = useState<1 | 3 | 5 | 10>(5);
+  const [macroAssumptions, setMacroAssumptions] = useState({
     cpi: 3.1,
     fedFunds: 4.75,
     marketReturn: 7.2,
@@ -82,35 +66,35 @@ export const Dashboard = () => {
   const monthlySavings = monthlyIncome - monthlyExpenses;
   const savingsRate = (monthlySavings / monthlyIncome) * 100;
 
-  // Platform insights with exact significance calculation
-  const insights: InsightData[] = [
+  // Advanced insight detection (simulated)
+  const insights = [
     {
       id: "weekend-spending",
       text: "Weekend spending +32% vs weekdays — dining accounts for 67% of variance",
       significance: 0.89,
-      polarity: 'negative'
+      icon: TrendingUp
     },
     {
       id: "grocery-optimization", 
       text: "Switching grocery stores last month saved $127 — projected annual impact: $1,524",
       significance: 0.76,
-      polarity: 'positive'
+      icon: Sparkles
     },
     {
       id: "automation-opportunity",
       text: "You save mostly in salary-deposit week — automating transfers could smooth volatility",
       significance: 0.82,
-      polarity: 'neutral'
+      icon: Zap
     }
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
-      {/* H-1: Insight Marquee */}
-      <PlatformInsightMarquee insights={insights} />
+      {/* Header Insight Marquee */}
+      <InsightMarquee insights={insights} />
       
-      {/* H-2: Macro Ribbon */}
-      <PlatformMacroRibbon 
+      {/* Context Ribbon */}
+      <ContextRibbon 
         assumptions={macroAssumptions}
         onAdjust={setMacroAssumptions}
       />
@@ -130,45 +114,47 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* K-1, K-2, K-3, K-4: Hero Quad Tiles */}
+        {/* Hero Quad Tiles - Animated KPIs */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <PlatformTile
-            id="K-1"
-            label="Monthly Income"
-            value={`$${monthlyIncome.toLocaleString()}`}
-            variant="default"
+          <AnimatedKPITile
+            title="Monthly Income"
+            pastValue={6200}
+            currentValue={monthlyIncome}
+            nextMilestone={7500}
             icon={DollarSign}
-            subtitle="Current"
-            lastUpdated="2024-07-23T10:30:00Z"
-          />
-
-          <PlatformTile
-            id="K-2"
-            label="Savings Power"
-            value={`$${monthlySavings.toLocaleString()}`}
-            variant="mint"
-            icon={PiggyBank}
-            subtitle="Current"
-            lastUpdated="2024-07-23T10:30:00Z"
-          />
-
-          <PlatformTile
-            id="K-3"
-            label="Goals Velocity"
-            value={3}
             variant="default"
+            lastUpdated="2024-07-23T10:30:00Z"
+          />
+
+          <AnimatedKPITile
+            title="Savings Power"
+            pastValue={2100}
+            currentValue={monthlySavings}
+            nextMilestone={3000}
+            icon={PiggyBank}
+            variant="success"
+            lastUpdated="2024-07-23T10:30:00Z"
+          />
+
+          <AnimatedKPITile
+            title="Goals Velocity"
+            pastValue={2}
+            currentValue={3}
+            nextMilestone={5}
+            unit=""
             icon={Target}
-            subtitle="Current"
+            variant="default"
             lastUpdated="2024-07-22T15:45:00Z"
           />
 
-          <PlatformTile
-            id="K-4"
-            label="Resilience Score"
-            value="85/100"
-            variant="cream"
+          <AnimatedKPITile
+            title="Resilience Score"
+            pastValue={72}
+            currentValue={85}
+            nextMilestone={95}
+            unit="/100"
             icon={Shield}
-            subtitle="Current"
+            variant="success"
             lastUpdated="2024-07-23T08:15:00Z"
           />
         </div>
@@ -195,9 +181,9 @@ export const Dashboard = () => {
               </TabsTrigger>
             </TabsList>
 
-            {/* T-1: Trajectory Matrix Card */}
+            {/* Trajectory Tab - Sophisticated Analytics */}
             <TabsContent value="trajectory" className="space-y-8 mt-8">
-              <PlatformTrajectoryMatrix 
+              <TrajectoryMatrix 
                 timeHorizon={timeHorizon}
                 onTimeHorizonChange={setTimeHorizon}
               />
@@ -226,10 +212,10 @@ export const Dashboard = () => {
                     
                     <div className="text-center py-8">
                       <div className="text-3xl font-bold text-accent-success mb-2">38.2%</div>
-                       <div className="text-sm">Current 30-day rate</div>
-                       <div className="mt-4 text-xs">
-                         Pattern: "Back-Half Saver" — surplus appears in last 10 days
-                       </div>
+                      <div className="text-sm text-muted-foreground">Current 30-day rate</div>
+                      <div className="mt-4 text-xs text-muted-foreground">
+                        Pattern: "Back-Half Saver" — surplus appears in last 10 days
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -260,10 +246,10 @@ export const Dashboard = () => {
                         <div className="absolute inset-2 rounded-full border-4 border-accent-coral/40 animate-pulse" />
                         <div className="absolute inset-4 rounded-full border-4 border-accent-coral animate-pulse" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                           <div className="text-center">
-                             <div className="text-sm font-bold">Dining</div>
-                             <div className="text-xs">High Volatility</div>
-                           </div>
+                          <div className="text-center">
+                            <div className="text-sm font-bold">Dining</div>
+                            <div className="text-xs text-muted-foreground">High Volatility</div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -274,13 +260,13 @@ export const Dashboard = () => {
 
             {/* Other tabs with sophisticated content */}
             <TabsContent value="momentum" className="space-y-6 mt-8">
-               <div className="text-center py-12">
-                 <Activity className="w-16 h-16 mx-auto mb-4" />
-                 <h3 className="text-xl font-semibold mb-2">Behavioral Momentum Analytics</h3>
-                 <p>
-                   Advanced pattern recognition and habit tracking coming in this sophisticated view.
-                 </p>
-               </div>
+              <div className="text-center py-12">
+                <Activity className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Behavioral Momentum Analytics</h3>
+                <p className="text-muted-foreground">
+                  Advanced pattern recognition and habit tracking coming in this sophisticated view.
+                </p>
+              </div>
             </TabsContent>
 
             <TabsContent value="intelligence" className="space-y-6 mt-8">
@@ -289,21 +275,21 @@ export const Dashboard = () => {
                   <Brain className="w-6 h-6 text-primary" />
                   <h2 className="text-2xl font-bold">Financial Intelligence Engine</h2>
                 </div>
-                 <p>
-                   AI-powered insights that understand the 'why' behind every financial pattern.
-                 </p>
+                <p className="text-muted-foreground">
+                  AI-powered insights that understand the 'why' behind every financial pattern.
+                </p>
               </div>
               <AIFinancialChat />
             </TabsContent>
 
             <TabsContent value="journeys" className="space-y-6 mt-8">
-               <div className="text-center py-12">
-                 <Route className="w-16 h-16 mx-auto mb-4" />
-                 <h3 className="text-xl font-semibold mb-2">Financial Journeys</h3>
-                 <p>
-                   Narrative-driven goal tracking with predictive stress analysis and milestone rewards.
-                 </p>
-               </div>
+              <div className="text-center py-12">
+                <Route className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Financial Journeys</h3>
+                <p className="text-muted-foreground">
+                  Narrative-driven goal tracking with predictive stress analysis and milestone rewards.
+                </p>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

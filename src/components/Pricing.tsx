@@ -80,13 +80,13 @@ const Pricing = () => {
               <div className="w-12 h-12 mx-auto mb-4 bg-muted/20 rounded-full flex items-center justify-center">
                 <BarChart3 className="w-6 h-6 text-muted-foreground" />
               </div>
-              <CardTitle className="text-xl font-semibold">Basic</CardTitle>
-              <CardDescription className="text-sm text-muted-foreground">
+              <CardTitle className="text-xl font-semibold text-muted-foreground">Basic</CardTitle>
+              <CardDescription className="text-sm">
                 Limited features for simple tracking
               </CardDescription>
               <div className="mt-4">
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-2xl font-bold">$3.99</span>
+                  <span className="text-2xl font-bold text-muted-foreground">$3.99</span>
                   <div className="text-left">
                     <div className="text-muted-foreground text-sm">/month</div>
                   </div>
@@ -97,26 +97,26 @@ const Pricing = () => {
             <CardContent className="space-y-4 relative">
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
-                  <Check className="w-4 h-4 text-foreground" />
-                  <span className="text-foreground">Basic budgeting tools</span>
+                  <Check className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Basic budgeting tools</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Check className="w-4 h-4 text-foreground" />
-                  <span className="text-foreground">Limited bank connections (2 accounts)</span>
+                  <Check className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Limited bank connections (2 accounts)</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Check className="w-4 h-4 text-foreground" />
-                  <span className="text-foreground">Basic expense tracking</span>
+                  <Check className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Basic expense tracking</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm opacity-90">
+                <div className="flex items-center gap-3 text-sm opacity-50">
                   <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
                   <span className="text-muted-foreground line-through">AI Financial Advisor</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm opacity-90">
+                <div className="flex items-center gap-3 text-sm opacity-50">
                   <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
                   <span className="text-muted-foreground line-through">Advanced Forecasting</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm opacity-90">
+                <div className="flex items-center gap-3 text-sm opacity-50">
                   <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
                   <span className="text-muted-foreground line-through">Crisis Simulations</span>
                 </div>
@@ -125,12 +125,12 @@ const Pricing = () => {
               <div className="pt-4">
                 <Button 
                   variant="outline" 
-                  className="w-full text-foreground border-muted hover:bg-muted/50" 
+                  className="w-full text-muted-foreground border-muted" 
                   size="lg"
                 >
                   Start Basic
                 </Button>
-                <p className="text-xs text-center mt-2">
+                <p className="text-xs text-center text-muted-foreground mt-2">
                   Limited functionality • No AI insights
                 </p>
               </div>
@@ -164,7 +164,7 @@ const Pricing = () => {
                     <div className="text-sm text-accent-success font-medium">50% OFF Launch Price</div>
                   </div>
                 </div>
-                <p className="text-sm mt-2">
+                <p className="text-sm text-muted-foreground mt-2">
                   Only $0.33/day • Less than a coffee
                 </p>
               </div>
@@ -182,7 +182,7 @@ const Pricing = () => {
                         <feature.icon className="w-4 h-4 text-primary" />
                         <span className="font-medium">{feature.title}</span>
                       </div>
-                      <p className="text-sm">{feature.description}</p>
+                      <p className="text-sm text-muted-foreground">{feature.description}</p>
                     </div>
                   </div>
                 ))}
@@ -195,7 +195,7 @@ const Pricing = () => {
                       <Crown className="w-4 h-4 text-primary" />
                       <span className="font-medium">Unlimited Everything</span>
                     </div>
-                    <p className="text-sm">No limits on accounts, goals, or AI consultations</p>
+                    <p className="text-sm text-muted-foreground">No limits on accounts, goals, or AI consultations</p>
                   </div>
                 </div>
               </div>
@@ -215,12 +215,12 @@ const Pricing = () => {
                     'Start Free Trial • No Credit Card'
                   )}
                 </Button>
-                <p className="text-sm text-center mt-3">
+                <p className="text-sm text-center text-muted-foreground mt-3">
                   <span className="text-accent-success font-medium">Limited time:</span> 50% off for first 1000 users
                 </p>
               </div>
 
-              <div className="text-center text-sm space-y-1">
+              <div className="text-center text-sm text-muted-foreground space-y-1">
                 <p>✓ 7-day free trial</p>
                 <p>✓ Cancel anytime</p>
                 <p>✓ 30-day money-back guarantee</p>
@@ -282,7 +282,7 @@ const Pricing = () => {
                 >
                   Contact Sales
                 </Button>
-                <p className="text-xs text-center mt-2">
+                <p className="text-xs text-center text-muted-foreground mt-2">
                   Custom pricing • Volume discounts available
                 </p>
               </div>
@@ -300,7 +300,7 @@ const Pricing = () => {
                   <Brain className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold">AI Saves 8+ Hours/Month</h4>
-                <p className="text-sm">
+                <p className="text-muted-foreground text-sm">
                   Our AI handles complex analysis so you don't have to spend weekends on spreadsheets
                 </p>
               </div>
@@ -309,7 +309,7 @@ const Pricing = () => {
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold">Average $2,847 Saved</h4>
-                <p className="text-sm">
+                <p className="text-muted-foreground text-sm">
                   Users save 300x the subscription cost through optimized spending and goal achievement
                 </p>
               </div>
@@ -318,7 +318,7 @@ const Pricing = () => {
                   <Shield className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold">Enterprise Security</h4>
-                <p className="text-sm">
+                <p className="text-muted-foreground text-sm">
                   Bank-level encryption trusted by 50,000+ users, including financial professionals
                 </p>
               </div>
