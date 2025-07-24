@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Eye, TrendingUp, Calendar, EyeOff } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import FanChart from './FanChart';
-import { runMonteCarloSimulation } from '@/lib/financialCalculations';
+import { getMockFinancialData } from '@/components/MonteCarloEngine';
 import { TimeHorizon, eventBus, EVENTS } from '@/lib/eventBus';
 import { cn } from '@/lib/utils';
 
@@ -17,12 +17,14 @@ interface BehavioralMarker {
 interface PlatformTrajectoryMatrixProps {
   timeHorizon: TimeHorizon;
   onTimeHorizonChange: (horizon: TimeHorizon) => void;
+  onShowMath?: () => void;
   className?: string;
 }
 
 export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> = ({
   timeHorizon,
   onTimeHorizonChange,
+  onShowMath,
   className
 }) => {
   const [fanChartData, setFanChartData] = useState<{
@@ -56,16 +58,8 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
 
   useEffect(() => {
     // Recalculate Monte Carlo simulation when horizon changes
-    const months = timeHorizon * 12;
-    const simulation = runMonteCarloSimulation(
-      initialValue,
-      monthlyContribution,
-      expectedReturn,
-      volatility,
-      months,
-      5000
-    );
-    setFanChartData(simulation);
+    const result = getMockFinancialData(timeHorizon);
+    setFanChartData(result);
   }, [timeHorizon]);
 
   const handleHorizonChange = (horizon: TimeHorizon) => {
@@ -130,7 +124,12 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="h-6 text-xs px-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-6 text-xs px-2"
+              onClick={onShowMath}
+            >
               Show math
             </Button>
             <Button variant="ghost" size="sm" className="h-6 text-xs px-2">
@@ -236,7 +235,7 @@ export const PlatformTrajectoryMatrix: React.FC<PlatformTrajectoryMatrixProps> =
             onMouseLeave={() => {/* Remove highlight */}}
           >
             <div className="text-sm font-normal text-[#67728A] mb-1">Conservative (P10)</div>
-            <div className="text-2xl font-bold text-[#F86C6B]">
+            <div className="text-2xl font-bold text-rose">
               ${probabilities.p10.toLocaleString()}
             </div>
           </div>

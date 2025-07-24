@@ -7,10 +7,10 @@
 @layer base {
   :root {
     /* Core Platform Color Tokens - Exact Specification */
-    --color-navy: #11234A;
-    --color-mint: #2ED3A1;
-    --color-rose: #F86C6B;
-    --color-cream: #F5F9F6;
+    --c-navy: #0E1D47;
+    --c-mint: #2ED3A1; 
+    --c-rose: #F86C6B;
+    --c-cream: #F5F9F6;
 
     /* Extended Palette for UI States */
     --primary: 230 82% 67%; /* #5665FF */
@@ -333,31 +333,75 @@
   }
   /* Platform Color Utilities */
   .text-navy {
-    color: var(--color-navy);
+    color: var(--c-navy);
   }
   
   .text-mint {
-    color: var(--color-mint);
+    color: var(--c-mint);
   }
   
   .text-rose {
-    color: var(--color-rose);
+    color: var(--c-rose);
   }
   
   .bg-cream {
-    background-color: var(--color-cream);
+    background-color: var(--c-cream);
   }
   
   .bg-mint {
-    background-color: var(--color-mint);
+    color: var(--c-mint);
   }
   
   .bg-rose {
-    background-color: var(--color-rose);
+    background-color: var(--c-rose);
   }
 
   .bg-navy {
-    background-color: var(--color-navy);
+    background-color: var(--c-navy);
+  }
+
+  /* Grid Layout System */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    max-width: 1440px;
+    margin: 0 auto;
+    gap: 32px;
+    padding: 28px;
+  }
+
+  .dashboard-hero-tiles {
+    grid-column: 2 / 12;
+  }
+
+  .dashboard-main-content {
+    grid-column: 3 / 11;
+  }
+
+  /* Baseline Grid */
+  .baseline-overlay {
+    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 100% 4px;
+  }
+
+  /* Mint underline animation for tabs */
+  .tab-underline {
+    position: relative;
+  }
+
+  .tab-underline::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--c-mint);
+    transition: width 120ms ease-out;
+  }
+
+  .tab-underline.active::after {
+    width: 100%;
   }
 
   /* Reduced Motion Support */
