@@ -31,7 +31,7 @@
     --secondary: 240 4.8% 95.9%; /* #F8F9FA */
     --secondary-foreground: 240 5.9% 10%; /* #1A1A1B */
     --muted: 240 4.8% 95.9%; /* #F8F9FA */
-    --muted-foreground: 240 5% 35%; /* Darker for better contrast */
+    --muted-foreground: 240 10% 25%; /* Much darker for better contrast */
     --accent: 174 72% 56%; /* #46D3C5 */
     --accent-foreground: 0 0% 100%; /* white */
 
@@ -87,7 +87,7 @@
     --secondary: 240 3.7% 15.9%; /* #3F3F46 */
     --secondary-foreground: 0 0% 95%; /* #F2F2F2 */
     --muted: 240 3.7% 15.9%; /* #3F3F46 */
-    --muted-foreground: 240 5% 70%; /* Lighter for dark mode but still readable */
+    --muted-foreground: 240 5% 80%; /* Much lighter for dark mode */
     --accent: 174 72% 56%; /* #46D3C5 */
     --accent-foreground: 240 10% 7%; /* dark background */
 

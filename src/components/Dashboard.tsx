@@ -212,10 +212,10 @@ export const Dashboard = () => {
                     
                     <div className="text-center py-8">
                       <div className="text-3xl font-bold text-accent-success mb-2">38.2%</div>
-                      <div className="text-sm text-muted-foreground">Current 30-day rate</div>
-                      <div className="mt-4 text-xs text-muted-foreground">
-                        Pattern: "Back-Half Saver" — surplus appears in last 10 days
-                      </div>
+                       <div className="text-sm">Current 30-day rate</div>
+                       <div className="mt-4 text-xs">
+                         Pattern: "Back-Half Saver" — surplus appears in last 10 days
+                       </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -246,10 +246,10 @@ export const Dashboard = () => {
                         <div className="absolute inset-2 rounded-full border-4 border-accent-coral/40 animate-pulse" />
                         <div className="absolute inset-4 rounded-full border-4 border-accent-coral animate-pulse" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-sm font-bold">Dining</div>
-                            <div className="text-xs text-muted-foreground">High Volatility</div>
-                          </div>
+                           <div className="text-center">
+                             <div className="text-sm font-bold">Dining</div>
+                             <div className="text-xs">High Volatility</div>
+                           </div>
                         </div>
                       </div>
                     </div>
@@ -260,13 +260,13 @@ export const Dashboard = () => {
 
             {/* Other tabs with sophisticated content */}
             <TabsContent value="momentum" className="space-y-6 mt-8">
-              <div className="text-center py-12">
-                <Activity className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Behavioral Momentum Analytics</h3>
-                <p className="text-muted-foreground">
-                  Advanced pattern recognition and habit tracking coming in this sophisticated view.
-                </p>
-              </div>
+               <div className="text-center py-12">
+                 <Activity className="w-16 h-16 mx-auto mb-4" />
+                 <h3 className="text-xl font-semibold mb-2">Behavioral Momentum Analytics</h3>
+                 <p>
+                   Advanced pattern recognition and habit tracking coming in this sophisticated view.
+                 </p>
+               </div>
             </TabsContent>
 
             <TabsContent value="intelligence" className="space-y-6 mt-8">
@@ -275,21 +275,21 @@ export const Dashboard = () => {
                   <Brain className="w-6 h-6 text-primary" />
                   <h2 className="text-2xl font-bold">Financial Intelligence Engine</h2>
                 </div>
-                <p className="text-muted-foreground">
-                  AI-powered insights that understand the 'why' behind every financial pattern.
-                </p>
+                 <p>
+                   AI-powered insights that understand the 'why' behind every financial pattern.
+                 </p>
               </div>
               <AIFinancialChat />
             </TabsContent>
 
             <TabsContent value="journeys" className="space-y-6 mt-8">
-              <div className="text-center py-12">
-                <Route className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Financial Journeys</h3>
-                <p className="text-muted-foreground">
-                  Narrative-driven goal tracking with predictive stress analysis and milestone rewards.
-                </p>
-              </div>
+               <div className="text-center py-12">
+                 <Route className="w-16 h-16 mx-auto mb-4" />
+                 <h3 className="text-xl font-semibold mb-2">Financial Journeys</h3>
+                 <p>
+                   Narrative-driven goal tracking with predictive stress analysis and milestone rewards.
+                 </p>
+               </div>
             </TabsContent>
           </Tabs>
         </div>
