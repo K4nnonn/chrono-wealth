@@ -54,10 +54,10 @@ export const DemoTrajectoryMatrix = () => {
   const [showMathModal, setShowMathModal] = useState(false);
 
   const projectionLayers = [
-    { id: 'P_week', name: 'Weekly (Volatility Adj.)', color: 'hsl(var(--accent-success))', formula: 'P_week = S × 0.9', visible: true, dashPattern: '5 5' },
-    { id: 'P_month', name: 'Monthly Momentum', color: 'hsl(var(--accent-teal))', formula: 'P_month = MA(S,4) × (1 + ΔB × 0.25)', visible: true, dashPattern: '10 5' },
-    { id: 'P_quarter', name: 'Quarterly Compound', color: 'hsl(var(--accent-amber))', formula: 'P_quarter = P_month × 1.15', visible: true, dashPattern: '15 10' },
-    { id: 'P_year', name: 'Yearly Optimistic', color: 'hsl(var(--accent-coral))', formula: 'P_year = P_quarter × (1 + R × 0.4)', visible: true, dashPattern: '20 15' }
+    { id: 'P_week', name: 'Weekly (Volatility Adj.)', color: 'hsl(var(--accent-success))', formula: 'Proprietary Algorithm', visible: true, dashPattern: '5 5' },
+    { id: 'P_month', name: 'Monthly Momentum', color: 'hsl(var(--accent-teal))', formula: 'AI-Powered Projection', visible: true, dashPattern: '10 5' },
+    { id: 'P_quarter', name: 'Quarterly Compound', color: 'hsl(var(--accent-amber))', formula: 'Advanced Forecasting', visible: true, dashPattern: '15 10' },
+    { id: 'P_year', name: 'Yearly Optimistic', color: 'hsl(var(--accent-coral))', formula: 'Machine Learning Model', visible: true, dashPattern: '20 15' }
   ];
 
   const goalWeek = 45; // Demo goal achievement at week 45
