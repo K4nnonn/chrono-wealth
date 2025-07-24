@@ -5,16 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PulseBar } from '@/components/PulseBar';
-import { TimelineChart } from "@/components/TimelineChart";
-import { QuickActionFab } from "@/components/QuickActionFab";
+import { SignalStrip } from '@/components/SignalStrip';
+import { PulseTile } from '@/components/PulseTile';
+import { DualAxisTimeline } from '@/components/DualAxisTimeline';
+import { MoneyMap } from '@/components/MoneyMap';
+import { JourneyCard } from '@/components/JourneyCard';
+import { ContextualActionOrb } from '@/components/ContextualActionOrb';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
 import { FinancialHealthDashboard } from "@/components/FinancialHealthDashboard";
 import { PlaidDashboard } from "@/components/PlaidDashboard";
 import { PlaidLink } from "@/components/PlaidLink";
 import { MetricCard, StatusCard, InsightCard } from "@/components/ui/enhanced-cards";
 import { CallToActionSection } from "@/components/CallToActionSection";
-import { AdvancedForecasting } from "@/components/AdvancedForecasting";
 import { 
   DollarSign, 
   TrendingUp, 
@@ -27,7 +29,11 @@ import {
   Brain,
   Zap,
   CreditCard,
-  AlertTriangle
+  AlertTriangle,
+  Eye,
+  Activity,
+  Route,
+  MessageSquare
 } from 'lucide-react';
 
 interface Goal {
@@ -89,247 +95,251 @@ export const Dashboard = () => {
     }
   };
 
+  const getSignalUrgency = () => {
+    switch (pulseStatus) {
+      case 'critical':
+        return 'critical' as const;
+      case 'warning':
+        return 'warning' as const;
+      default:
+        return 'advisory' as const;
+    }
+  };
+
+  // Sample journey data for goals
+  const sampleMilestones = [
+    { id: '1', title: '3-Month Emergency Fund', amount: 15000, date: '2024-12-31', completed: true },
+    { id: '2', title: '6-Month Emergency Fund', amount: 30000, date: '2025-06-30', completed: false },
+    { id: '3', title: 'Full Emergency Fund', amount: 50000, date: '2025-12-31', completed: false }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
-      <div className="container mx-auto p-6 space-y-8">
-        {/* Header Section */}
-        <div className="space-y-6">
-          <div className="flex flex-col space-y-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-primary animate-pulse" />
+    <>
+      {/* Signal Strip - Persistent across top */}
+      <SignalStrip 
+        urgency={getSignalUrgency()}
+        message={getStatusMessage()}
+        action={{
+          label: pulseStatus === 'critical' ? 'Fix Now' : 'Optimize',
+          onClick: () => console.log('Signal action clicked')
+        }}
+        onDismiss={() => console.log('Signal dismissed')}
+        onSnooze={() => console.log('Signal snoozed')}
+        onBookmark={() => console.log('Signal bookmarked')}
+      />
+
+      <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
+        <div className="container mx-auto p-6 space-y-8">
+          {/* Greeting Header */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <h1 className="text-4xl font-bold tracking-tight bg-gradient-primary bg-clip-text text-transparent">
-                Welcome back, {profile?.first_name || 'User'}
+                Hello, {new Date().getFullYear()} {profile?.first_name || 'User'}!
               </h1>
             </div>
             <p className="text-lg text-muted-foreground">
-              Here's your comprehensive financial overview and AI-powered insights.
+              Your forward-looking financial command center.
             </p>
           </div>
 
-          <PulseBar 
-            status={pulseStatus} 
-            message={getStatusMessage()}
-            actionLabel={pulseStatus === 'critical' ? 'Fix Now' : 'Optimize'}
-            onActionClick={() => {
-              // Navigate to appropriate action based on status
-              console.log('Action clicked for status:', pulseStatus);
-            }}
-          />
-        </div>
+          {/* Progressive Disclosure Tabs */}
+          <div className="w-full">
+            <Tabs defaultValue="vision" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 h-14 bg-muted/50 rounded-xl p-1">
+                <TabsTrigger value="vision" className="rounded-lg font-medium flex flex-col gap-1">
+                  <Eye className="w-4 h-4" />
+                  <span className="text-xs">Vision</span>
+                </TabsTrigger>
+                <TabsTrigger value="vitals" className="rounded-lg font-medium flex flex-col gap-1">
+                  <Activity className="w-4 h-4" />
+                  <span className="text-xs">Vitals</span>
+                </TabsTrigger>
+                <TabsTrigger value="strategies" className="rounded-lg font-medium flex flex-col gap-1">
+                  <Brain className="w-4 h-4" />
+                  <span className="text-xs">Strategies</span>
+                </TabsTrigger>
+                <TabsTrigger value="journeys" className="rounded-lg font-medium flex flex-col gap-1">
+                  <Route className="w-4 h-4" />
+                  <span className="text-xs">Journeys</span>
+                </TabsTrigger>
+              </TabsList>
 
-        {/* Main Dashboard */}
-        <div className="w-full">
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-5 h-12 bg-muted/50 rounded-xl p-1">
-              <TabsTrigger value="overview" className="rounded-lg font-medium">Overview</TabsTrigger>
-              <TabsTrigger value="banking" className="rounded-lg font-medium">Banking</TabsTrigger>
-              <TabsTrigger value="health" className="rounded-lg font-medium">Health Score</TabsTrigger>
-              <TabsTrigger value="goals" className="rounded-lg font-medium">Goals</TabsTrigger>
-              <TabsTrigger value="ai" className="rounded-lg font-medium">AI Advisor</TabsTrigger>
-            </TabsList>
+              {/* Vision Tab - Forward-Looking Projections */}
+              <TabsContent value="vision" className="space-y-8 mt-8">
+                {/* Dynamic Pulse Tiles */}
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                  <PulseTile
+                    title="Monthly Income"
+                    value={`$${monthlyIncome.toLocaleString()}`}
+                    trend="stable"
+                    trendValue={hasPlaidData ? 'From bank data' : 'Manual input'}
+                    confidence={hasPlaidData ? 95 : 60}
+                    icon={DollarSign}
+                    variant="default"
+                  />
 
-            <TabsContent value="overview" className="space-y-8 mt-8">
-              {/* Plaid Connection Prompt */}
-              {!hasPlaidData && (
-                <StatusCard
-                  title="Connect Your Bank Accounts"
-                  description="Unlock real-time financial insights and automated expense tracking by connecting your bank accounts securely."
-                  status="info"
-                  action={{
-                    label: "Connect Bank Account",
-                    onClick: () => {
-                      const plaidElement = document.querySelector('[data-plaid-link]') as HTMLElement;
-                      plaidElement?.click();
-                    }
-                  }}
-                  className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
-                />
-              )}
+                  <PulseTile
+                    title="Monthly Savings"
+                    value={`$${monthlySavings.toLocaleString()}`}
+                    trend={monthlySavings > 0 ? 'up' : 'down'}
+                    trendValue={`${savingsRate.toFixed(1)}% savings rate`}
+                    confidence={85}
+                    icon={PiggyBank}
+                    variant={monthlySavings > 0 ? 'success' : 'destructive'}
+                  />
 
-              {/* Key Metrics Grid */}
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <MetricCard
-                  title="Monthly Income"
-                  value={`$${monthlyIncome.toLocaleString()}`}
-                  change={hasPlaidData ? 'From bank data' : 'Manual input'}
-                  changeType="neutral"
-                  confidence={hasPlaidData ? 95 : 60}
-                  icon={DollarSign}
-                  variant="default"
-                  trend="stable"
-                />
+                  <PulseTile
+                    title="Active Goals"
+                    value={goals.length}
+                    trend="up"
+                    trendValue={`${goals.filter(g => (g.current_amount / g.target_amount) * 100 >= 100).length} completed`}
+                    icon={Target}
+                    variant="default"
+                  />
 
-                <MetricCard
-                  title="Monthly Savings"
-                  value={`$${monthlySavings.toLocaleString()}`}
-                  change={`${savingsRate.toFixed(1)}% savings rate`}
-                  changeType={monthlySavings > 0 ? 'positive' : 'negative'}
-                  confidence={85}
-                  icon={PiggyBank}
-                  variant={monthlySavings > 0 ? 'success' : 'destructive'}
-                  trend={monthlySavings > 0 ? 'up' : 'down'}
-                />
-
-                <MetricCard
-                  title="Active Goals"
-                  value={goals.length}
-                  change={`${goals.filter(g => (g.current_amount / g.target_amount) * 100 >= 100).length} completed`}
-                  changeType="positive"
-                  icon={Target}
-                  variant="default"
-                  subtitle="Financial milestones"
-                />
-
-                <MetricCard
-                  title="Financial Health"
-                  value={pulseStatus === 'success' ? 'Excellent' : pulseStatus === 'normal' ? 'Good' : pulseStatus === 'warning' ? 'Fair' : 'Needs Work'}
-                  confidence={78}
-                  icon={Shield}
-                  variant={pulseStatus === 'success' ? 'success' : pulseStatus === 'critical' ? 'destructive' : 'warning'}
-                  subtitle="AI Assessment"
-                />
-              </div>
-
-              {/* Enhanced Financial Timeline with Advanced Forecasting */}
-              <AdvancedForecasting />
-
-              {/* Quick Actions */}
-              <div className="grid gap-4 md:grid-cols-3">
-                <StatusCard
-                  title="Run Crisis Simulation"
-                  description="Test your financial resilience against various economic scenarios."
-                  status="info"
-                  action={{
-                    label: "Start Simulation",
-                    onClick: () => console.log('Crisis simulation clicked')
-                  }}
-                />
-
-                <StatusCard
-                  title="Set New Goal"
-                  description="Define your next financial milestone and track your progress."
-                  status="healthy"
-                  action={{
-                    label: "Create Goal",
-                    onClick: () => console.log('Create goal clicked')
-                  }}
-                />
-
-                <StatusCard
-                  title="AI Financial Review"
-                  description="Get personalized recommendations from our AI advisor."
-                  status="info"
-                  action={{
-                    label: "Get Insights",
-                    onClick: () => console.log('AI review clicked')
-                  }}
-                />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="banking" className="space-y-6 mt-8">
-              <PlaidDashboard />
-              {/* Hidden PlaidLink for programmatic triggering */}
-              <div className="hidden">
-                <PlaidLink onSuccess={() => window.location.reload()} data-plaid-link />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="health" className="space-y-6 mt-8">
-              <FinancialHealthDashboard />
-            </TabsContent>
-
-            <TabsContent value="goals" className="space-y-6 mt-8">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h2 className="text-3xl font-bold tracking-tight">Financial Goals</h2>
-                  <p className="text-lg text-muted-foreground">Track your progress towards financial milestones</p>
+                  <PulseTile
+                    title="Financial Health"
+                    value={pulseStatus === 'success' ? 'Excellent' : pulseStatus === 'normal' ? 'Good' : pulseStatus === 'warning' ? 'Fair' : 'Needs Work'}
+                    trend={pulseStatus === 'success' ? 'up' : 'stable'}
+                    trendValue="AI Assessment"
+                    confidence={78}
+                    icon={Shield}
+                    variant={pulseStatus === 'success' ? 'success' : pulseStatus === 'critical' ? 'destructive' : 'warning'}
+                  />
                 </div>
-                <Button className="bg-gradient-primary hover:shadow-glow">
-                  <Target className="w-4 h-4 mr-2" />
-                  Add Goal
-                </Button>
-              </div>
 
-              <div className="grid gap-6">
-                {goals.map((goal) => {
-                  const progress = (goal.current_amount / goal.target_amount) * 100;
-                  return (
-                    <Card key={goal.id} className="border-0 shadow-card hover-lift transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div className="space-y-1">
-                            <CardTitle className="text-xl">{goal.name}</CardTitle>
-                            {goal.target_date && (
-                              <p className="text-sm text-muted-foreground">
-                                Target: {new Date(goal.target_date).toLocaleDateString()}
-                              </p>
-                            )}
-                          </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold">
-                              ${goal.current_amount.toLocaleString()}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              of ${goal.target_amount.toLocaleString()}
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          <Progress value={progress} className="h-3" />
-                          <div className="flex justify-between text-sm">
-                            <span className="font-medium">{Math.round(progress)}% complete</span>
-                            <span className="text-muted-foreground">
-                              ${(goal.target_amount - goal.current_amount).toLocaleString()} remaining
-                            </span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+                {/* Dual-Axis Financial Timeline */}
+                <DualAxisTimeline 
+                  onTimeChange={(year) => console.log('Time changed to:', year)}
+                />
 
-                {goals.length === 0 && (
-                  <Card className="border-dashed border-2 border-muted hover:border-primary/50 transition-colors">
-                    <CardContent className="flex flex-col items-center justify-center py-16">
-                      <Target className="w-16 h-16 text-muted-foreground mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">No goals yet</h3>
-                      <p className="text-muted-foreground text-center mb-6 max-w-md">
-                        Start your financial journey by setting your first goal. Whether it's an emergency fund, 
-                        vacation, or home down payment, we'll help you track your progress.
-                      </p>
-                      <Button className="bg-gradient-primary hover:shadow-glow">
-                        <Target className="w-4 h-4 mr-2" />
-                        Create Your First Goal
-                      </Button>
-                    </CardContent>
-                  </Card>
+                {/* Money Flow Engine */}
+                <MoneyMap 
+                  totalIncome={monthlyIncome}
+                  savingsRate={savingsRate}
+                  flows={{
+                    taxes: { category: "Taxes", amount: Math.round(monthlyIncome * 0.2), percentage: 20, change: 0 },
+                    fixedCosts: [
+                      { category: "Rent", amount: financialData?.monthly_rent || 0, percentage: 30, change: 0 },
+                      { category: "Insurance", amount: 300, percentage: 5, change: -5 },
+                      { category: "Utilities", amount: 200, percentage: 3.3, change: 12 }
+                    ],
+                    discretionary: [
+                      { category: "Dining", amount: 400, percentage: 6.7, change: 12, aiInsight: "Dining out up 12% vs. last month; skip 3 meals → +$87/mo" },
+                      { category: "Entertainment", amount: 200, percentage: 3.3, change: -8 },
+                      { category: "Shopping", amount: 300, percentage: 5, change: 25, aiInsight: "Shopping spike detected; review recent purchases" }
+                    ],
+                    savings: { category: "Savings", amount: monthlySavings, percentage: savingsRate, change: 15 }
+                  }}
+                />
+              </TabsContent>
+
+              {/* Vitals Tab - Current Status */}
+              <TabsContent value="vitals" className="space-y-6 mt-8">
+                {/* Plaid Connection Prompt */}
+                {!hasPlaidData && (
+                  <StatusCard
+                    title="Connect Your Bank Accounts"
+                    description="Unlock real-time financial insights and automated expense tracking by connecting your bank accounts securely."
+                    status="info"
+                    action={{
+                      label: "Connect Bank Account",
+                      onClick: () => {
+                        const plaidElement = document.querySelector('[data-plaid-link]') as HTMLElement;
+                        plaidElement?.click();
+                      }
+                    }}
+                    className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10"
+                  />
                 )}
-              </div>
-            </TabsContent>
 
-            <TabsContent value="ai" className="space-y-6 mt-8">
-              <div className="mb-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <Brain className="w-6 h-6 text-primary" />
-                  <h2 className="text-2xl font-bold">AI Financial Advisor</h2>
+                <PlaidDashboard />
+                <FinancialHealthDashboard />
+                
+                {/* Hidden PlaidLink for programmatic triggering */}
+                <div className="hidden">
+                  <PlaidLink onSuccess={() => window.location.reload()} data-plaid-link />
                 </div>
-                <p className="text-muted-foreground">
-                  Get personalized financial advice powered by advanced AI and real-time data analysis.
-                </p>
-              </div>
-              <AIFinancialChat />
-            </TabsContent>
-          </Tabs>
+              </TabsContent>
+
+              {/* Strategies Tab - AI Simulations */}
+              <TabsContent value="strategies" className="space-y-6 mt-8">
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Brain className="w-6 h-6 text-primary" />
+                    <h2 className="text-2xl font-bold">AI Financial Advisor</h2>
+                  </div>
+                  <p className="text-muted-foreground">
+                    Get personalized financial advice powered by advanced AI and real-time data analysis.
+                  </p>
+                </div>
+                <AIFinancialChat />
+              </TabsContent>
+
+              {/* Journeys Tab - Goal Narratives */}
+              <TabsContent value="journeys" className="space-y-6 mt-8">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-3xl font-bold tracking-tight">Financial Journeys</h2>
+                    <p className="text-lg text-muted-foreground">Living narratives of your financial milestones</p>
+                  </div>
+                  <Button className="bg-gradient-primary hover:shadow-glow">
+                    <Target className="w-4 h-4 mr-2" />
+                    New Journey
+                  </Button>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2">
+                  {goals.map((goal) => (
+                    <JourneyCard
+                      key={goal.id}
+                      id={goal.id}
+                      title={goal.name}
+                      targetAmount={goal.target_amount}
+                      currentAmount={goal.current_amount}
+                      targetDate={goal.target_date || new Date().toISOString()}
+                      category={goal.category || 'General'}
+                      riskLevel="medium"
+                      milestones={sampleMilestones}
+                      onActionPlan={(goalId) => console.log('Action plan for goal:', goalId)}
+                    />
+                  ))}
+
+                  {goals.length === 0 && (
+                    <div className="md:col-span-2">
+                      <Card className="border-dashed border-2 border-muted hover:border-primary/50 transition-colors">
+                        <CardContent className="flex flex-col items-center justify-center py-16">
+                          <Route className="w-16 h-16 text-muted-foreground mb-4" />
+                          <h3 className="text-xl font-semibold mb-2">No journeys yet</h3>
+                          <p className="text-muted-foreground text-center mb-6 max-w-md">
+                            Begin your financial story by creating your first journey. Each journey transforms a simple goal into a living narrative with milestones, insights, and AI-guided action plans.
+                          </p>
+                          <Button className="bg-gradient-primary hover:shadow-glow">
+                            <Route className="w-4 h-4 mr-2" />
+                            Start Your First Journey
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          {/* Call to Action Section */}
+          <CallToActionSection />
         </div>
 
-        {/* Call to Action Section */}
-        <CallToActionSection />
-
-        <QuickActionFab />
+        {/* Contextual Action Orb */}
+        <ContextualActionOrb 
+          onNewGoal={() => console.log('New goal from orb')}
+          onWhatIfScenario={() => console.log('What-if scenario from orb')}
+          onCrisisDrill={() => console.log('Crisis drill from orb')}
+          onAIChat={() => console.log('AI chat from orb')}
+        />
       </div>
-    </div>
+    </>
   );
 };
