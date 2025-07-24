@@ -3,6 +3,8 @@
  * Core mathematical logic for behavioral pattern detection and trajectory forecasting
  */
 
+import { monteCarloNetWorthForecast, bstsSpendingForecast, kMeansClustering, elasticNetRegression } from './advancedForecastModels';
+
 export interface Transaction {
   id: string;
   amount: number;
@@ -448,5 +450,23 @@ export class FlowSightFiEngine {
       realisticWeeks: realisticAchievement ? realisticAchievement.week : null,
       impactOfBehaviorChange: behaviorImpact
     };
+  }
+
+
+  // Advanced forecasting models
+  monteCarloNetWorthForecast(initialNetWorth: number, expectedReturn: number, volatility: number, years: number, stepsPerYear: number = 12, iterations: number = 1000): number[] {
+    return monteCarloNetWorthForecast(initialNetWorth, expectedReturn, volatility, years, stepsPerYear, iterations);
+  }
+
+  bstsSpendingForecast(history: number[], steps: number = 12): number[] {
+    return bstsSpendingForecast(history, steps);
+  }
+
+  clusterSpendingPatterns(data: { [category: string]: number[] }, k: number): { clusters: number[][]; centroids: number[][] } {
+    return kMeansClustering(data, k);
+  }
+
+  fitElasticNetSpendingModel(features: number[][], targets: number[], alpha: number = 0.5, lambda: number = 0.1, learningRate: number = 0.001, iterations: number = 1000): { weights: number[]; intercept: number } {
+    return elasticNetRegression(features, targets, alpha, lambda, learningRate, iterations);
   }
 }
