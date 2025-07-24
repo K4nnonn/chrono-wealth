@@ -97,26 +97,26 @@ const Pricing = () => {
             <CardContent className="space-y-4 relative">
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
-                  <Check className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Basic budgeting tools</span>
+                  <Check className="w-4 h-4 text-foreground" />
+                  <span className="text-foreground">Basic budgeting tools</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Check className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Limited bank connections (2 accounts)</span>
+                  <Check className="w-4 h-4 text-foreground" />
+                  <span className="text-foreground">Limited bank connections (2 accounts)</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Check className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Basic expense tracking</span>
+                  <Check className="w-4 h-4 text-foreground" />
+                  <span className="text-foreground">Basic expense tracking</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm opacity-50">
+                <div className="flex items-center gap-3 text-sm opacity-70">
                   <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
                   <span className="text-muted-foreground line-through">AI Financial Advisor</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm opacity-50">
+                <div className="flex items-center gap-3 text-sm opacity-70">
                   <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
                   <span className="text-muted-foreground line-through">Advanced Forecasting</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm opacity-50">
+                <div className="flex items-center gap-3 text-sm opacity-70">
                   <div className="w-4 h-4 rounded-full border-2 border-muted-foreground" />
                   <span className="text-muted-foreground line-through">Crisis Simulations</span>
                 </div>
@@ -125,7 +125,7 @@ const Pricing = () => {
               <div className="pt-4">
                 <Button 
                   variant="outline" 
-                  className="w-full text-muted-foreground border-muted" 
+                  className="w-full text-foreground border-muted hover:bg-muted/50" 
                   size="lg"
                 >
                   Start Basic

@@ -48,11 +48,11 @@ const Hero = () => {
                 Flow<span className="text-transparent bg-gradient-to-r from-primary-glow to-accent bg-clip-text">Sight</span>Fi
               </h1>
               
-              <p className="text-xl lg:text-2xl text-white/80 max-w-xl">
+              <p className="text-xl lg:text-2xl text-white/90 max-w-xl">
                 See Your Financial Future—Clearly, Confidently, Calmly.
               </p>
               
-              <p className="text-lg text-white/70 max-w-2xl">
+              <p className="text-lg text-white/85 max-w-2xl">
                 Navigate your financial journey with AI-powered forecasting that flows with your life. Track, simulate, and optimize across all your financial streams.
               </p>
             </div>
@@ -72,7 +72,7 @@ const Hero = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex items-center gap-6 justify-center lg:justify-start text-white/60 text-sm">
+            <div className="flex items-center gap-6 justify-center lg:justify-start text-white/80 text-sm">
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4" />
                 Bank-level Security

@@ -188,7 +188,7 @@ export const CallToActionSection: React.FC = () => {
             <Lightbulb className="w-5 h-5 text-white" />
             <div className="text-white">
               <p className="font-semibold">Ready to get started?</p>
-              <p className="text-sm opacity-90">Join thousands improving their financial future</p>
+              <p className="text-sm text-white/90">Join thousands improving their financial future</p>
             </div>
             <Button 
               variant="secondary" 
