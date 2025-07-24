@@ -62,7 +62,7 @@ const Pricing = () => {
     <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
+          <h2 className="text-4xl font-bold mb-4 text-primary">
             Choose Your Financial Future
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -158,7 +158,7 @@ const Pricing = () => {
               <div className="mt-6">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm text-muted-foreground line-through">$19.99</span>
-                  <span className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent">$9.99</span>
+                  <span className="text-5xl font-bold text-primary">$9.99</span>
                   <div className="text-left">
                     <div className="text-muted-foreground">/month</div>
                     <div className="text-sm text-accent-success font-medium">50% OFF Launch Price</div>
