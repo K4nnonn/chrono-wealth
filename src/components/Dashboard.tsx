@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { InsightMarquee } from '@/components/InsightMarquee';
 import { AnimatedKPITile } from '@/components/AnimatedKPITile';
 import { ContextRibbon } from '@/components/ContextRibbon';
-import { TrajectoryMatrix } from '@/components/TrajectoryMatrix';
+import { EnhancedTrajectoryMatrix } from '@/components/EnhancedTrajectoryMatrix';
+import { BehavioralInsightEngine } from '@/components/BehavioralInsightEngine';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
 import { 
   DollarSign, 
@@ -183,12 +184,8 @@ export const Dashboard = () => {
 
             {/* Trajectory Tab - Sophisticated Analytics */}
             <TabsContent value="trajectory" className="space-y-8 mt-8">
-              <TrajectoryMatrix 
-                timeHorizon={timeHorizon}
-                onTimeHorizonChange={setTimeHorizon}
-              />
-
-              {/* Additional sophisticated cards would go here */}
+              <EnhancedTrajectoryMatrix />
+              <BehavioralInsightEngine />
               <div className="grid gap-6 md:grid-cols-2">
                 {/* Savings Momentum Gauge */}
                 <Card>
