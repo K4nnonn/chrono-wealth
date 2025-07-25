@@ -1,0 +1,6 @@
+{
+  "Core": { "sku": "price_A", "limits": { "goals": 1 } },
+  "Plus": { "sku": "price_B", "limits": { "monthly_sim": 3 } },
+  "Pro":  { "sku": "price_C" },
+  "Advisory": { "sku": "price_D", "role": "advisor" }
+}
