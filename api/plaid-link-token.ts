@@ -1,24 +1,27 @@
-import { NextRequest, NextResponse } from 'next/server';
+// Use the global Request/Response types instead of next/server. Vercel Edge
+// Functions support the Web Fetch API, so Request and Response are available
+// without importing from `next/server`, which is not present in this project.
 
-const corsHeaders = {
+const corsHeaders: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 export async function OPTIONS() {
-  return new NextResponse(null, { headers: corsHeaders });
+  // Return an empty 200 response for CORS preflight.
+  return new Response(null, { headers: corsHeaders });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     const { user_id } = await req.json();
 
     if (!user_id) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({ error: 'User ID is required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
@@ -26,10 +29,10 @@ export async function POST(req: NextRequest) {
     const PLAID_ENV = process.env.PLAID_ENV || 'sandbox';
 
     if (!PLAID_CLIENT_ID || !PLAID_SECRET) {
-      return NextResponse.json(
-        { error: 'Plaid credentials not configured' },
-        { status: 500, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({ error: 'Plaid credentials not configured' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const plaidHost = PLAID_ENV === 'production' 
@@ -73,20 +76,23 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       const errorData = await response.text();
       console.error('Plaid API error:', errorData);
-      return NextResponse.json(
-        { error: 'Failed to create link token' },
-        { status: response.status, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({ error: 'Failed to create link token' }), {
+        status: response.status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const data = await response.json();
-    return NextResponse.json(data, { headers: corsHeaders });
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
 
   } catch (error) {
     console.error('Error creating Plaid link token:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500, headers: corsHeaders }
-    );
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 }

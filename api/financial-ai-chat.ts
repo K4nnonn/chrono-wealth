@@ -1,13 +1,18 @@
 // Vercel Edge Function for AI Financial Chat
-import { NextRequest, NextResponse } from 'next/server';
+// Use the global Request/Response types instead of next/server. When running
+// in a Vercel Edge Runtime, the standard Web Fetch API is available, which
+// exposes Request and Response globally. Importing from `next/server` is
+// unsupported in non‑Next.js projects like this one and causes build
+// failures. See https://vercel.com/docs/functions/edge-functions for more.
 
 export const config = {
   runtime: 'edge',
 };
 
-export default async function handler(req: NextRequest) {
+export default async function handler(req: Request) {
+  // Handle CORS preflight requests.
   if (req.method === 'OPTIONS') {
-    return new NextResponse(null, {
+    return new Response(null, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -17,8 +22,12 @@ export default async function handler(req: NextRequest) {
     });
   }
 
+  // Only allow POST requests to this endpoint.
   if (req.method !== 'POST') {
-    return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
@@ -111,31 +120,40 @@ Guidelines:
     }
 
     const data = await response.json();
-    let reply = data.choices[0].message;
+    const reply = data.choices[0].message;
 
-    return NextResponse.json({ 
-      reply: reply.content || "I'd be happy to help with your financial questions!", 
-      confidence: 0.85 
-    }, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    return new Response(
+      JSON.stringify({
+        reply: reply.content || "I'd be happy to help with your financial questions!",
+        confidence: 0.85,
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
       },
-    });
+    );
 
   } catch (error) {
     console.error('Error in financial-ai-chat:', error);
-    return NextResponse.json({ 
-      error: error.message,
-      reply: "I'm having trouble processing your request right now. Please try again in a moment."
-    }, { 
-      status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    return new Response(
+      JSON.stringify({
+        error: (error as Error).message,
+        reply: "I'm having trouble processing your request right now. Please try again in a moment.",
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
       },
-    });
+    );
   }
 }
