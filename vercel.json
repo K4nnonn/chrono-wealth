@@ -5,10 +5,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
-  // Environment variables are managed via the Vercel dashboard. Remove the
-  // `env` section entirely to allow Vercel to inject variables defined in
-  // the project settings (e.g., VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY,
-  // PLAID_CLIENT_ID, etc.). This avoids referencing undefined secrets.
+  
   "functions": {
     "app/api/**/*.ts": {
       "runtime": "nodejs18.x"
