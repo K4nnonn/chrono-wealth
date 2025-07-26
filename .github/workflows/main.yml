@@ -30,3 +30,9 @@ jobs:
 
       - name: Run tests
         run: npm test --if-present
+
+      - name: Playwright
+        run: npx playwright install --with-deps && npx playwright test
+
+      - name: Lighthouse
+        run: npx lhci autorun --collect.url=https://flowsightfi.com
