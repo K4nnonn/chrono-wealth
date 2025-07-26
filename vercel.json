@@ -5,13 +5,10 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
-  "env": {
-    "VITE_SUPABASE_URL": "@supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key",
-    "PLAID_CLIENT_ID": "@plaid_client_id",
-    "PLAID_SECRET": "@plaid_secret",
-    "PLAID_ENV": "@plaid_env"
-  },
+  // Environment variables are managed via the Vercel dashboard. Remove the
+  // `env` section entirely to allow Vercel to inject variables defined in
+  // the project settings (e.g., VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY,
+  // PLAID_CLIENT_ID, etc.). This avoids referencing undefined secrets.
   "functions": {
     "app/api/**/*.ts": {
       "runtime": "nodejs18.x"
