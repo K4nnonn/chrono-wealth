@@ -9,6 +9,16 @@ interface SubscriptionData {
   subscription_end?: string;
 }
 
+/**
+ * Custom hook for retrieving and managing a user's subscription status.
+ *
+ * This hook exposes the current subscription information along with a handful
+ * of helpers for checking the status, initiating a checkout session and
+ * opening the customer portal. The checkout helper now accepts an optional
+ * tier argument (defaulting to the "Core" plan) and sends that along to the
+ * Supabase Edge Function, which forwards it to Stripe. Without this body
+ * parameter, the backend could only ever default to the Core plan.
+ */
 export const useSubscription = () => {
   const { user, session } = useAuth();
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionData>({
@@ -17,6 +27,11 @@ export const useSubscription = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+  /**
+   * Fetch the current subscription state for the logged‑in user.
+   *
+   * Optionally displays a toast upon completion; useful for manual refreshes.
+   */
   const checkSubscription = async (showToast = false) => {
     if (!user || !session) {
       setSubscriptionData({ subscribed: false });
@@ -26,13 +41,10 @@ export const useSubscription = () => {
 
     try {
       setRefreshing(true);
-      console.log('Checking subscription status...');
-
       const { data, error } = await supabase.functions.invoke('check-subscription', {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
- 
       });
 
       if (error) {
@@ -43,9 +55,7 @@ export const useSubscription = () => {
         return;
       }
 
-      console.log('Subscription data received:', data);
       setSubscriptionData(data);
-      
       if (showToast) {
         if (data.subscribed) {
           toast.success(`Subscription active: ${data.subscription_tier} plan`);
@@ -62,31 +72,35 @@ export const useSubscription = () => {
       setLoading(false);
       setRefreshing(false);
     }
-};
+  };
 
-  const createCheckout = async () => {
+  /**
+   * Begin a Stripe checkout session for the given subscription tier.
+   *
+   * If no tier is provided, the user will be placed on the Core plan by
+   * default. This helper injects both the JWT for Supabase authentication
+   * (via the `Authorization` header) and a JSON body containing the tier.
+   */
+  const createCheckout = async (
+    tier: 'Core' | 'Plus' | 'Pro' | 'Advisory' = 'Core'
+  ) => {
     if (!user || !session) {
       toast.error('Please log in to subscribe');
-   r
-eturn;
+      return;
     }
-
     try {
-      console.log('Creating checkout session...');
       const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { tier },
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
       });
-
       if (error) {
         console.error('Checkout creation error:', error);
         toast.error('Failed to create checkout session');
         return;
       }
-
       if (data?.url) {
-        // Open Stripe checkout in new tab
         window.open(data.url, '_blank');
       } else {
         toast.error('Invalid checkout session response');
@@ -97,39 +111,37 @@ eturn;
     }
   };
 
+  /**
+   * Opens the Stripe customer billing portal for the current user.
+   */
   const openCustomerPortal = async () => {
     if (!user || !session) {
- 
       toast.error('Please log in to manage subscription');
       return;
     }
-
     try {
-      console.log('Opening customer portal...');
       const { data, error } = await supabase.functions.invoke('customer-portal', {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
       });
-
       if (error) {
         console.error('Customer portal error:', error);
         toast.error('Failed to open billing portal');
         return;
       }
-
       if (data?.url) {
-        // Open Stripe customer portal in new tab
         window.open(data.url, '_blank');
       } else {
         toast.error('Invalid portal session response');
       }
     } catch (error) {
       console.error('Error opening customer portal:', error);
-toast.error('Failed to open billing portal');
+      toast.error('Failed to open billing portal');
     }
   };
 
+  // Check subscription on mount and whenever the user object changes.
   useEffect(() => {
     if (user) {
       checkSubscription();
@@ -139,14 +151,13 @@ toast.error('Failed to open billing portal');
     }
   }, [user]);
 
-  // Auto-refresh subscription status every 30 seconds when tab is visible
+  // Refresh the subscription status periodically when the tab is visible.
   useEffect(() => {
     const interval = setInterval(() => {
       if (user && !document.hidden) {
         checkSubscription();
       }
     }, 30000);
-
     return () => clearInterval(interval);
   }, [user]);
 
@@ -160,4 +171,3 @@ toast.error('Failed to open billing portal');
     refresh: () => checkSubscription(true),
   };
 };
-.
