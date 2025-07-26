@@ -99,6 +99,7 @@ eturn;
 
   const openCustomerPortal = async () => {
     if (!user || !session) {
+ 
       toast.error('Please log in to manage subscription');
       return;
     }
@@ -125,7 +126,7 @@ eturn;
       }
     } catch (error) {
       console.error('Error opening customer portal:', error);
-      toast.error('Failed to open billing portal');
+toast.error('Failed to open billing portal');
     }
   };
 
@@ -159,3 +160,4 @@ eturn;
     refresh: () => checkSubscription(true),
   };
 };
+.
