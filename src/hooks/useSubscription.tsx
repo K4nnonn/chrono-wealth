@@ -32,6 +32,7 @@ export const useSubscription = () => {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
+ 
       });
 
       if (error) {
@@ -61,12 +62,13 @@ export const useSubscription = () => {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+};
 
   const createCheckout = async () => {
     if (!user || !session) {
       toast.error('Please log in to subscribe');
-      return;
+   r
+eturn;
     }
 
     try {
