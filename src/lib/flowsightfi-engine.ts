@@ -454,19 +454,19 @@ export class FlowSightFiEngine {
 
 
   // Advanced forecasting models
-  monteCarloNetWorthForecast(initialNetWorth: number, expectedReturn: number, volatility: number, years: number, stepsPerYear: number = 12, iterations: number = 1000): number[] {
-    return monteCarloNetWorthForecast(initialNetWorth, expectedReturn, volatility, years, stepsPerYear, iterations);
+  monteCarloNetWorthForecast(initialNetWorth: number, expectedReturn: number, volatility: number, years: number, numSimulations: number = 1000): number[] {
+    return monteCarloNetWorthForecast(initialNetWorth, expectedReturn, volatility, years, numSimulations);
   }
 
   bstsSpendingForecast(history: number[], steps: number = 12): number[] {
     return bstsSpendingForecast(history, steps);
   }
 
-  clusterSpendingPatterns(data: { [category: string]: number[] }, k: number): { clusters: number[][]; centroids: number[][] } {
+  clusterSpendingPatterns(data: number[][], k: number): { centroids: number[][]; labels: number[] } {
     return kMeansClustering(data, k);
   }
 
-  fitElasticNetSpendingModel(features: number[][], targets: number[], alpha: number = 0.5, lambda: number = 0.1, learningRate: number = 0.001, iterations: number = 1000): { weights: number[]; intercept: number } {
-    return elasticNetRegression(features, targets, alpha, lambda, learningRate, iterations);
+  fitElasticNetSpendingModel(features: number[][], targets: number[], alpha: number = 1, l1Ratio: number = 0.5, iterations: number = 1000, learningRate: number = 0.01): { coefficients: number[]; intercept: number } {
+    return elasticNetRegression(features, targets, alpha, l1Ratio, iterations, learningRate);
   }
 }

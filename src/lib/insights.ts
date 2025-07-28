@@ -79,7 +79,7 @@ export function generateInsights(engine: FlowSightFiEngine, goals: Goal[]): Insi
   });
   // 3. Insights from forecasting (alerts for negative net worth)
   try {
-    const forecast = engine.monteCarloNetWorthForecast(10000, 0.05, 0.15, 1, 12, 100);
+    const forecast = engine.monteCarloNetWorthForecast(10000, 0.05, 0.15, 1, 100);
     const belowZero = forecast.find(v => v < 0);
     if (belowZero !== undefined) {
       insights.push({
