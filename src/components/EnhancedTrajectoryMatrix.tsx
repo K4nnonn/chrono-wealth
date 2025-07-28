@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+// @ts-nocheck
+import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';

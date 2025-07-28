@@ -56,11 +56,12 @@ export function monteCarloFan(
   }
   return results.map(dayArr => {
     const sorted = dayArr.slice().sort((a, b) => a - b)
-    return [
+    const result = [
       quantileSorted(sorted, 0.10),
       quantileSorted(sorted, 0.50),
       quantileSorted(sorted, 0.90),
     ]
+    return result.filter((val): val is number => val !== undefined)
   })
 }
 

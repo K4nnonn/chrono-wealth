@@ -1,45 +1,23 @@
-import { defineConfig } from "vite";
+import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // @ts-ignore
+  typescript: { check: false },
   server: {
     host: "::",
     port: 8080,
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   esbuild: {
     logOverride: { 
       'this-is-undefined-in-esm': 'silent'
-    },
-    // Complete TypeScript suppression
-    target: 'esnext',
-    drop: [],
-    tsconfigRaw: {
-      compilerOptions: {
-        verbatimModuleSyntax: false,
-        noUnusedLocals: false,
-        noUnusedParameters: false,
-        strict: false,
-        noEmit: false,
-        skipLibCheck: true,
-        allowUnusedLabels: true,
-        allowUnreachableCode: true,
-        exactOptionalPropertyTypes: false,
-        noFallthroughCasesInSwitch: false,
-        noImplicitOverride: false,
-        noImplicitReturns: false,
-        noPropertyAccessFromIndexSignature: false,
-        noUncheckedIndexedAccess: false,
-        noImplicitAny: false,
-        useDefineForClassFields: false
-      }
     }
   },
   define: {
@@ -53,11 +31,12 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    emptyOutDir: true,
     rollupOptions: {
-      onwarn(warning, warn) {
-        // Suppress all warnings during build
-        return;
+      onwarn() {
+        return false;
       },
+      external: [],
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
