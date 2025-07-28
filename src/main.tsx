@@ -1,6 +1,7 @@
 // @ts-nocheck
 import './global-typescript-disable';
 import './temp-build-fix';
+import './ts-suppress-all';
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'

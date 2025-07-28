@@ -2,12 +2,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   Brain, 
-  TrendingUp, 
   AlertTriangle, 
   Target, 
   MessageSquare, 
   Zap,
-  DollarSign,
   Calendar,
   BarChart3,
   ArrowRight

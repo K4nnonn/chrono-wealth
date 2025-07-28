@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
   const { user } = useAuth();
-  const { subscribed, subscription_tier, createCheckout, loading } = useSubscription();
+  const { subscribed, createCheckout, loading } = useSubscription();
   const navigate = useNavigate();
 
   const handleGetStarted = () => {

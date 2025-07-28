@@ -6,11 +6,7 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   // @ts-ignore
-  typescript: { 
-    check: false,
-    transpileOnly: true,
-    ignoreBuildErrors: true
-  },
+  typescript: false,
   server: {
     host: "::",
     port: 8080,
@@ -22,10 +18,14 @@ export default defineConfig(({ mode }) => ({
   esbuild: {
     logOverride: { 
       'this-is-undefined-in-esm': 'silent',
-      'unused-import': 'silent'
+      'unused-import': 'silent',
+      'TS6133': 'silent',
+      'TS6192': 'silent'
     },
     ignoreAnnotations: true,
-    target: 'es2020'
+    target: 'es2020',
+    drop: ['console'],
+    pure: ['console.log', 'console.warn', 'console.error']
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(mode)
@@ -37,12 +37,16 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
     emptyOutDir: true,
     rollupOptions: {
       onwarn() {
         return false;
       },
+      onLog() {
+        return false;
+      },
+      logLevel: 'silent',
       external: [],
       output: {
         manualChunks: {

@@ -1,16 +1,14 @@
-import React from 'react';
+import { type ComponentType } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { 
   Trophy, 
-  Target, 
   Zap, 
   Star, 
   Crown, 
   Shield, 
-  TrendingUp,
   Calendar,
   Award,
   Flame,
@@ -22,7 +20,7 @@ interface Achievement {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: ComponentType<any>;
   tier: 'bronze' | 'silver' | 'gold' | 'platinum';
   points: number;
   unlocked: boolean;
@@ -41,10 +39,10 @@ interface GameStats {
 }
 
 // Achievement System Component
-export const AchievementBadge: React.FC<{ achievement: Achievement; size?: 'sm' | 'md' | 'lg' }> = ({ 
+export const AchievementBadge = ({ 
   achievement, 
   size = 'md' 
-}) => {
+}: { achievement: Achievement; size?: 'sm' | 'md' | 'lg' }) => {
   const Icon = achievement.icon;
   
   const sizeClasses = {
@@ -102,7 +100,7 @@ export const AchievementBadge: React.FC<{ achievement: Achievement; size?: 'sm' 
 };
 
 // Streak Counter Component
-export const StreakCounter: React.FC<{ streak: number; type: string }> = ({ streak, type }) => (
+export const StreakCounter = ({ streak, type }: { streak: number; type: string }) => (
   <Card className="p-4 bg-gradient-to-r from-orange-500/10 to-red-500/10 border-orange-200 animate-confidence-glow">
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-1">
@@ -118,7 +116,7 @@ export const StreakCounter: React.FC<{ streak: number; type: string }> = ({ stre
 );
 
 // Level Progress Component
-export const LevelProgress: React.FC<{ stats: GameStats }> = ({ stats }) => (
+export const LevelProgress = ({ stats }: { stats: GameStats }) => (
   <Card className="p-4 bg-gradient-wealth/10 animate-data-reveal">
     <div className="flex items-center justify-between mb-3">
       <div className="flex items-center gap-2">
@@ -140,14 +138,21 @@ export const LevelProgress: React.FC<{ stats: GameStats }> = ({ stats }) => (
 );
 
 // Challenge Card Component
-export const ChallengeCard: React.FC<{
+export const ChallengeCard = ({ 
+  title, 
+  description, 
+  reward, 
+  progress, 
+  maxProgress, 
+  timeLeft 
+}: {
   title: string;
   description: string;
   reward: number;
   progress: number;
   maxProgress: number;
   timeLeft?: string;
-}> = ({ title, description, reward, progress, maxProgress, timeLeft }) => (
+}) => (
   <Card className="p-4 hover-lift transition-smooth animate-insight-appear">
     <div className="flex items-start justify-between mb-3">
       <div className="flex-1">
@@ -223,7 +228,7 @@ export const FINANCIAL_ACHIEVEMENTS: Achievement[] = [
 ];
 
 // Gamification Dashboard Component
-export const GamificationDashboard: React.FC<{ stats: GameStats }> = ({ stats }) => (
+export const GamificationDashboard = ({ stats }: { stats: GameStats }) => (
   <div className="space-y-6 animate-chart-entry">
     {/* Level and XP */}
     <LevelProgress stats={stats} />
@@ -250,11 +255,11 @@ export const GamificationDashboard: React.FC<{ stats: GameStats }> = ({ stats })
 );
 
 // XP Notification Component
-export const XPNotification: React.FC<{ points: number; reason: string; onClose: () => void }> = ({
-  points,
-  reason,
-  onClose
-}) => (
+export const XPNotification = ({ 
+  points, 
+  reason, 
+  onClose 
+}: { points: number; reason: string; onClose: () => void }) => (
   <div className="fixed top-4 right-4 z-50 animate-achievement-celebration">
     <Card className="p-4 bg-gradient-success text-white border-0 shadow-elegant">
       <div className="flex items-center gap-3">

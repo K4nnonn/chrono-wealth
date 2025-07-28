@@ -6,7 +6,6 @@ import {
   Target, 
   Calendar, 
   TrendingUp, 
-  AlertTriangle, 
   CheckCircle2,
   ChevronRight,
   Clock
