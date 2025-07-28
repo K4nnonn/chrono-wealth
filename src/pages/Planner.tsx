@@ -2,20 +2,15 @@
 import Navigation from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { AIFinancialChat } from "@/components/AIFinancialChat";
 import { 
-  MessageSquare, 
-  Mic, 
-  Send, 
   Brain,
   TrendingUp,
   Target,
   AlertTriangle,
   Lightbulb,
-  Clock,
-  User,
-  Bot
+  Clock
 } from "lucide-react";
 
 const chatHistory = [
@@ -84,122 +79,22 @@ const Planner = () => {
 
           <div className="grid lg:grid-cols-3 gap-8">
             
-            {/* Chat Interface */}
+            {/* Chat Interface - Now using functional AIFinancialChat */}
             <div className="lg:col-span-2">
-              <Card className="flex flex-col h-[600px]">
-                
-                {/* Chat Header */}
-                <div className="flex items-center justify-between p-4 border-b">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="font-semibold">FlowSight AI</span>
-                    <Badge className="bg-accent-success/20 text-accent-success">Online</Badge>
+              <div className="mb-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-white" />
                   </div>
-                  
-                  <Button variant="outline" size="sm">
-                    Clear Chat
-                  </Button>
+                  <h2 className="text-xl font-semibold">FlowSight AI Financial Planner</h2>
+                  <Badge className="bg-accent-success/20 text-accent-success">Live</Badge>
                 </div>
-
-                {/* Chat Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                  
-                  {/* Welcome Message */}
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="bg-muted rounded-lg p-3">
-                        <p className="text-sm">
-                          Hi! I'm your AI financial planner. I can help you explore scenarios, answer questions about your finances, and suggest optimizations. What would you like to know?
-                        </p>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">Just now</div>
-                    </div>
-                  </div>
-
-                  {/* Chat History */}
-                  {chatHistory.map((message) => (
-                    <div key={message.id} className={`flex items-start gap-3 ${
-                      message.type === 'user' ? 'flex-row-reverse' : ''
-                    }`}>
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                        message.type === 'user' 
-                          ? 'bg-primary' 
-                          : 'bg-gradient-primary'
-                      }`}>
-                        {message.type === 'user' ? (
-                          <User className="w-4 h-4 text-white" />
-                        ) : (
-                          <Bot className="w-4 h-4 text-white" />
-                        )}
-                      </div>
-                      
-                      <div className="flex-1 max-w-md">
-                        <div className={`rounded-lg p-3 ${
-                          message.type === 'user' 
-                            ? 'bg-primary text-primary-foreground ml-auto' 
-                            : 'bg-muted'
-                        }`}>
-                          <p className="text-sm">{message.message}</p>
-                          
-                          {/* AI Suggestions */}
-                          {message.suggestions && (
-                            <div className="mt-3 space-y-2">
-                              {message.suggestions.map((suggestion, index) => (
-                                <div key={index} className="flex items-center gap-2 text-xs bg-background/10 rounded p-2">
-                                  <Lightbulb className="w-3 h-3" />
-                                  {suggestion}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                          
-                          {/* AI Insights */}
-                          {message.insights && (
-                            <div className="mt-3 space-y-2">
-                              {message.insights.map((insight, index) => (
-                                <div key={index} className="flex items-center gap-2 text-xs bg-background/10 rounded p-2">
-                                  <insight.icon className={`w-3 h-3 ${insight.color}`} />
-                                  {insight.text}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                        <div className={`text-xs text-muted-foreground mt-1 ${
-                          message.type === 'user' ? 'text-right' : ''
-                        }`}>
-                          {message.timestamp}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Chat Input */}
-                <div className="p-4 border-t">
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      placeholder="Ask about your financial future..."
-                      className="flex-1"
-                    />
-                    <Button size="sm" variant="outline">
-                      <Mic className="w-4 h-4" />
-                    </Button>
-                    <Button size="sm" className="bg-gradient-primary">
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  
-                  <div className="text-xs text-muted-foreground mt-2 text-center">
-                    AI responses are estimates. Not financial advice.
-                  </div>
-                </div>
-              </Card>
+                <p className="text-muted-foreground text-sm">
+                  Chat with your AI assistant to explore financial scenarios and get personalized insights.
+                </p>
+              </div>
+              
+              <AIFinancialChat className="h-[600px]" />
             </div>
 
             {/* Sidebar */}

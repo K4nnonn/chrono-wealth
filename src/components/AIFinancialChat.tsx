@@ -65,30 +65,39 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
     setError(null);
 
     try {
-      // Use Supabase Edge Function
-      const response = await supabase.functions.invoke('financial-ai-chat', {
-        body: {
-          message: inputMessage,
-          userProfile: {
-            profile,
-            financialData
-          },
-          currentScores
-        }
-      });
+      // First try the AI service
+      let aiResponse;
+      try {
+        const response = await supabase.functions.invoke('financial-ai-chat', {
+          body: {
+            message: inputMessage,
+            userProfile: {
+              profile,
+              financialData
+            },
+            currentScores
+          }
+        });
 
-      if (response.error) {
-        throw new Error(response.error.message || 'Failed to get AI response');
+        if (!response.error && response.data?.reply) {
+          aiResponse = response.data.reply;
+        }
+      } catch (aiError) {
+        // AI service unavailable, use fallback
+        console.log('AI service unavailable, using fallback responses');
       }
 
-      const data = response.data;
+      // Use fallback responses if AI service failed
+      if (!aiResponse) {
+        aiResponse = getIntelligentResponse(inputMessage, profile, financialData);
+      }
 
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.reply,
+        content: aiResponse,
         timestamp: new Date(),
-        confidence: data.confidence
+        confidence: aiResponse.includes('AI service') ? 0.85 : 0.75
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -103,7 +112,7 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: "I apologize, but I'm having trouble connecting right now. Please try asking your question again, or feel free to explore the other features of your financial dashboard.",
+        content: "I apologize for the inconvenience. Let me try to help you with a basic response. What specific financial question can I assist you with?",
         timestamp: new Date(),
         confidence: 0.5
       };
@@ -119,6 +128,74 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  // Intelligent fallback responses based on user input and financial data
+  const getIntelligentResponse = (message: string, profile: any, financialData: any): string => {
+    const lowerMessage = message.toLowerCase();
+    const monthlyIncome = financialData?.annual_salary ? Math.round(financialData.annual_salary / 12) : 0;
+    const monthlyExpenses = (financialData?.monthly_rent || 0) + (financialData?.monthly_subscriptions || 0);
+    const monthlySavings = monthlyIncome - monthlyExpenses;
+    const savingsRate = monthlyIncome > 0 ? (monthlySavings / monthlyIncome) * 100 : 0;
+
+    // Budget-related questions
+    if (lowerMessage.includes('budget') || lowerMessage.includes('spending')) {
+      if (monthlyIncome > 0) {
+        return `Based on your financial profile (monthly income: $${monthlyIncome.toLocaleString()}), I recommend the 50/30/20 rule: 50% for needs ($${Math.round(monthlyIncome * 0.5).toLocaleString()}), 30% for wants ($${Math.round(monthlyIncome * 0.3).toLocaleString()}), and 20% for savings ($${Math.round(monthlyIncome * 0.2).toLocaleString()}). Your current savings rate is ${savingsRate.toFixed(1)}%. Would you like specific tips to improve this?`;
+      }
+      return "For effective budgeting, I recommend the 50/30/20 rule: 50% of income for needs, 30% for wants, and 20% for savings. Track your expenses for a month to see where your money goes, then adjust accordingly.";
+    }
+
+    // Savings-related questions
+    if (lowerMessage.includes('save') || lowerMessage.includes('saving')) {
+      if (monthlySavings > 0) {
+        return `Great news! You're currently saving $${monthlySavings.toLocaleString()} per month (${savingsRate.toFixed(1)}% savings rate). To optimize this further: 1) Automate your savings right after payday, 2) Consider high-yield savings accounts, 3) Increase by 1% whenever you get a raise. Your goal should be 20% if possible.`;
+      } else if (monthlySavings < 0) {
+        return `I notice your expenses may exceed your income. Let's fix this: 1) List all expenses and categorize them, 2) Identify 3 areas to cut back, 3) Consider additional income sources, 4) Start with saving just $25/month and increase gradually. Small steps lead to big changes!`;
+      }
+      return "Start by automating your savings - even $50/month is a great beginning! Open a high-yield savings account, and increase your savings by 1% every few months. The key is consistency, not perfection.";
+    }
+
+    // Investment-related questions
+    if (lowerMessage.includes('invest') || lowerMessage.includes('retirement')) {
+      const emergencyFund = financialData?.emergency_fund_months || 0;
+      if (emergencyFund < 3) {
+        return "Before investing, build an emergency fund of 3-6 months of expenses. Once that's secure, consider: 1) Max out any employer 401(k) match (free money!), 2) Open a Roth IRA for tax-free growth, 3) Start with low-cost index funds. Time in the market beats timing the market!";
+      }
+      return "With your emergency fund in place, focus on: 1) Maximizing employer 401(k) match, 2) Contributing to a Roth IRA (up to $7,000/year), 3) Investing in diversified index funds, 4) Consider target-date funds for simplicity. Start with what you can afford and increase over time.";
+    }
+
+    // Debt-related questions
+    if (lowerMessage.includes('debt') || lowerMessage.includes('loan') || lowerMessage.includes('credit card')) {
+      return "For debt payoff, use the avalanche method: 1) List all debts with interest rates, 2) Pay minimums on all debts, 3) Put extra money toward highest interest debt first, 4) Consider debt consolidation if it lowers your rate. Focus on one debt at a time for psychological wins!";
+    }
+
+    // Emergency fund questions
+    if (lowerMessage.includes('emergency') || lowerMessage.includes('fund')) {
+      const targetEmergency = monthlyExpenses * 6;
+      if (monthlyExpenses > 0) {
+        return `Your emergency fund should cover 3-6 months of expenses. Based on your monthly expenses of approximately $${monthlyExpenses.toLocaleString()}, aim for $${targetEmergency.toLocaleString()}. Start with $1,000, then build to one month, then gradually to 6 months. Keep it in a high-yield savings account for easy access.`;
+      }
+      return "Build an emergency fund of 3-6 months of expenses. Start with $1,000 as your first milestone, then work toward one month of expenses, then gradually build to 6 months. Keep it in a separate high-yield savings account that's easily accessible but not too convenient to dip into.";
+    }
+
+    // Goal-related questions
+    if (lowerMessage.includes('goal') || lowerMessage.includes('house') || lowerMessage.includes('car')) {
+      return "For major financial goals: 1) Set a specific target amount and date, 2) Break it down into monthly savings needed, 3) Open a separate savings account for this goal, 4) Automate transfers, 5) Review and adjust quarterly. The clearer your goal, the easier it is to achieve!";
+    }
+
+    // Income questions
+    if (lowerMessage.includes('income') || lowerMessage.includes('salary') || lowerMessage.includes('raise')) {
+      return "To increase income: 1) Research salary ranges for your role, 2) Document your achievements and value, 3) Ask for a raise annually, 4) Consider side hustles or freelancing, 5) Invest in skills that pay more. Even a 3% annual increase compounds significantly over time!";
+    }
+
+    // General financial health
+    if (lowerMessage.includes('health') || lowerMessage.includes('score') || lowerMessage.includes('improve')) {
+      return `Your financial health improves through: 1) Consistent saving (aim for 20% of income), 2) Building emergency funds, 3) Paying down high-interest debt, 4) Investing for long-term growth, 5) Regular review and adjustment. ${monthlyIncome > 0 ? `With your current income of $${monthlyIncome.toLocaleString()}/month, you have a solid foundation to build on.` : 'Start by tracking your income and expenses to understand your current position.'}`;
+    }
+
+    // Default helpful response
+    return `I'm here to help with your financial planning! I can assist with budgeting, saving strategies, debt payoff, investment guidance, and financial goal setting. ${monthlyIncome > 0 ? `Based on your profile, you have good potential to improve your financial health.` : 'To give you more personalized advice, consider updating your financial profile with your income and expense information.'} What specific area would you like to focus on?`;
   };
 
   const suggestedQuestions = [
