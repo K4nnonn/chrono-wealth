@@ -73,7 +73,7 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
             financialData
           },
           currentScores
-        })
+        }
       });
 
       if (response.error) {

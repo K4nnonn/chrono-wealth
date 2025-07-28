@@ -197,7 +197,7 @@ Deno.serve(async (req) => {
       console.error('Error loading macro rates', err)
     }
     
-    const insight = monthlySavings > 0 ? 'You're saving more than you spend—great job!' : 'Your expenses exceed your income.'
+    const insight = monthlySavings > 0 ? 'You are saving more than you spend—great job!' : 'Your expenses exceed your income.'
     
     return new Response(JSON.stringify({
       H1: insight,
