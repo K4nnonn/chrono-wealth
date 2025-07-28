@@ -71,9 +71,13 @@ export function HeroSection() {
         </div>
 
         {/* Demo Dashboard Preview */}
-        <div className="mt-16 relative">
-          <div className="bg-card rounded-xl shadow-2xl p-2 max-w-5xl mx-auto border">
-            <div className="bg-gradient-to-br from-muted/50 to-muted rounded-lg p-6 min-h-[400px]">
+        <div className="mt-16 relative animate-chart-entry">
+          <div className="bg-card rounded-xl shadow-elegant p-2 max-w-5xl mx-auto border hover-lift">
+            <div className="bg-gradient-card rounded-lg p-6 min-h-[400px] relative overflow-hidden">
+              {/* Enhanced Background with Psychology */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-wealth animate-wealth-pulse" />
+              </div>
               {/* Mini Dashboard Header */}
               <div className="flex items-center justify-between mb-6">
                 <div>
