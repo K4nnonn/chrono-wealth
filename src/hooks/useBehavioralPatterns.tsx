@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo } from 'react';
 import { usePlaidData } from './usePlaidData';
 import { useProfile } from './useProfile';

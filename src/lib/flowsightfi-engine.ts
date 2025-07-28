@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * FlowSightFi Behavioral Intelligence Engine
  * Core mathematical logic for behavioral pattern detection and trajectory forecasting

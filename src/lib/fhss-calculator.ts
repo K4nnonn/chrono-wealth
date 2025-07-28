@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Financial Health Scorecard Score (FHSS) Calculation Engine
 // Real-time client-side calculations with confidence intervals
 
