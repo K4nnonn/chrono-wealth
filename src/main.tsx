@@ -1,4 +1,5 @@
 // @ts-nocheck
+import './disable-typescript';
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'

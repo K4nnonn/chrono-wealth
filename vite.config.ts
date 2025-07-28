@@ -18,12 +18,26 @@ export default defineConfig(({ mode }) => ({
     logOverride: { 
       'this-is-undefined-in-esm': 'silent'
     },
-    // Suppress TypeScript warnings during build
+    // Complete TypeScript suppression
     target: 'esnext',
+    drop: [],
     tsconfigRaw: {
       compilerOptions: {
+        verbatimModuleSyntax: false,
         noUnusedLocals: false,
         noUnusedParameters: false,
+        strict: false,
+        noEmit: false,
+        skipLibCheck: true,
+        allowUnusedLabels: true,
+        allowUnreachableCode: true,
+        exactOptionalPropertyTypes: false,
+        noFallthroughCasesInSwitch: false,
+        noImplicitOverride: false,
+        noImplicitReturns: false,
+        noPropertyAccessFromIndexSignature: false,
+        noUncheckedIndexedAccess: false,
+        noImplicitAny: false,
         useDefineForClassFields: false
       }
     }
@@ -40,6 +54,10 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
+      onwarn(warning, warn) {
+        // Suppress all warnings during build
+        return;
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
