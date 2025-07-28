@@ -8,13 +8,24 @@ import { WhatIfSlider } from '@/components/WhatIfSlider';
 import { TimelineChart } from '@/components/TimelineChart';
 import { computeFHSS, FinancialProfile, FHSSResponse } from '@/lib/fhss-calculator';
 import { useProfile } from '@/hooks/useProfile';
-import { TrendingUp, AlertTriangle, CheckCircle, Target, Lightbulb } from 'lucide-react';
+import { TrendingUp, AlertTriangle, CheckCircle, Target, Lightbulb, Trophy, Zap } from 'lucide-react';
+import { GamificationDashboard, AchievementBadge, FINANCIAL_ACHIEVEMENTS } from '@/components/Gamification';
 
 export const FinancialHealthDashboard = () => {
   const { profile, financialData } = useProfile();
   const [currentScore, setCurrentScore] = useState<FHSSResponse | null>(null);
   const [baseProfile, setBaseProfile] = useState<FinancialProfile | null>(null);
   
+  // Mock gamification stats - would come from backend
+  const gameStats = {
+    level: 7,
+    totalPoints: 2840,
+    pointsToNextLevel: 660,
+    currentStreak: 12,
+    longestStreak: 23,
+    achievementsUnlocked: 8,
+    totalAchievements: 15
+  };
   useEffect(() => {
     if (profile && financialData) {
       const profileData: FinancialProfile = {
@@ -172,6 +183,9 @@ export const FinancialHealthDashboard = () => {
         </div>
       </Card>
 
+      {/* Gamification Section */}
+      <GamificationDashboard stats={gameStats} />
+      
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>

@@ -90,29 +90,67 @@ export function HeroSection() {
                 </div>
               </div>
               
-              {/* Mini Chart Area */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="bg-background/50 rounded-lg p-4">
+              {/* Mini Chart Area with Gamification */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="bg-background/50 rounded-lg p-4 hover-lift transition-smooth">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium">Net Worth</span>
-                    <span className="text-green-500 text-sm">+12.5%</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-green-500 text-sm">+12.5%</span>
+                      <div className="w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center animate-bounce-subtle">
+                        <span className="text-xs text-white">⭐</span>
+                      </div>
+                    </div>
                   </div>
                   <div className="text-xl font-bold">$156,429</div>
                   <div className="mt-2 h-2 bg-muted rounded-full">
-                    <div className="h-2 bg-primary rounded-full w-3/4"></div>
+                    <div className="h-2 bg-gradient-wealth rounded-full w-3/4 animate-growth-surge"></div>
                   </div>
                 </div>
                 
-                <div className="bg-background/50 rounded-lg p-4">
+                <div className="bg-background/50 rounded-lg p-4 hover-lift transition-smooth">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Monthly Savings</span>
-                    <span className="text-green-500 text-sm">+8.2%</span>
+                    <span className="text-sm font-medium">Savings Streak</span>
+                    <div className="flex items-center gap-1 text-orange-500">
+                      <span className="text-sm animate-pulse">🔥</span>
+                      <span className="text-sm font-bold">12</span>
+                    </div>
                   </div>
                   <div className="text-xl font-bold">$2,340</div>
                   <div className="mt-2 h-2 bg-muted rounded-full">
-                    <div className="h-2 bg-secondary rounded-full w-2/3"></div>
+                    <div className="h-2 bg-gradient-confidence rounded-full w-2/3 animate-confidence-glow"></div>
                   </div>
                 </div>
+
+                <div className="bg-background/50 rounded-lg p-4 hover-lift transition-smooth">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Level Progress</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-primary text-sm font-bold">Lv 7</span>
+                      <div className="w-4 h-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full animate-pulse"></div>
+                    </div>
+                  </div>
+                  <div className="text-xl font-bold">2,840 XP</div>
+                  <div className="mt-2 h-2 bg-muted rounded-full">
+                    <div className="h-2 bg-primary rounded-full w-4/5 animate-wealth-pulse"></div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Achievement Preview */}
+              <div className="bg-background/50 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">Recent Achievement</span>
+                    <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center animate-achievement-celebration">
+                      <span className="text-xs text-white">🏆</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-primary">+200 XP</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  <strong>Budget Master:</strong> Stayed under budget for 7 days straight!
+                </p>
               </div>
               
               {/* Mini Insights */}
