@@ -111,16 +111,43 @@ export const RadarChart = ({ data, width = 300, height = 300, className = '' }: 
 
     const line = d3.line().curve(d3.curveLinearClosed);
 
-    // Draw the filled area
-    svg
+    // Create gradient definition for the area
+    const defs = svg.append('defs');
+    const gradient = defs.append('radialGradient')
+      .attr('id', 'radarGradient')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', '70%');
+
+    // Calculate average score for gradient coloring
+    const avgScore = Object.values(data).reduce((sum, score) => sum + score, 0) / Object.values(data).length;
+    
+    if (avgScore >= 0.8) {
+      gradient.append('stop').attr('offset', '0%').attr('stop-color', 'hsl(var(--accent-success))').attr('stop-opacity', 0.6);
+      gradient.append('stop').attr('offset', '100%').attr('stop-color', 'hsl(var(--accent-teal))').attr('stop-opacity', 0.1);
+    } else if (avgScore >= 0.6) {
+      gradient.append('stop').attr('offset', '0%').attr('stop-color', 'hsl(var(--primary))').attr('stop-opacity', 0.5);
+      gradient.append('stop').attr('offset', '100%').attr('stop-color', 'hsl(var(--primary-glow))').attr('stop-opacity', 0.1);
+    } else if (avgScore >= 0.4) {
+      gradient.append('stop').attr('offset', '0%').attr('stop-color', 'hsl(var(--accent-warning))').attr('stop-opacity', 0.4);
+      gradient.append('stop').attr('offset', '100%').attr('stop-color', 'hsl(var(--accent-warning))').attr('stop-opacity', 0.1);
+    } else {
+      gradient.append('stop').attr('offset', '0%').attr('stop-color', 'hsl(var(--accent-destructive))').attr('stop-opacity', 0.4);
+      gradient.append('stop').attr('offset', '100%').attr('stop-color', 'hsl(var(--accent-destructive))').attr('stop-opacity', 0.1);
+    }
+
+    // Draw the filled area with enhanced styling
+    const path = svg
       .append('path')
       .datum(dataPoints as [number, number][])
       .attr('d', line)
-      .attr('fill', 'hsl(var(--primary))')
-      .attr('fill-opacity', 0.2)
-      .attr('stroke', 'hsl(var(--primary))')
-      .attr('stroke-width', 2)
-      .attr('class', 'data-area');
+      .attr('fill', 'url(#radarGradient)')
+      .attr('stroke', avgScore >= 0.8 ? 'hsl(var(--accent-success))' : 
+                     avgScore >= 0.6 ? 'hsl(var(--primary))' :
+                     avgScore >= 0.4 ? 'hsl(var(--accent-warning))' : 'hsl(var(--accent-destructive))')
+      .attr('stroke-width', 3)
+      .attr('class', 'data-area')
+      .style('filter', 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))');
 
     // Draw data points
     const pointsGroup = svg.append('g').attr('class', 'data-points');
@@ -130,81 +157,140 @@ export const RadarChart = ({ data, width = 300, height = 300, className = '' }: 
       const x = centerX + Math.cos(axis.angle - Math.PI / 2) * radiusScale(value);
       const y = centerY + Math.sin(axis.angle - Math.PI / 2) * radiusScale(value);
 
-      // Data point circle
+      // Enhanced data point circle with psychological indicators
+      const pointColor = value >= 0.8 ? 'hsl(var(--accent-success))' :
+                         value >= 0.6 ? 'hsl(var(--primary))' :
+                         value >= 0.4 ? 'hsl(var(--accent-warning))' : 'hsl(var(--accent-destructive))';
+      
+      // Outer glow ring for high-performing metrics
+      if (value >= 0.7) {
+        pointsGroup
+          .append('circle')
+          .attr('cx', x)
+          .attr('cy', y)
+          .attr('r', 12)
+          .attr('fill', 'none')
+          .attr('stroke', pointColor)
+          .attr('stroke-width', 1)
+          .attr('opacity', 0.3)
+          .style('animation', 'pulse 2s ease-in-out infinite');
+      }
+      
       pointsGroup
         .append('circle')
         .attr('cx', x)
         .attr('cy', y)
-        .attr('r', 6)
-        .attr('fill', 'hsl(var(--primary))')
+        .attr('r', 7)
+        .attr('fill', pointColor)
         .attr('stroke', 'hsl(var(--background))')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 3)
         .style('cursor', 'pointer')
+        .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))')
         .on('mouseenter', function() {
-          d3.select(this).transition().duration(200).attr('r', 8);
+          d3.select(this).transition().duration(200).attr('r', 10);
           
-          // Show tooltip
+          // Enhanced tooltip with better psychology
           const tooltip = svg
             .append('g')
             .attr('class', 'tooltip')
-            .attr('transform', `translate(${x}, ${y - 20})`);
+            .attr('transform', `translate(${x}, ${y - 35})`);
 
-          const rect = tooltip
+          const tooltipBg = tooltip
             .append('rect')
-            .attr('x', -30)
-            .attr('y', -15)
-            .attr('width', 60)
-            .attr('height', 20)
-            .attr('rx', 4)
-            .attr('fill', 'hsl(var(--background-card))')
-            .attr('stroke', 'hsl(var(--border))');
+            .attr('x', -45)
+            .attr('y', -25)
+            .attr('width', 90)
+            .attr('height', 30)
+            .attr('rx', 8)
+            .attr('fill', 'hsl(var(--background))')
+            .attr('stroke', pointColor)
+            .attr('stroke-width', 2)
+            .style('filter', 'drop-shadow(0 8px 16px rgba(0,0,0,0.15))');
 
           tooltip
             .append('text')
             .attr('text-anchor', 'middle')
-            .attr('dominant-baseline', 'central')
+            .attr('y', -15)
             .attr('fill', 'hsl(var(--foreground))')
             .attr('font-size', '12px')
-            .attr('font-weight', 500)
+            .attr('font-weight', 600)
+            .text(axis.name);
+
+          tooltip
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('y', -2)
+            .attr('fill', pointColor)
+            .attr('font-size', '14px')
+            .attr('font-weight', 'bold')
             .text(`${Math.round(value * 100)}%`);
         })
         .on('mouseleave', function() {
-          d3.select(this).transition().duration(200).attr('r', 6);
+          d3.select(this).transition().duration(200).attr('r', 7);
           svg.select('.tooltip').remove();
         });
     });
 
-    // Add center score
+    // Enhanced center score with psychological design
     const averageScore = Object.values(data).reduce((sum, score) => sum + score, 0) / Object.values(data).length;
+    const centerColor = avgScore >= 0.8 ? 'hsl(var(--accent-success))' :
+                       avgScore >= 0.6 ? 'hsl(var(--primary))' :
+                       avgScore >= 0.4 ? 'hsl(var(--accent-warning))' : 'hsl(var(--accent-destructive))';
+    
+    // Outer glow ring for center
+    svg
+      .append('circle')
+      .attr('cx', centerX)
+      .attr('cy', centerY)
+      .attr('r', 30)
+      .attr('fill', 'none')
+      .attr('stroke', centerColor)
+      .attr('stroke-width', 1)
+      .attr('opacity', 0.2)
+      .style('animation', 'pulse 3s ease-in-out infinite');
+    
+    // Main center circle with gradient
+    const centerGradient = defs.append('radialGradient')
+      .attr('id', 'centerGradient')
+      .attr('cx', '50%')
+      .attr('cy', '30%')
+      .attr('r', '70%');
+    
+    centerGradient.append('stop').attr('offset', '0%').attr('stop-color', 'hsl(var(--background))').attr('stop-opacity', 1);
+    centerGradient.append('stop').attr('offset', '100%').attr('stop-color', centerColor).attr('stop-opacity', 0.1);
     
     svg
       .append('circle')
       .attr('cx', centerX)
       .attr('cy', centerY)
-      .attr('r', 20)
-      .attr('fill', 'hsl(var(--background-card))')
-      .attr('stroke', 'hsl(var(--primary))')
-      .attr('stroke-width', 2);
+      .attr('r', 24)
+      .attr('fill', 'url(#centerGradient)')
+      .attr('stroke', centerColor)
+      .attr('stroke-width', 3)
+      .style('filter', 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))');
 
+    // Center score text with enhanced styling
     svg
       .append('text')
       .attr('x', centerX)
-      .attr('y', centerY - 2)
+      .attr('y', centerY - 3)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
-      .attr('fill', 'hsl(var(--primary))')
-      .attr('font-size', '14px')
+      .attr('fill', centerColor)
+      .attr('font-size', '16px')
       .attr('font-weight', 'bold')
+      .style('text-shadow', '0 1px 3px rgba(0,0,0,0.1)')
       .text(`${Math.round(averageScore * 100)}`);
 
     svg
       .append('text')
       .attr('x', centerX)
-      .attr('y', centerY + 8)
+      .attr('y', centerY + 10)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
       .attr('fill', 'hsl(var(--muted-foreground))')
-      .attr('font-size', '10px')
+      .attr('font-size', '9px')
+      .attr('font-weight', 500)
       .text('FHSS');
 
   }, [data, width, height]);

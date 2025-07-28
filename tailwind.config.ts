@@ -101,6 +101,16 @@ const config: Config = {
         'gradient-flow': 'var(--gradient-flow)',
         'gradient-card': 'var(--gradient-card)',
         'gradient-hero': 'var(--gradient-hero)',
+        // Financial Psychology Gradients
+        'gradient-wealth': 'var(--gradient-wealth)',
+        'gradient-growth': 'var(--gradient-growth)',
+        'gradient-confidence': 'var(--gradient-confidence)',
+        'gradient-warning': 'var(--gradient-warning)',
+        'gradient-danger': 'var(--gradient-danger)',
+        // Chart Gradients
+        'gradient-chart-positive': 'var(--gradient-chart-positive)',
+        'gradient-chart-neutral': 'var(--gradient-chart-neutral)',
+        'gradient-chart-negative': 'var(--gradient-chart-negative)',
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -115,6 +125,14 @@ const config: Config = {
         "shimmer": "shimmer 1.5s infinite",
         "bounce-subtle": "bounce-subtle 2s infinite",
         "float": "float 3s ease-in-out infinite",
+        // Financial Psychology Animations
+        "wealth-pulse": "wealth-pulse 3s ease-in-out infinite",
+        "growth-surge": "growth-surge 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite",
+        "confidence-glow": "confidence-glow 4s ease-in-out infinite",
+        "achievement-celebration": "achievement-celebration 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "chart-entry": "chart-entry 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+        "data-reveal": "data-reveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+        "insight-appear": "insight-appear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
       },
       keyframes: {
         "accordion-down": {
@@ -164,6 +182,69 @@ const config: Config = {
         "float": {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
+        },
+        // Financial Psychology Keyframes
+        "wealth-pulse": {
+          "0%, 100%": { 
+            boxShadow: "0 0 20px hsl(var(--accent-success) / 0.3)",
+            transform: "scale(1)"
+          },
+          "50%": { 
+            boxShadow: "0 0 40px hsl(var(--accent-success) / 0.6), 0 0 60px hsl(var(--accent-teal) / 0.2)",
+            transform: "scale(1.02)"
+          },
+        },
+        "growth-surge": {
+          "0%, 100%": { transform: "translateY(0)", opacity: "0.8" },
+          "50%": { transform: "translateY(-3px)", opacity: "1" },
+        },
+        "confidence-glow": {
+          "0%, 100%": { boxShadow: "0 0 15px hsl(var(--accent-teal) / 0.3)" },
+          "50%": { boxShadow: "0 0 30px hsl(var(--accent-teal) / 0.6), 0 0 50px hsl(var(--primary) / 0.2)" },
+        },
+        "achievement-celebration": {
+          "0%": { transform: "scale(1)" },
+          "50%": { 
+            transform: "scale(1.1)",
+            boxShadow: "0 0 40px hsl(var(--accent-success) / 0.8)"
+          },
+          "100%": { 
+            transform: "scale(1)",
+            boxShadow: "0 0 20px hsl(var(--accent-success) / 0.4)"
+          },
+        },
+        "chart-entry": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateY(20px) scale(0.95)"
+          },
+          "100%": { 
+            opacity: "1",
+            transform: "translateY(0) scale(1)"
+          },
+        },
+        "data-reveal": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateX(-10px)",
+            filter: "blur(2px)"
+          },
+          "100%": { 
+            opacity: "1",
+            transform: "translateX(0)",
+            filter: "blur(0)"
+          },
+        },
+        "insight-appear": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateY(15px) rotate(-1deg)"
+          },
+          "70%": { transform: "translateY(-2px) rotate(0.5deg)" },
+          "100%": { 
+            opacity: "1",
+            transform: "translateY(0) rotate(0deg)"
+          },
         },
       },
       transitionTimingFunction: {

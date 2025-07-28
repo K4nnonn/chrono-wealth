@@ -77,27 +77,85 @@ export const FinancialHealthDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Overall Score Header */}
-      <Card className="p-6 bg-gradient-card">
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold">Financial Health Score</h2>
+      {/* Overall Score Header - Psychologically Enhanced */}
+      <Card className="p-6 bg-gradient-card hover-lift transition-smooth overflow-hidden relative">
+        {/* Dynamic Background Elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className={`absolute top-0 right-0 w-32 h-32 rounded-full ${
+            currentScore.fhss >= 0.8 ? 'bg-gradient-wealth' :
+            currentScore.fhss >= 0.6 ? 'bg-gradient-confidence' :
+            currentScore.fhss >= 0.4 ? 'bg-gradient-warning' : 'bg-gradient-danger'
+          } animate-wealth-pulse`} />
+        </div>
+        
+        <div className="flex items-center justify-between relative z-10">
+          <div className="space-y-2 animate-data-reveal">
+            <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Financial Health Score
+            </h2>
             <p className="text-muted-foreground">
               Comprehensive analysis of your financial wellness
             </p>
+            {/* Psychological Insight */}
+            <div className="flex items-center gap-2 text-xs text-primary animate-insight-appear" style={{animationDelay: '0.3s'}}>
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              <span>
+                {currentScore.fhss >= 0.8 ? "You're in excellent financial health! 🌟" :
+                 currentScore.fhss >= 0.6 ? "You're on a solid financial path! 📈" :
+                 currentScore.fhss >= 0.4 ? "Good progress, room to grow! 💪" :
+                 "Let's build your financial strength! 🚀"}
+              </span>
+            </div>
           </div>
           
-          <div className="text-center">
-            <div className={`text-4xl font-bold ${getScoreColor(currentScore.fhss)}`}>
-              {Math.round(currentScore.fhss * 100)}
+          <div className="text-center animate-chart-entry">
+            {/* Enhanced Score Display */}
+            <div className={`relative ${
+              currentScore.fhss >= 0.8 ? 'animate-achievement-celebration' :
+              currentScore.fhss >= 0.6 ? 'animate-confidence-glow' :
+              'animate-growth-surge'
+            }`}>
+              <div className={`text-5xl font-bold ${getScoreColor(currentScore.fhss)} drop-shadow-sm`}>
+                {Math.round(currentScore.fhss * 100)}
+              </div>
+              {/* Score Ring Animation */}
+              <div className="absolute inset-0 -m-4">
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="text-muted opacity-20"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeDasharray={`${currentScore.fhss * 283} 283`}
+                    strokeLinecap="round"
+                    className={getScoreColor(currentScore.fhss)}
+                    style={{
+                      transform: 'rotate(-90deg)',
+                      transformOrigin: '50% 50%',
+                      transition: 'stroke-dasharray 1.5s ease-out'
+                    }}
+                  />
+                </svg>
+              </div>
             </div>
             <Badge 
               variant={getScoreBadgeVariant(currentScore.fhss)}
-              className="mt-2"
+              className="mt-3 animate-bounce-subtle shadow-lg"
             >
               {getScoreLabel(currentScore.fhss)}
             </Badge>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-xs text-muted-foreground mt-2 opacity-80">
               {Math.round(currentScore.confidence * 100)}% confidence
             </div>
           </div>

@@ -53,64 +53,114 @@ export const AdvancedForecasting: React.FC = () => {
   }));
 
   return (
-    <div className="space-y-8 p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 rounded-2xl">
-      {/* Top Metrics Row */}
+    <div className="space-y-8 p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 rounded-2xl animate-chart-entry">
+      {/* Psychological Header with Confidence Indicator */}
+      <div className="flex items-center justify-between mb-8 animate-data-reveal">
+        <div>
+          <h2 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            Advanced Financial Forecasting
+          </h2>
+          <p className="text-muted-foreground mt-2">AI-powered insights into your financial future</p>
+        </div>
+        <div className="flex items-center gap-3 bg-gradient-confidence px-4 py-2 rounded-full animate-confidence-glow">
+          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+          <span className="text-white font-medium text-sm">94% Confidence</span>
+        </div>
+      </div>
+      
+      {/* Top Metrics Row - Enhanced with Psychology */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 hover-lift transition-smooth animate-data-reveal overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-sm font-medium">Monthly Income</p>
-                <p className="text-3xl font-bold">{formatCurrency(currentMetrics.monthlyIncome)}</p>
-                <p className="text-blue-200 text-xs">+12% from last month</p>
+                <p className="text-blue-100 text-sm font-medium flex items-center gap-2">
+                  Monthly Income
+                  <TrendingUp className="w-4 h-4 animate-growth-surge" />
+                </p>
+                <p className="text-3xl font-bold animate-data-reveal" style={{animationDelay: '0.2s'}}>
+                  {formatCurrency(currentMetrics.monthlyIncome)}
+                </p>
+                <p className="text-blue-200 text-xs flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+                  +12% from last month
+                </p>
               </div>
-              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <DollarSign className="h-6 w-6" />
+              <div className="h-14 w-14 bg-white/20 rounded-xl flex items-center justify-center animate-float backdrop-blur-sm">
+                <DollarSign className="h-7 w-7" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-wealth text-white border-0 hover-lift transition-smooth animate-data-reveal overflow-hidden relative" style={{animationDelay: '0.1s'}}>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-emerald-100 text-sm font-medium">Monthly Savings</p>
-                <p className="text-3xl font-bold">{formatCurrency(currentMetrics.monthlySavings)}</p>
-                <p className="text-emerald-200 text-xs">{(currentMetrics.savingsRate * 100).toFixed(1)}% savings rate</p>
+                <p className="text-emerald-100 text-sm font-medium flex items-center gap-2">
+                  Monthly Savings
+                  <Shield className="w-4 h-4 animate-confidence-glow" />
+                </p>
+                <p className="text-3xl font-bold animate-data-reveal animate-wealth-pulse" style={{animationDelay: '0.3s'}}>
+                  {formatCurrency(currentMetrics.monthlySavings)}
+                </p>
+                <p className="text-emerald-200 text-xs flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse" />
+                  {(currentMetrics.savingsRate * 100).toFixed(1)}% savings rate
+                </p>
               </div>
-              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-6 w-6" />
+              <div className="h-14 w-14 bg-white/20 rounded-xl flex items-center justify-center animate-float backdrop-blur-sm" style={{animationDelay: '0.2s'}}>
+                <TrendingUp className="h-7 w-7" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 hover-lift transition-smooth animate-data-reveal overflow-hidden relative" style={{animationDelay: '0.2s'}}>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 text-sm font-medium">Net Worth</p>
-                <p className="text-3xl font-bold">{formatCurrency(currentMetrics.currentNetWorth)}</p>
-                <p className="text-purple-200 text-xs">+8.2% this year</p>
+                <p className="text-purple-100 text-sm font-medium flex items-center gap-2">
+                  Net Worth
+                  <Zap className="w-4 h-4 animate-pulse" />
+                </p>
+                <p className="text-3xl font-bold animate-data-reveal" style={{animationDelay: '0.4s'}}>
+                  {formatCurrency(currentMetrics.currentNetWorth)}
+                </p>
+                <p className="text-purple-200 text-xs flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
+                  +8.2% this year
+                </p>
               </div>
-              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <Target className="h-6 w-6" />
+              <div className="h-14 w-14 bg-white/20 rounded-xl flex items-center justify-center animate-float backdrop-blur-sm" style={{animationDelay: '0.3s'}}>
+                <Target className="h-7 w-7" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0">
-          <CardContent className="p-6">
+        <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0 hover-lift transition-smooth animate-data-reveal overflow-hidden relative" style={{animationDelay: '0.3s'}}>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-100 text-sm font-medium">Goal Progress</p>
-                <p className="text-3xl font-bold">67%</p>
-                <p className="text-orange-200 text-xs">45 days to milestone</p>
+                <p className="text-orange-100 text-sm font-medium flex items-center gap-2">
+                  Goal Progress
+                  <Calculator className="w-4 h-4 animate-bounce-subtle" />
+                </p>
+                <p className="text-3xl font-bold animate-data-reveal animate-achievement-celebration" style={{animationDelay: '0.5s'}}>
+                  67%
+                </p>
+                <p className="text-orange-200 text-xs flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
+                  45 days to milestone
+                </p>
               </div>
-              <div className="h-12 w-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <Calendar className="h-6 w-6" />
+              <div className="h-14 w-14 bg-white/20 rounded-xl flex items-center justify-center animate-float backdrop-blur-sm" style={{animationDelay: '0.4s'}}>
+                <Calendar className="h-7 w-7" />
               </div>
             </div>
           </CardContent>
