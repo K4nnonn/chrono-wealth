@@ -55,7 +55,10 @@ export const Dashboard = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setGoals(data || []);
+      setGoals((data || []).map(goal => ({
+        ...goal,
+        current_amount: goal.current_amount || 0
+      })));
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error fetching goals:', error);

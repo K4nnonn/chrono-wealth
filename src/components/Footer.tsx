@@ -122,14 +122,14 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
             {/* Legal Links */}
             <div className="flex items-center gap-6 text-sm">
-              <Link to="/terms" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              <a href="/terms" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <FileText className="w-4 h-4" />
                 Terms of Service
-              </Link>
-              <Link to="/privacy" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              </a>
+              <a href="/privacy" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Shield className="w-4 h-4" />
                 Privacy Policy
-              </Link>
+              </a>
               <button className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Lock className="w-4 h-4" />
                 Security

@@ -68,7 +68,7 @@ export const SubscriptionGuard = ({ children, fallback }: SubscriptionGuardProps
                 </ul>
               </div>
 
-              <Button onClick={createCheckout} className="w-full" size="lg">
+              <Button onClick={() => createCheckout()} className="w-full" size="lg">
                 <CreditCard className="w-4 h-4 mr-2" />
                 Subscribe Now
               </Button>

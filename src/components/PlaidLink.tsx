@@ -92,11 +92,11 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
         }
       }
 
-      if (!syncResponse.ok) {
+      if (syncResponse.error) {
         throw new Error('Failed to sync data');
       }
 
-      const plaidData = await syncResponse.json();
+      const plaidData = syncResponse.data;
 
       // Store comprehensive data
       const { error: dataError } = await supabase
