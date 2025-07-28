@@ -8,8 +8,8 @@ import { WhatIfSlider } from '@/components/WhatIfSlider';
 import { TimelineChart } from '@/components/TimelineChart';
 import { computeFHSS, FinancialProfile, FHSSResponse } from '@/lib/fhss-calculator';
 import { useProfile } from '@/hooks/useProfile';
-import { TrendingUp, AlertTriangle, CheckCircle, Target, Lightbulb, Trophy, Zap } from 'lucide-react';
-import { GamificationDashboard, AchievementBadge, FINANCIAL_ACHIEVEMENTS } from '@/components/Gamification';
+import { TrendingUp, AlertTriangle, CheckCircle, Target, Lightbulb } from 'lucide-react';
+import { GamificationDashboard } from '@/components/Gamification';
 
 export const FinancialHealthDashboard = () => {
   const { profile, financialData } = useProfile();

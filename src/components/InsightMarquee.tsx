@@ -1,18 +1,7 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { 
-  TrendingUp, 
-  Target, 
-  Zap, 
-  Activity, 
-  DollarSign,
-  AlertTriangle,
-  ChevronRight,
-  Clock,
-  BarChart3
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface InsightMarqueeProps {

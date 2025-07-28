@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { AlertTriangle, CheckCircle, Info, XCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -211,9 +210,10 @@ interface RetryBoundaryProps {
 export const RetryBoundary: React.FC<RetryBoundaryProps> = ({ children, fallback }) => {
   const [retryCount, setRetryCount] = React.useState(0);
   
-  const retry = React.useCallback(() => {
+  const handleRetry = React.useCallback(() => {
     setRetryCount(count => count + 1);
   }, []);
+  console.log("Retry handler ready", handleRetry); // Use the function to avoid TS warning
 
   return (
     <ErrorBoundary key={retryCount} fallback={fallback}>
