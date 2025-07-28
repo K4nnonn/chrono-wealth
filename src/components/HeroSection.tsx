@@ -70,11 +70,57 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Optional: Add preview image or animation below */}
+        {/* Demo Dashboard Preview */}
         <div className="mt-16 relative">
           <div className="bg-card rounded-xl shadow-2xl p-2 max-w-5xl mx-auto border">
-            <div className="bg-gradient-to-br from-muted/50 to-muted rounded-lg p-8 min-h-[400px] flex items-center justify-center">
-              <p className="text-muted-foreground text-lg">Dashboard Preview / Demo Video Placeholder</p>
+            <div className="bg-gradient-to-br from-muted/50 to-muted rounded-lg p-6 min-h-[400px]">
+              {/* Mini Dashboard Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-lg font-semibold">Financial Health Score</h3>
+                  <p className="text-sm text-muted-foreground">Live dashboard preview</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary">78</div>
+                  <div className="text-xs text-muted-foreground">Good Health</div>
+                </div>
+              </div>
+              
+              {/* Mini Chart Area */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-background/50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Net Worth</span>
+                    <span className="text-green-500 text-sm">+12.5%</span>
+                  </div>
+                  <div className="text-xl font-bold">$156,429</div>
+                  <div className="mt-2 h-2 bg-muted rounded-full">
+                    <div className="h-2 bg-primary rounded-full w-3/4"></div>
+                  </div>
+                </div>
+                
+                <div className="bg-background/50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Monthly Savings</span>
+                    <span className="text-green-500 text-sm">+8.2%</span>
+                  </div>
+                  <div className="text-xl font-bold">$2,340</div>
+                  <div className="mt-2 h-2 bg-muted rounded-full">
+                    <div className="h-2 bg-secondary rounded-full w-2/3"></div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Mini Insights */}
+              <div className="bg-background/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium">Latest Insight</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Your emergency fund is well-positioned. Consider increasing retirement contributions by 2% to optimize tax benefits.
+                </p>
+              </div>
             </div>
           </div>
         </div>
