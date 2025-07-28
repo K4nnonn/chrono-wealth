@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import {
   BarChart3,
   Brain,
@@ -12,7 +13,8 @@ import {
   Settings,
   Menu,
   X,
-  Home
+  Home,
+  LogOut
 } from "lucide-react";
 
 const navItems = [
@@ -27,6 +29,7 @@ const navItems = [
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -174,9 +177,10 @@ const Navigation = () => {
             
             <Button
               variant="ghost"
-              onClick={() => {/* Add sign out here */}}
+              onClick={signOut}
               className="w-full flex items-center gap-3 p-3 rounded-lg transition-colors text-left"
             >
+              <LogOut className="w-4 h-4" />
               Sign Out
             </Button>
           </div>

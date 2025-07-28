@@ -65,7 +65,9 @@ export const Dashboard = () => {
       if (error) throw error;
       setGoals(data || []);
     } catch (error) {
-      console.error('Error fetching goals:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching goals:', error);
+      }
     }
   };
 
@@ -123,11 +125,19 @@ export const Dashboard = () => {
         message={getStatusMessage()}
         action={{
           label: pulseStatus === 'critical' ? 'Fix Now' : 'Optimize',
-          onClick: () => console.log('Signal action clicked')
+          onClick: () => {
+            if (import.meta.env.DEV) console.log('Signal action clicked');
+          }
         }}
-        onDismiss={() => console.log('Signal dismissed')}
-        onSnooze={() => console.log('Signal snoozed')}
-        onBookmark={() => console.log('Signal bookmarked')}
+        onDismiss={() => {
+          if (import.meta.env.DEV) console.log('Signal dismissed');
+        }}
+        onSnooze={() => {
+          if (import.meta.env.DEV) console.log('Signal snoozed');
+        }}
+        onBookmark={() => {
+          if (import.meta.env.DEV) console.log('Signal bookmarked');
+        }}
       />
 
       <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
@@ -219,7 +229,9 @@ export const Dashboard = () => {
 
                 {/* Dual-Axis Financial Timeline */}
                 <DualAxisTimeline 
-                  onTimeChange={(year) => console.log('Time changed to:', year)}
+                  onTimeChange={(year) => {
+                    if (import.meta.env.DEV) console.log('Time changed to:', year);
+                  }}
                 />
 
                 {/* Money Flow Engine */}
@@ -310,7 +322,9 @@ export const Dashboard = () => {
                       category={goal.category || 'General'}
                       riskLevel="medium"
                       milestones={sampleMilestones}
-                      onActionPlan={(goalId) => console.log('Action plan for goal:', goalId)}
+                      onActionPlan={(goalId) => {
+                        if (import.meta.env.DEV) console.log('Action plan for goal:', goalId);
+                      }}
                     />
                   ))}
 
@@ -342,10 +356,18 @@ export const Dashboard = () => {
 
         {/* Contextual Action Orb */}
         <ContextualActionOrb 
-          onNewGoal={() => console.log('New goal from orb')}
-          onWhatIfScenario={() => console.log('What-if scenario from orb')}
-          onCrisisDrill={() => console.log('Crisis drill from orb')}
-          onAIChat={() => console.log('AI chat from orb')}
+          onNewGoal={() => {
+            if (import.meta.env.DEV) console.log('New goal from orb');
+          }}
+          onWhatIfScenario={() => {
+            if (import.meta.env.DEV) console.log('What-if scenario from orb');
+          }}
+          onCrisisDrill={() => {
+            if (import.meta.env.DEV) console.log('Crisis drill from orb');
+          }}
+          onAIChat={() => {
+            if (import.meta.env.DEV) console.log('AI chat from orb');
+          }}
         />
       </div>
     </>

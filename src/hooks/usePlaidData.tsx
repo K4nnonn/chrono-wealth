@@ -83,7 +83,7 @@ export const usePlaidData = () => {
         .eq('status', 'active')
         .order('last_updated', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (plaidError && plaidError.code !== 'PGRST116') {
         throw plaidError;
@@ -105,7 +105,9 @@ export const usePlaidData = () => {
         });
       }
     } catch (err) {
-      console.error('Error fetching Plaid data:', err);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching Plaid data:', err);
+      }
       setError(err instanceof Error ? err.message : 'Failed to fetch data');
     } finally {
       setLoading(false);
@@ -120,19 +122,15 @@ export const usePlaidData = () => {
       
       // Sync data for all active institutions
       for (const institution of institutions) {
-        const response = await fetch('/api/plaid-sync-data', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        const response = await supabase.functions.invoke('plaid-sync-data', {
+          body: {
             access_token: institution.access_token,
             user_id: user.id,
-          }),
+          }
         });
 
-        if (!response.ok) {
-          throw new Error(`Failed to sync data for ${institution.institution_name}`);
+        if (response.error) {
+          throw new Error(response.error.message || `Failed to sync data for ${institution.institution_name}`);
         }
 
         const syncedData = await response.json();
@@ -160,7 +158,9 @@ export const usePlaidData = () => {
       // Refresh the data
       await fetchPlaidData();
     } catch (err) {
-      console.error('Error syncing Plaid data:', err);
+      if (import.meta.env.DEV) {
+        console.error('Error syncing Plaid data:', err);
+      }
       setError(err instanceof Error ? err.message : 'Failed to sync data');
     }
   };
@@ -178,7 +178,9 @@ export const usePlaidData = () => {
       // Refresh data
       await fetchPlaidData();
     } catch (err) {
-      console.error('Error disconnecting institution:', err);
+      if (import.meta.env.DEV) {
+        console.error('Error disconnecting institution:', err);
+      }
       setError(err instanceof Error ? err.message : 'Failed to disconnect');
     }
   };

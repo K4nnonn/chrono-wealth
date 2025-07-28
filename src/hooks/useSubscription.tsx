@@ -48,7 +48,9 @@ export const useSubscription = () => {
       });
 
       if (error) {
-        console.error('Subscription check error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Subscription check error:', error);
+        }
         if (showToast) {
           toast.error('Failed to check subscription status');
         }
@@ -64,7 +66,9 @@ export const useSubscription = () => {
         }
       }
     } catch (error) {
-      console.error('Error checking subscription:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error checking subscription:', error);
+      }
       if (showToast) {
         toast.error('Failed to check subscription status');
       }
@@ -96,7 +100,9 @@ export const useSubscription = () => {
         },
       });
       if (error) {
-        console.error('Checkout creation error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Checkout creation error:', error);
+        }
         toast.error('Failed to create checkout session');
         return;
       }
@@ -106,7 +112,9 @@ export const useSubscription = () => {
         toast.error('Invalid checkout session response');
       }
     } catch (error) {
-      console.error('Error creating checkout:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error creating checkout:', error);
+      }
       toast.error('Failed to create checkout session');
     }
   };
@@ -126,7 +134,9 @@ export const useSubscription = () => {
         },
       });
       if (error) {
-        console.error('Customer portal error:', error);
+        if (import.meta.env.DEV) {
+          console.error('Customer portal error:', error);
+        }
         toast.error('Failed to open billing portal');
         return;
       }
@@ -136,7 +146,9 @@ export const useSubscription = () => {
         toast.error('Invalid portal session response');
       }
     } catch (error) {
-      console.error('Error opening customer portal:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error opening customer portal:', error);
+      }
       toast.error('Failed to open billing portal');
     }
   };

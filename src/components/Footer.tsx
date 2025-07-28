@@ -51,21 +51,21 @@ const Footer = () => {
             <div className="space-y-6">
               <h3 className="font-semibold text-lg">Product</h3>
               <div className="space-y-3">
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   AI Forecast Engine
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Crisis Simulator
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Goal Tracker
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Smart Nudges
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   AI Copilot
-                </a>
+                </button>
               </div>
             </div>
 
@@ -73,21 +73,21 @@ const Footer = () => {
             <div className="space-y-6">
               <h3 className="font-semibold text-lg">Company</h3>
               <div className="space-y-3">
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   About Us
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Careers
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Press Kit
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Blog
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Contact
-                </a>
+                </button>
               </div>
             </div>
 
@@ -95,21 +95,21 @@ const Footer = () => {
             <div className="space-y-6">
               <h3 className="font-semibold text-lg">Resources</h3>
               <div className="space-y-3">
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Help Center
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   API Documentation
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Financial Tools
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Security
-                </a>
-                <a href="#" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                </button>
+                <button className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors text-left">
                   Status Page
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -122,18 +122,18 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
             {/* Legal Links */}
             <div className="flex items-center gap-6 text-sm">
-              <a href="#" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              <Link to="/terms" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <FileText className="w-4 h-4" />
                 Terms of Service
-              </a>
-              <a href="#" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              </Link>
+              <Link to="/privacy" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Shield className="w-4 h-4" />
                 Privacy Policy
-              </a>
-              <a href="#" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              </Link>
+              <button className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Lock className="w-4 h-4" />
                 Security
-              </a>
+              </button>
             </div>
 
             {/* Copyright */}

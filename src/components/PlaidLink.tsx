@@ -33,7 +33,9 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
       const data = response.data;
       setLinkToken(data.link_token);
     } catch (error) {
-      console.error('Error creating link token:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error creating link token:', error);
+      }
       toast({
         title: 'Connection Error',
         description: 'Failed to initialize bank connection. Please try again.',
@@ -85,7 +87,9 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
       });
 
       if (syncResponse.error) {
-        console.error('Failed to sync data:', syncResponse.error);
+        if (import.meta.env.DEV) {
+          console.error('Failed to sync data:', syncResponse.error);
+        }
       }
 
       if (!syncResponse.ok) {
@@ -124,7 +128,9 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
             // For now, use existing values if available
           });
 
-        if (financialError) console.error('Error updating financial data:', financialError);
+        if (financialError && import.meta.env.DEV) {
+          console.error('Error updating financial data:', financialError);
+        }
       }
 
       toast({
@@ -134,7 +140,9 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
 
       onSuccess?.();
     } catch (error) {
-      console.error('Error connecting bank account:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error connecting bank account:', error);
+      }
       toast({
         title: 'Connection Failed',
         description: 'Failed to connect your bank account. Please try again.',

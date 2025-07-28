@@ -57,7 +57,9 @@ export const Dashboard = () => {
       if (error) throw error;
       setGoals(data || []);
     } catch (error) {
-      console.error('Error fetching goals:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching goals:', error);
+      }
     }
   };
 

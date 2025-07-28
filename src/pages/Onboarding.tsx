@@ -112,7 +112,9 @@ const Onboarding = () => {
 
       navigate("/dashboard");
     } catch (error) {
-      console.error('Error completing onboarding:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error completing onboarding:', error);
+      }
       toast({
         title: "Setup error",
         description: "There was an issue saving your data. Please try again.",

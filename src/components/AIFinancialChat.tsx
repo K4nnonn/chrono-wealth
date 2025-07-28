@@ -93,7 +93,10 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
       setMessages(prev => [...prev, assistantMessage]);
 
     } catch (error) {
-      console.error('Chat error:', error);
+      // Only log in development
+      if (import.meta.env.DEV) {
+        console.error('Chat error:', error);
+      }
       setError('Sorry, I had trouble processing your message. Please try again.');
       
       const errorMessage: ChatMessage = {

@@ -59,7 +59,9 @@ export const useProfile = () => {
       if (error && error.code !== 'PGRST116') throw error;
       setHasPlaidData((data?.length || 0) > 0);
     } catch (error) {
-      console.error('Error checking Plaid data:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error checking Plaid data:', error);
+      }
     }
   };
 
@@ -71,12 +73,14 @@ export const useProfile = () => {
         .from('profiles')
         .select('*')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setProfile(data);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching profile:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -90,12 +94,14 @@ export const useProfile = () => {
         .from('user_financial_data')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error; // Ignore "not found" errors
       setFinancialData(data);
     } catch (error) {
-      console.error('Error fetching financial data:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching financial data:', error);
+      }
     }
   };
 
@@ -113,7 +119,9 @@ export const useProfile = () => {
       setProfile(prev => prev ? { ...prev, ...updates } : null);
       return { success: true };
     } catch (error) {
-      console.error('Error updating profile:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error updating profile:', error);
+      }
       return { success: false, error };
     }
   };
@@ -134,7 +142,9 @@ export const useProfile = () => {
       setFinancialData(prev => prev ? { ...prev, ...data } : data as FinancialData);
       return { success: true };
     } catch (error) {
-      console.error('Error updating financial data:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error updating financial data:', error);
+      }
       return { success: false, error };
     }
   };
