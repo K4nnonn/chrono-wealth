@@ -15,6 +15,7 @@ export const Auth = () => {
   const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{[key: string]: string}>({});
   
   // Form states
   const [email, setEmail] = useState('');
@@ -22,38 +23,80 @@ export const Auth = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [resetEmail, setResetEmail] = useState('');
 
   // Get initial tab from URL params
   const mode = searchParams.get('mode');
-  const [activeTab, setActiveTab] = useState(mode === 'signup' ? 'signup' : 'signin');
+  const redirect = searchParams.get('redirect');
+  const [activeTab, setActiveTab] = useState(
+    mode === 'signup' ? 'signup' : 
+    mode === 'reset' ? 'reset' : 'signin'
+  );
 
   // Redirect if already authenticated
   if (user && !loading) {
-    return <Navigate to="/" replace />;
+    const redirectTo = redirect ? decodeURIComponent(redirect) : '/dashboard';
+    return <Navigate to={redirectTo} replace />;
   }
+
+  // Validation functions
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
+  };
+
+  const validateForm = (type: 'signin' | 'signup' | 'reset') => {
+    const errors: {[key: string]: string} = {};
+
+    if (!email) {
+      errors.email = 'Email is required';
+    } else if (!validateEmail(email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+
+    if (type !== 'reset') {
+      if (!password) {
+        errors.password = 'Password is required';
+      } else if (!validatePassword(password)) {
+        errors.password = 'Password must be at least 6 characters';
+      }
+    }
+
+    if (type === 'signup') {
+      if (!firstName) errors.firstName = 'First name is required';
+      if (!lastName) errors.lastName = 'Last name is required';
+      if (!confirmPassword) {
+        errors.confirmPassword = 'Please confirm your password';
+      } else if (password !== confirmPassword) {
+        errors.confirmPassword = 'Passwords do not match';
+      }
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) return;
+    if (!validateForm('signin')) return;
 
     setIsLoading(true);
-    await signIn(email, password);
+    const { error } = await signIn(email, password);
+    if (!error) {
+      // Success will be handled by auth state change
+      const redirectTo = redirect ? decodeURIComponent(redirect) : '/dashboard';
+      window.location.href = redirectTo;
+    }
     setIsLoading(false);
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password || !firstName || !lastName) return;
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters');
-      return;
-    }
+    if (!validateForm('signup')) return;
 
     setIsLoading(true);
     await signUp(email, password, firstName, lastName);
@@ -62,10 +105,10 @@ export const Auth = () => {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!validateForm('reset')) return;
 
     setIsLoading(true);
-    await resetPassword(email);
+    await resetPassword(resetEmail || email);
     setIsLoading(false);
   };
 
@@ -95,9 +138,18 @@ export const Auth = () => {
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="signin" className="rounded-lg">Sign In</TabsTrigger>
-                <TabsTrigger value="signup" className="rounded-lg">Sign Up</TabsTrigger>
+              <TabsList className={`grid w-full ${activeTab === 'reset' ? 'grid-cols-1' : 'grid-cols-2'} mb-6`}>
+                {activeTab !== 'reset' && (
+                  <>
+                    <TabsTrigger value="signin" className="rounded-lg">Sign In</TabsTrigger>
+                    <TabsTrigger value="signup" className="rounded-lg">Sign Up</TabsTrigger>
+                  </>
+                )}
+                {activeTab === 'reset' && (
+                  <div className="text-center p-2 bg-muted rounded-lg">
+                    <span className="text-sm font-medium">Reset Password</span>
+                  </div>
+                )}
               </TabsList>
 
               <TabsContent value="signin" className="space-y-4">
@@ -150,11 +202,18 @@ export const Auth = () => {
                   </Button>
                 </form>
 
+                {validationErrors.email && (
+                  <p className="text-sm text-destructive">{validationErrors.email}</p>
+                )}
+                {validationErrors.password && (
+                  <p className="text-sm text-destructive">{validationErrors.password}</p>
+                )}
+
                 <div className="text-center">
                   <button
-                    onClick={handleResetPassword}
+                    type="button"
+                    onClick={() => setActiveTab('reset')}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    disabled={!email}
                   >
                     Forgot your password?
                   </button>
@@ -261,6 +320,68 @@ export const Auth = () => {
                     {isLoading ? "Creating account..." : "Create Account"}
                   </Button>
                 </form>
+
+                {/* Validation errors for signup */}
+                {validationErrors.firstName && (
+                  <p className="text-sm text-destructive">{validationErrors.firstName}</p>
+                )}
+                {validationErrors.lastName && (
+                  <p className="text-sm text-destructive">{validationErrors.lastName}</p>
+                )}
+                {validationErrors.email && (
+                  <p className="text-sm text-destructive">{validationErrors.email}</p>
+                )}
+                {validationErrors.password && (
+                  <p className="text-sm text-destructive">{validationErrors.password}</p>
+                )}
+                {validationErrors.confirmPassword && (
+                  <p className="text-sm text-destructive">{validationErrors.confirmPassword}</p>
+                )}
+              </TabsContent>
+
+              <TabsContent value="reset" className="space-y-4">
+                <form onSubmit={handleResetPassword} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="reset-email">Email Address</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="reset-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={resetEmail || email}
+                        onChange={(e) => {
+                          setResetEmail(e.target.value);
+                          setEmail(e.target.value);
+                        }}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    disabled={isLoading || !resetEmail && !email}
+                  >
+                    {isLoading ? "Sending reset link..." : "Send Reset Link"}
+                  </Button>
+                </form>
+
+                {validationErrors.email && (
+                  <p className="text-sm text-destructive">{validationErrors.email}</p>
+                )}
+
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('signin')}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    Back to sign in
+                  </button>
+                </div>
               </TabsContent>
             </Tabs>
 

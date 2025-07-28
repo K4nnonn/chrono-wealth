@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Navigation from "@/components/Navigation";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -46,6 +46,7 @@ function App() {
               
               <Route path="/goals" element={
                 <ProtectedRoute>
+                  <Navigation />
                   <Goals />
                 </ProtectedRoute>
               } />
@@ -96,6 +97,13 @@ function App() {
                 <ProtectedRoute>
                   <Navigation />
                   <Onboarding />
+                </ProtectedRoute>
+              } />
+              
+              {/* Legacy /app route redirect to dashboard */}
+              <Route path="/app" element={
+                <ProtectedRoute>
+                  <Navigate to="/dashboard" replace />
                 </ProtectedRoute>
               } />
               
