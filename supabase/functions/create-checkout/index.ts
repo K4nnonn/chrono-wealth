@@ -126,7 +126,9 @@ serve(async (req) => {
 
     // Create the checkout session using a preconfigured price ID
     const origin = req.headers.get("origin") || "https://www.flowsightfi.com";
-    const session = await stripe.checkout.sessions.create({
+    
+    // Build session options - only use customer_update if we have an existing customer
+    const sessionOptions: any = {
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
       line_items: [
@@ -140,10 +142,16 @@ serve(async (req) => {
       cancel_url: `${origin}/pricing?canceled=true`,
       allow_promotion_codes: true,
       billing_address_collection: "required",
-      customer_update: {
+    };
+    
+    // Only add customer_update if we have an existing customer
+    if (customerId) {
+      sessionOptions.customer_update = {
         address: "auto",
-      },
-    });
+      };
+    }
+    
+    const session = await stripe.checkout.sessions.create(sessionOptions);
 
     logStep("Checkout session created", { sessionId: session.id, url: session.url });
 
