@@ -1,5 +1,0 @@
-version: 1
-jobs:
-  nightly-etl:
-    schedule: '0 4 * * *'
-    command: nightly-etl
