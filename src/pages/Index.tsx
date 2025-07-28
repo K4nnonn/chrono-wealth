@@ -1,20 +1,22 @@
 import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import Hero from "@/components/Hero";
+import { HeroSection } from "@/components/HeroSection";
+import { TrustBar } from "@/components/TrustBar";
 import Features from "@/components/Features";
 import { Dashboard as DashboardPreview } from "@/components/Dashboard";
 import Pricing from "@/components/Pricing";
-import Footer from "@/components/Footer";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 const Index = () => {
   const { user } = useAuth();
   return (
     <div className="min-h-screen">
-      <Hero />
+      <HeroSection />
+      <TrustBar />
       <Features />
       <DashboardPreview />
       <Pricing />
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };
