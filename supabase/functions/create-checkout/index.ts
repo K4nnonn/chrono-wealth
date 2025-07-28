@@ -36,7 +36,6 @@ const priceMap: Record<string, string> = {
   Core: Deno.env.get("STRIPE_PRICE_CORE") ?? "",
   Plus: Deno.env.get("STRIPE_PRICE_PLUS") ?? "",
   Pro: Deno.env.get("STRIPE_PRICE_PRO") ?? "",
-  Advisory: Deno.env.get("STRIPE_PRICE_ADVISORY") ?? "",
 };
 
 // Main handler

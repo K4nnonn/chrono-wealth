@@ -86,7 +86,7 @@ export const useSubscription = () => {
    * (via the `Authorization` header) and a JSON body containing the tier.
    */
   const createCheckout = async (
-    tier: 'Core' | 'Plus' | 'Pro' | 'Advisory' = 'Core'
+    tier: 'Core' | 'Plus' | 'Pro' = 'Core'
   ) => {
     if (!user || !session) {
       toast.error('Please log in to subscribe');
