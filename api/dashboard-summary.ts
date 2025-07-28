@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import {
   calcSavingsRate,
@@ -6,12 +5,17 @@ import {
   liquidityRunway,
   resilienceScore,
   monteCarloFan,
-} from '@/lib/metrics'
+} from '../../../../lib/metrics'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const horizon = Number(req.query.horizon) || 1  // years
-  const userId = req.headers['x-user-id'] as string
-  const supabase = createClient(process.env.VITE_SUPABASE_URL!,
+export const config = {
+  runtime: 'edge',
+}
+
+export default async function handler(req: Request) {
+  const url = new URL(req.url!)
+  const horizon = Number(url.searchParams.get('horizon')) || 1  // years
+  const userId = req.headers.get('x-user-id') as string
+  const supabase = createClient(process.env.SUPABASE_URL!,
                                 process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
   // fetch daily_income / daily_expense / daily_balance aggregates and compute metrics
@@ -116,7 +120,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('Error loading macro rates', err)
   }
   const insight = monthlySavings > 0 ? 'You’re saving more than you spend—great job!' : 'Your expenses exceed your income.'
-  res.status(200).json({
+  return new Response(JSON.stringify({
     H1: insight,
     H2: macroRibbon,
     K1: monthlyIncome,
@@ -128,5 +132,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     M2: {},
     L1: runway,
     J1: journeyBand,
+  }), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
   })
 }
