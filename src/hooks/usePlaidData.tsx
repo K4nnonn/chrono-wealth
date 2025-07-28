@@ -73,7 +73,10 @@ export const usePlaidData = () => {
 
       if (institutionsError) throw institutionsError;
 
-      setInstitutions(institutionsData || []);
+      setInstitutions((institutionsData || []).map(institution => ({
+        ...institution,
+        is_active: institution.is_active ?? false
+      })));
 
       // Fetch consolidated plaid data
       const { data: plaidDataResponse, error: plaidError } = await supabase
@@ -133,7 +136,7 @@ export const usePlaidData = () => {
           throw new Error(response.error.message || `Failed to sync data for ${institution.institution_name}`);
         }
 
-        const syncedData = await response.json();
+        const syncedData = response.data;
 
         // Update the database
         const { error: updateError } = await supabase
@@ -171,7 +174,7 @@ export const usePlaidData = () => {
         .from('plaid_institutions')
         .update({ is_active: false })
         .eq('id', institutionId)
-        .eq('user_id', user?.id);
+        .eq('user_id', user?.id || '');
 
       if (error) throw error;
 

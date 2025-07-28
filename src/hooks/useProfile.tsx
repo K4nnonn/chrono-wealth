@@ -76,7 +76,19 @@ export const useProfile = () => {
         .maybeSingle();
 
       if (error) throw error;
-      setProfile(data);
+      setProfile(data ? {
+        id: data.id,
+        email: data.email || '',
+        first_name: data.first_name || '',
+        last_name: data.last_name || '',
+        onboarding_completed: data.onboarding_completed || false,
+        risk_profile: data.risk_profile || 'moderate',
+        preferred_currency: data.preferred_currency || 'USD',
+        ai_voice_enabled: data.ai_voice_enabled ?? false,
+        dark_mode: data.dark_mode ?? false,
+        notifications_email: data.notifications_email ?? false,
+        notifications_push: data.notifications_push ?? false
+      } : null);
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error fetching profile:', error);
@@ -97,7 +109,14 @@ export const useProfile = () => {
         .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error; // Ignore "not found" errors
-      setFinancialData(data);
+      setFinancialData(data ? {
+        annual_salary: data.annual_salary,
+        monthly_rent: data.monthly_rent,
+        monthly_subscriptions: data.monthly_subscriptions,
+        has_variable_income: data.has_variable_income ?? false,
+        has_dependents: data.has_dependents ?? false,
+        emergency_fund_months: data.emergency_fund_months ?? 3
+      } : null);
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error('Error fetching financial data:', error);

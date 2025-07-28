@@ -234,7 +234,7 @@ export const EnhancedChart: React.FC<EnhancedChartProps> = ({
   return (
     <div className={containerClassName}>
       <ResponsiveContainer width="100%" height={height}>
-        {renderChart()}
+        {renderChart() || <div />}
       </ResponsiveContainer>
     </div>
   );
