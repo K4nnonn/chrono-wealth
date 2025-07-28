@@ -1,19 +1,21 @@
-// Use the global Request/Response types instead of next/server. Vercel Edge
-// Functions support the Web Fetch API, so Request and Response are available
-// without importing from `next/server`, which is not present in this project.
-
-const corsHeaders: Record<string, string> = {
+const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
-
-export async function OPTIONS() {
-  // Return an empty 200 response for CORS preflight.
-  return new Response(null, { headers: corsHeaders });
 }
 
-export async function POST(req: Request) {
+Deno.serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const { user_id } = await req.json();
 
@@ -24,9 +26,9 @@ export async function POST(req: Request) {
       });
     }
 
-    const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
-    const PLAID_SECRET = process.env.PLAID_SECRET;
-    const PLAID_ENV = process.env.PLAID_ENV || 'sandbox';
+    const PLAID_CLIENT_ID = Deno.env.get('PLAID_CLIENT_ID');
+    const PLAID_SECRET = Deno.env.get('PLAID_SECRET');
+    const PLAID_ENV = Deno.env.get('PLAID_ENV') || 'sandbox';
 
     if (!PLAID_CLIENT_ID || !PLAID_SECRET) {
       return new Response(JSON.stringify({ error: 'Plaid credentials not configured' }), {
@@ -95,4 +97,4 @@ export async function POST(req: Request) {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
-}
+})

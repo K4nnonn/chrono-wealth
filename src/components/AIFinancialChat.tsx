@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { supabase } from '@/integrations/supabase/client';
 import { Bot, User, Send, Loader2 } from 'lucide-react';
 
 interface ChatMessage {
@@ -63,13 +64,9 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
     setError(null);
 
     try {
-      // Use Vercel Edge Function instead of Supabase
-      const response = await fetch('/api/financial-ai-chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      // Use Supabase Edge Function
+      const response = await supabase.functions.invoke('financial-ai-chat', {
+        body: {
           message: inputMessage,
           userProfile: {
             profile,
@@ -79,11 +76,11 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
         })
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to get AI response');
       }
 
-      const data = await response.json();
+      const data = response.data;
 
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),

@@ -22,19 +22,15 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
     
     setLoading(true);
     try {
-      const response = await fetch('/api/plaid-link-token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_id: user.id }),
+      const response = await supabase.functions.invoke('plaid-link-token', {
+        body: { user_id: user.id }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create link token');
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to create link token');
       }
 
-      const data = await response.json();
+      const data = response.data;
       setLinkToken(data.link_token);
     } catch (error) {
       console.error('Error creating link token:', error);
@@ -54,22 +50,18 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
     setLoading(true);
     try {
       // Exchange public token for access token
-      const exchangeResponse = await fetch('/api/plaid-exchange-token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const exchangeResponse = await supabase.functions.invoke('plaid-exchange-token', {
+        body: {
           public_token,
           user_id: user.id,
-        }),
+        }
       });
 
-      if (!exchangeResponse.ok) {
-        throw new Error('Failed to exchange token');
+      if (exchangeResponse.error) {
+        throw new Error(exchangeResponse.error.message || 'Failed to exchange token');
       }
 
-      const { access_token, item_id, institution_name } = await exchangeResponse.json();
+      const { access_token, item_id, institution_name } = exchangeResponse.data;
 
       // Store institution info
       const { error: institutionError } = await supabase
@@ -85,16 +77,16 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({ onSuccess, className }) =>
       if (institutionError) throw institutionError;
 
       // Sync financial data
-      const syncResponse = await fetch('/api/plaid-sync-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const syncResponse = await supabase.functions.invoke('plaid-sync-data', {
+        body: {
           access_token,
           user_id: user.id,
-        }),
+        }
       });
+
+      if (syncResponse.error) {
+        console.error('Failed to sync data:', syncResponse.error);
+      }
 
       if (!syncResponse.ok) {
         throw new Error('Failed to sync data');
