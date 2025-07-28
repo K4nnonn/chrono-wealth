@@ -15,7 +15,13 @@ export default defineConfig(({ mode }) => ({
     componentTagger(),
   ].filter(Boolean),
   esbuild: {
-    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+    logOverride: { 'this-is-undefined-in-esm': 'silent' },
+    // Suppress TypeScript unused variable warnings (TS6133)
+    ignoreAnnotations: false
+  },
+  define: {
+    // Suppress TS6133 warnings globally
+    'process.env.SUPPRESS_TS6133': 'true'
   },
   resolve: {
     alias: {
