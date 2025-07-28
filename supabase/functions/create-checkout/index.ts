@@ -125,6 +125,7 @@ serve(async (req) => {
     }
 
     // Create the checkout session using a preconfigured price ID
+    const origin = req.headers.get("origin") || "https://www.flowsightfi.com";
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
@@ -135,8 +136,8 @@ serve(async (req) => {
         },
       ],
       mode: "subscription",
-      success_url: `${req.headers.get("origin")}/dashboard?success=true`,
-      cancel_url: `${req.headers.get("origin")}/pricing?canceled=true`,
+      success_url: `${origin}/dashboard?success=true`,
+      cancel_url: `${origin}/pricing?canceled=true`,
       allow_promotion_codes: true,
       billing_address_collection: "required",
       customer_update: {

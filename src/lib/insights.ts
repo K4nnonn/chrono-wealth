@@ -97,6 +97,4 @@ export function generateInsights(engine: FlowSightFiEngine, goals: Goal[]): Insi
     // ignore forecast errors
   }
   return insights;
-  }
-
 }
