@@ -30,12 +30,24 @@ const logStep = (step: string, details?: unknown) => {
 
 // Build a map of tiers to Stripe price IDs from environment variables.
 // When adding a new tier you must set the corresponding env var in
-// Supabase/Vercel.  An empty string will cause checkout creation to
+// Supabase.  An empty string will cause checkout creation to
 // fail, so ensure all expected tiers are configured.
-const priceMap: Record<string, string> = {
-  Core: Deno.env.get("STRIPE_PRICE_CORE") ?? "",
-  Plus: Deno.env.get("STRIPE_PRICE_PLUS") ?? "",
-  Pro: Deno.env.get("STRIPE_PRICE_PRO") ?? "",
+const buildPriceMap = () => {
+  const corePrice = Deno.env.get("STRIPE_PRICE_CORE");
+  const plusPrice = Deno.env.get("STRIPE_PRICE_PLUS"); 
+  const proPrice = Deno.env.get("STRIPE_PRICE_PRO");
+  
+  logStep("Building price map", {
+    corePrice: corePrice ? `${corePrice.substring(0, 10)}...` : "MISSING",
+    plusPrice: plusPrice ? `${plusPrice.substring(0, 10)}...` : "MISSING",
+    proPrice: proPrice ? `${proPrice.substring(0, 10)}...` : "MISSING"
+  });
+  
+  return {
+    Core: corePrice ?? "",
+    Plus: plusPrice ?? "",
+    Pro: proPrice ?? "",
+  };
 };
 
 // Main handler
@@ -52,6 +64,17 @@ serve(async (req) => {
 
   try {
     logStep("Function started");
+    
+    // Debug environment variables
+    const corePrice = Deno.env.get("STRIPE_PRICE_CORE");
+    const plusPrice = Deno.env.get("STRIPE_PRICE_PLUS");
+    const proPrice = Deno.env.get("STRIPE_PRICE_PRO");
+    logStep("Environment variables check", { 
+      corePrice: corePrice ? "SET" : "MISSING",
+      plusPrice: plusPrice ? "SET" : "MISSING", 
+      proPrice: proPrice ? "SET" : "MISSING",
+      stripeSecret: Deno.env.get("STRIPE_SECRET_KEY") ? "SET" : "MISSING"
+    });
 
     // Verify the caller is authenticated
     const authHeader = req.headers.get("Authorization");
@@ -79,7 +102,8 @@ serve(async (req) => {
       logStep("Creating new customer");
     }
 
-    // Determine requested tier from JSON body. Default to Core.
+    // Build the price map and determine requested tier from JSON body. Default to Core.
+    const priceMap = buildPriceMap();
     let tier = "Core";
     try {
       const body = await req.json();
@@ -96,7 +120,8 @@ serve(async (req) => {
     logStep("Selected tier", { tier });
     const priceId = priceMap[tier];
     if (!priceId) {
-      throw new Error(`Price ID for tier '${tier}' is not configured`);
+      logStep("Available price map", priceMap);
+      throw new Error(`Price ID for tier '${tier}' is not configured. Check environment variables.`);
     }
 
     // Create the checkout session using a preconfigured price ID
