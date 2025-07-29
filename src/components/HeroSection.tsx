@@ -1,10 +1,21 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle, PlayCircle } from 'lucide-react'
 import { Button } from './ui/button'
+import { FloatingSecurityBadge, LiveUserCounter } from './TrustSignals'
+import { UrgencyTimer } from './UrgencyEngagement'
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-hero min-h-screen flex items-center">
+      {/* Trust Signals */}
+      <FloatingSecurityBadge />
+      <LiveUserCounter />
+      
+      {/* Urgency Banner */}
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <UrgencyTimer />
+      </div>
+      
       {/* Enterprise Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Premium gradient orbs */}
