@@ -64,7 +64,7 @@ const Features = () => {
           </div>
           <h2 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight">
             Beyond Traditional
-            <span className="block text-gradient-hero">Financial Management</span>
+            <span className="block text-primary">Financial Management</span>
           </h2>
           <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Enterprise-grade AI that doesn't just track your money—it predicts, optimizes, and transforms 
@@ -85,7 +85,7 @@ const Features = () => {
                 </div>
                 
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-bold text-foreground group-hover:text-gradient-primary transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-all duration-300">
                     {feature.title}
                   </h3>
                   <p className="text-muted-foreground leading-relaxed text-lg">
@@ -108,7 +108,7 @@ const Features = () => {
             <div className="space-y-4">
               <h3 className="text-4xl lg:text-5xl font-bold text-foreground">
                 Enterprise-Grade vs 
-                <span className="block text-gradient-wealth">Consumer Apps</span>
+                <span className="block text-primary">Consumer Apps</span>
               </h3>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 See why financial professionals choose institutional-level intelligence over basic tracking

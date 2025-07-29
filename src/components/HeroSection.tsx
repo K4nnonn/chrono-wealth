@@ -32,27 +32,27 @@ export function HeroSection() {
       <div className="relative container mx-auto px-4 max-w-7xl">
         <div className="text-center max-w-5xl mx-auto animate-slide-up">
           {/* Premium status indicator */}
-          <div className="inline-flex items-center gap-3 bg-gradient-card border border-primary/20 text-primary text-sm font-semibold px-6 py-3 rounded-full mb-8 shadow-elegant hover-enterprise">
+          <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-semibold px-6 py-3 rounded-full mb-8 shadow-glow">
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/60 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary shadow-glow"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400/60 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-400 shadow-glow"></span>
             </span>
             Enterprise-Grade AI Financial Intelligence
-            <span className="ml-2 px-2 py-1 bg-secondary-accent/20 text-secondary-accent text-xs rounded-full">LIVE</span>
+            <span className="ml-2 px-2 py-1 bg-green-400/20 text-green-300 text-xs rounded-full font-bold">LIVE</span>
           </div>
 
           {/* Hero headline with enterprise typography */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[0.9] tracking-tight">
-            <span className="block text-foreground mb-2">Transform Your</span>
-            <span className="block text-gradient-hero mb-4">Financial Future</span>
-            <span className="block text-2xl sm:text-3xl md:text-4xl font-medium text-muted-foreground">
+            <span className="block text-white mb-2 drop-shadow-lg">Transform Your</span>
+            <span className="block text-white mb-4 drop-shadow-lg">Financial Future</span>
+            <span className="block text-2xl sm:text-3xl md:text-4xl font-medium text-white/90 drop-shadow-md">
               with AI-Powered Precision
             </span>
           </h1>
 
           {/* Premium value proposition */}
-          <p className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-            Join <span className="text-gradient-wealth font-semibold">100,000+ financial leaders</span> using enterprise-grade AI to build wealth, 
+          <p className="text-xl sm:text-2xl lg:text-3xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-md">
+            Join <span className="text-white font-semibold">100,000+ financial leaders</span> using enterprise-grade AI to build wealth, 
             optimize portfolios, and achieve financial independence with scientific precision.
           </p>
 
@@ -78,20 +78,20 @@ export function HeroSection() {
           {/* Premium trust indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-center animate-fade-in" style={{animationDelay: '0.6s'}}>
             <div className="flex flex-col items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-accent-success" />
-              <span className="text-sm font-medium text-muted-foreground">Enterprise Security</span>
+              <CheckCircle className="w-6 h-6 text-green-400" />
+              <span className="text-sm font-medium text-white/80">Enterprise Security</span>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-accent-success" />
-              <span className="text-sm font-medium text-muted-foreground">60-Second Setup</span>
+              <CheckCircle className="w-6 h-6 text-green-400" />
+              <span className="text-sm font-medium text-white/80">60-Second Setup</span>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-accent-success" />
-              <span className="text-sm font-medium text-muted-foreground">SOC 2 Compliant</span>
+              <CheckCircle className="w-6 h-6 text-green-400" />
+              <span className="text-sm font-medium text-white/80">SOC 2 Compliant</span>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-accent-success" />
-              <span className="text-sm font-medium text-muted-foreground">24/7 Support</span>
+              <CheckCircle className="w-6 h-6 text-green-400" />
+              <span className="text-sm font-medium text-white/80">24/7 Support</span>
             </div>
           </div>
         </div>
