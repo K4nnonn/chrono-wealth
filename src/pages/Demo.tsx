@@ -7,7 +7,6 @@ import {
   AlertCircle,
   Sparkles,
   ChevronRight,
-  BarChart3,
   Wallet,
   CreditCard
 } from 'lucide-react'
@@ -157,7 +156,7 @@ export default function Demo() {
         <Card className="mb-6">
           <div className="border-b border-border">
             <div className="flex gap-1 p-1">
-              {['overview', 'cashflow', 'goals', 'investments'].map((tab) => (
+              {['overview', 'cashflow', 'goals', 'spending'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -286,18 +285,45 @@ export default function Demo() {
               </div>
             )}
 
-            {activeTab === 'investments' && (
-              <div className="text-center py-12">
-                <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">
-                  Investment analysis and recommendations available in full version
-                </p>
-                <Button asChild variant="link" className="mt-4">
-                  <Link to="/auth">
-                    Unlock full analysis
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </Button>
+            {activeTab === 'spending' && (
+              <div className="space-y-6">
+                <h3 className="font-semibold text-foreground mb-4">Spending Behavior Analysis</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card className="bg-orange-50 dark:bg-orange-900/20">
+                    <CardContent className="p-4">
+                      <h4 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">Top Spending Category</h4>
+                      <p className="text-2xl font-bold text-orange-700 dark:text-orange-300">Dining Out</p>
+                      <p className="text-sm text-orange-600 dark:text-orange-400">$680/month • 38% over budget</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-blue-50 dark:bg-blue-900/20">
+                    <CardContent className="p-4">
+                      <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Spending Trend</h4>
+                      <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">Decreasing</p>
+                      <p className="text-sm text-blue-600 dark:text-blue-400">-12% vs last month</p>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                  <h4 className="font-semibold text-foreground mb-4">Recent Spending Insights</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span>Subscription Services</span>
+                      <span className="font-semibold">$127/month</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Groceries</span>
+                      <span className="font-semibold">$450/month</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Transportation</span>
+                      <span className="font-semibold">$320/month</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </CardContent>
