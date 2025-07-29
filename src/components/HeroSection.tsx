@@ -4,165 +4,221 @@ import { Button } from './ui/button'
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted/50 pt-16 pb-20 sm:pt-24 sm:pb-28">
-      {/* Background decoration */}
+    <section className="relative overflow-hidden bg-gradient-hero min-h-screen flex items-center">
+      {/* Enterprise Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/10 rounded-full opacity-20 blur-3xl"></div>
+        {/* Premium gradient orbs */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-enterprise-glow"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary-accent/20 rounded-full blur-3xl animate-enterprise-glow" style={{animationDelay: '1.5s'}}></div>
+        
+        {/* Financial pattern overlay */}
+        <div className="absolute inset-0 bg-financial-pattern"></div>
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-grid-enterprise opacity-30"></div>
       </div>
 
       <div className="relative container mx-auto px-4 max-w-7xl">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* Small tag above headline */}
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full mb-6">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/50 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+        <div className="text-center max-w-5xl mx-auto animate-slide-up">
+          {/* Premium status indicator */}
+          <div className="inline-flex items-center gap-3 bg-gradient-card border border-primary/20 text-primary text-sm font-semibold px-6 py-3 rounded-full mb-8 shadow-elegant hover-enterprise">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/60 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary shadow-glow"></span>
             </span>
-            AI-Powered Financial Planning
+            Enterprise-Grade AI Financial Intelligence
+            <span className="ml-2 px-2 py-1 bg-secondary-accent/20 text-secondary-accent text-xs rounded-full">LIVE</span>
           </div>
 
-          {/* Main headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-            See Your Financial Future
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-              in 60 Seconds
+          {/* Hero headline with enterprise typography */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[0.9] tracking-tight">
+            <span className="block text-foreground mb-2">Transform Your</span>
+            <span className="block text-gradient-hero mb-4">Financial Future</span>
+            <span className="block text-2xl sm:text-3xl md:text-4xl font-medium text-muted-foreground">
+              with AI-Powered Precision
             </span>
           </h1>
 
-          {/* Subheadline */}
-          <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join 50,000+ people using AI to build wealth, eliminate debt, and achieve financial freedom faster than ever before.
+          {/* Premium value proposition */}
+          <p className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed font-light">
+            Join <span className="text-gradient-wealth font-semibold">100,000+ financial leaders</span> using enterprise-grade AI to build wealth, 
+            optimize portfolios, and achieve financial independence with scientific precision.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button asChild size="lg" className="gap-2">
+          {/* Enterprise CTA Section */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12 animate-scale-in" style={{animationDelay: '0.3s'}}>
+            <Button asChild size="lg" className="h-14 px-8 text-lg bg-gradient-primary hover:shadow-glow hover-enterprise border-0 group">
               <Link to="/demo">
-                <PlayCircle className="w-5 h-5" />
-                Try Interactive Demo
-                <ArrowRight className="w-4 h-4" />
+                <PlayCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+                Experience Live Demo
+                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
             
-            <Button asChild variant="outline" size="lg" className="gap-2">
+            <Button asChild variant="outline" size="lg" className="h-14 px-8 text-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/5 hover-enterprise group">
               <Link to="/auth">
-                Start Free Trial
+                <span className="mr-3">🚀</span>
+                Start Enterprise Trial
+                <span className="ml-3 opacity-60 group-hover:opacity-100 transition-opacity">Free</span>
               </Link>
             </Button>
           </div>
 
-          {/* Trust indicators below buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              No credit card required
-            </span>
-            <span className="flex items-center gap-1">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              5-minute setup
-            </span>
-            <span className="flex items-center gap-1">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              Cancel anytime
-            </span>
+          {/* Premium trust indicators */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-center animate-fade-in" style={{animationDelay: '0.6s'}}>
+            <div className="flex flex-col items-center gap-2">
+              <CheckCircle className="w-6 h-6 text-accent-success" />
+              <span className="text-sm font-medium text-muted-foreground">Enterprise Security</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <CheckCircle className="w-6 h-6 text-accent-success" />
+              <span className="text-sm font-medium text-muted-foreground">60-Second Setup</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <CheckCircle className="w-6 h-6 text-accent-success" />
+              <span className="text-sm font-medium text-muted-foreground">SOC 2 Compliant</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <CheckCircle className="w-6 h-6 text-accent-success" />
+              <span className="text-sm font-medium text-muted-foreground">24/7 Support</span>
+            </div>
           </div>
         </div>
 
-        {/* Demo Dashboard Preview */}
-        <div className="mt-16 relative animate-chart-entry">
-          <div className="bg-card rounded-xl shadow-elegant p-2 max-w-5xl mx-auto border hover-lift">
-            <div className="bg-gradient-card rounded-lg p-6 min-h-[400px] relative overflow-hidden">
-              {/* Enhanced Background with Psychology */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-wealth animate-wealth-pulse" />
-              </div>
-              {/* Mini Dashboard Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-lg font-semibold">Financial Health Score</h3>
-                  <p className="text-sm text-muted-foreground">Live dashboard preview</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">78</div>
-                  <div className="text-xs text-muted-foreground">Good Health</div>
-                </div>
-              </div>
-              
-              {/* Mini Chart Area with Gamification */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="bg-background/50 rounded-lg p-4 hover-lift transition-smooth">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Net Worth</span>
-                    <div className="flex items-center gap-1">
-                      <span className="text-green-500 text-sm">+12.5%</span>
-                      <div className="w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center animate-bounce-subtle">
-                        <span className="text-xs text-white">⭐</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-xl font-bold">$156,429</div>
-                  <div className="mt-2 h-2 bg-muted rounded-full">
-                    <div className="h-2 bg-gradient-wealth rounded-full w-3/4 animate-growth-surge"></div>
-                  </div>
+        {/* Enterprise Dashboard Preview */}
+        <div className="mt-20 relative animate-slide-up" style={{animationDelay: '0.9s'}}>
+          <div className="relative max-w-7xl mx-auto">
+            {/* Premium frame with depth */}
+            <div className="relative card-premium rounded-2xl p-3 hover-enterprise">
+              <div className="bg-gradient-card rounded-xl p-8 min-h-[600px] relative overflow-hidden border border-primary/10">
+                {/* Enterprise background effects */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-gradient-wealth animate-enterprise-glow" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-gradient-confidence animate-enterprise-glow" style={{animationDelay: '2s'}} />
                 </div>
                 
-                <div className="bg-background/50 rounded-lg p-4 hover-lift transition-smooth">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Savings Streak</span>
-                    <div className="flex items-center gap-1 text-orange-500">
-                      <span className="text-sm animate-pulse">🔥</span>
-                      <span className="text-sm font-bold">12</span>
+                {/* Premium dashboard header */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full bg-accent-success animate-pulse" />
+                      <h3 className="text-2xl font-bold text-foreground">Enterprise Financial Intelligence</h3>
                     </div>
+                    <p className="text-muted-foreground">Real-time AI-powered wealth optimization platform</p>
                   </div>
-                  <div className="text-xl font-bold">$2,340</div>
-                  <div className="mt-2 h-2 bg-muted rounded-full">
-                    <div className="h-2 bg-gradient-confidence rounded-full w-2/3 animate-confidence-glow"></div>
+                  <div className="text-center card-enterprise p-4 rounded-xl">
+                    <div className="text-4xl font-bold text-gradient-wealth mb-1">94</div>
+                    <div className="text-sm text-muted-foreground font-medium">Wealth Health Score</div>
+                    <div className="text-xs text-accent-success">+12% vs last quarter</div>
                   </div>
                 </div>
+              
+                {/* Enterprise KPI Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="card-enterprise p-6 hover-enterprise group">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-muted-foreground tracking-wide">TOTAL PORTFOLIO VALUE</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-accent-success text-sm font-bold">+24.7%</span>
+                        <div className="w-6 h-6 bg-gradient-wealth rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <span className="text-xs">💎</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-foreground mb-3">$2,847,392</div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-2 bg-gradient-wealth rounded-full w-4/5 transition-all duration-1000"></div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">Target: $3.2M by Q4 2025</p>
+                  </div>
+                  
+                  <div className="card-enterprise p-6 hover-enterprise group">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-muted-foreground tracking-wide">MONTHLY CASH FLOW</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-accent-success text-sm font-bold">+18.3%</span>
+                        <div className="w-6 h-6 bg-gradient-confidence rounded-full flex items-center justify-center group-hover:scale-110 transition-transform animate-pulse">
+                          <span className="text-xs">🚀</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-foreground mb-3">$24,780</div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-2 bg-gradient-confidence rounded-full w-3/5 transition-all duration-1000"></div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">43-day improvement streak</p>
+                  </div>
 
-                <div className="bg-background/50 rounded-lg p-4 hover-lift transition-smooth">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Level Progress</span>
-                    <div className="flex items-center gap-1">
-                      <span className="text-primary text-sm font-bold">Lv 7</span>
-                      <div className="w-4 h-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full animate-pulse"></div>
+                  <div className="card-enterprise p-6 hover-enterprise group">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-muted-foreground tracking-wide">AI OPTIMIZATION</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-primary text-sm font-bold">Level 12</span>
+                        <div className="w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <span className="text-xs">🧠</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-foreground mb-3">$127K</div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-2 bg-gradient-primary rounded-full w-5/6 transition-all duration-1000"></div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">Saved through AI recommendations</p>
+                  </div>
+                </div>
+              
+                {/* Enterprise Insights Section */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="card-enterprise p-6 hover-enterprise">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-semibold text-muted-foreground tracking-wide">AI MARKET INSIGHTS</span>
+                        <div className="w-8 h-8 bg-gradient-forecast rounded-lg flex items-center justify-center">
+                          <span className="text-sm">📊</span>
+                        </div>
+                      </div>
+                      <span className="text-xs text-accent-info font-medium px-2 py-1 bg-accent-info/10 rounded-full">LIVE</span>
+                    </div>
+                    <p className="text-sm text-foreground font-medium mb-2">
+                      Fed policy shifts detected: 73% probability of rate cut by Q2 2025
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-4">
+                      AI recommends rebalancing 12% towards growth assets. Potential 6-month impact: +$47,230
+                    </p>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="h-7 text-xs hover-enterprise">Analyze Impact</Button>
+                      <Button variant="ghost" size="sm" className="h-7 text-xs">Remind Later</Button>
                     </div>
                   </div>
-                  <div className="text-xl font-bold">2,840 XP</div>
-                  <div className="mt-2 h-2 bg-muted rounded-full">
-                    <div className="h-2 bg-primary rounded-full w-4/5 animate-wealth-pulse"></div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Achievement Preview */}
-              <div className="bg-background/50 rounded-lg p-4 mb-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">Recent Achievement</span>
-                    <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center animate-achievement-celebration">
-                      <span className="text-xs text-white">🏆</span>
+                  
+                  <div className="card-enterprise p-6 hover-enterprise">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-semibold text-muted-foreground tracking-wide">BEHAVIORAL PATTERN</span>
+                        <div className="w-8 h-8 bg-gradient-success rounded-lg flex items-center justify-center animate-pulse">
+                          <span className="text-sm">🎯</span>
+                        </div>
+                      </div>
+                      <span className="text-xs text-accent-success font-medium px-2 py-1 bg-accent-success/10 rounded-full">OPTIMIZED</span>
+                    </div>
+                    <p className="text-sm text-foreground font-medium mb-2">
+                      Spending discipline improved 340% in Q4 vs Q3
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-4">
+                      Weekend optimization saved $3,247 last month. AI suggests automating grocery delivery to maintain momentum.
+                    </p>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="h-7 text-xs hover-enterprise">Setup Automation</Button>
+                      <Button variant="ghost" size="sm" className="h-7 text-xs">View Trends</Button>
                     </div>
                   </div>
-                  <span className="text-xs text-primary">+200 XP</span>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  <strong>Budget Master:</strong> Stayed under budget for 7 days straight!
-                </p>
-              </div>
-              
-              {/* Mini Insights */}
-              <div className="bg-background/50 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium">Latest Insight</span>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Your emergency fund is well-positioned. Consider increasing retirement contributions by 2% to optimize tax benefits.
-                </p>
               </div>
             </div>
+            
+            {/* Premium depth indicator */}
+            <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-gradient-primary rounded-full shadow-glow"></div>
+            <div className="absolute -top-2 -left-2 w-3 h-3 bg-gradient-wealth rounded-full shadow-glow"></div>
           </div>
         </div>
       </div>

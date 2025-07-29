@@ -4,6 +4,7 @@ import { TrustBar } from "@/components/TrustBar";
 import Features from "@/components/Features";
 import { Dashboard as DashboardPreview } from "@/components/Dashboard";
 import Pricing from "@/components/Pricing";
+import { CallToActionSection } from "@/components/CallToActionSection";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { LoadingPage } from "@/components/LoadingPage";
 
@@ -20,16 +21,17 @@ const Index = () => {
   }, []);
 
   if (isLoading) {
-    return <LoadingPage message="Loading FlowSight Fi..." />;
+    return <LoadingPage message="Initializing Enterprise Financial Intelligence..." />;
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-card">
       <HeroSection />
       <TrustBar />
       <Features />
       <DashboardPreview />
       <Pricing />
+      <CallToActionSection />
       <EnhancedFooter />
     </div>
   );
