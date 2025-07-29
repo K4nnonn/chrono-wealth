@@ -96,7 +96,7 @@ export default function Demo() {
         <Card className="mb-6">
           <CardContent className="p-6">
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              Welcome to Your Financial Dashboard, Sarah
+              Welcome to Your Financial Dashboard
             </h1>
             <p className="text-muted-foreground">
               Here's your AI-powered financial analysis based on typical data for a 32-year-old professional.
