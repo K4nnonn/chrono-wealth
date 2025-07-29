@@ -98,7 +98,7 @@ export default function Demo() {
             <h1 className="text-2xl font-bold text-foreground mb-2">
               Welcome to Your Financial Dashboard
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground font-medium text-base">
               Here's your AI-powered financial analysis based on typical data for a 32-year-old professional.
             </p>
           </CardContent>
@@ -136,10 +136,10 @@ export default function Demo() {
               <div className="flex items-start gap-3">
                 <Sparkles className="w-6 h-6 text-secondary flex-shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-foreground mb-1">
+                  <h3 className="font-bold text-foreground mb-2 text-lg">
                     AI Insight: You could save $450/month
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-foreground/80 leading-relaxed font-medium">
                     Based on your spending patterns, we've identified 3 subscriptions you rarely use 
                     and 2 areas where you're overpaying. Fixing these could boost your savings rate to 50%.
                   </p>

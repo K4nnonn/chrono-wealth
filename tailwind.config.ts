@@ -19,9 +19,9 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        body: ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Source Sans Pro', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Source Sans Pro', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        body: ['Source Sans Pro', 'DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
       },
       colors: {
