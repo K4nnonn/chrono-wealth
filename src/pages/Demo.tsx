@@ -62,13 +62,16 @@ export default function Demo() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Demo Mode Banner */}
-      <div className="bg-yellow-400 text-yellow-900 py-3 px-4 text-center font-medium">
-        <AlertCircle className="inline-block w-4 h-4 mr-2" />
-        This is a demo with sample data. 
-        <Link to="/auth" className="underline ml-2 font-semibold">
-          Get your real analysis →
-        </Link>
+      {/* Demo Mode Banner with Urgency */}
+      <div className="urgency-indicator text-white py-3 px-4 text-center font-medium relative overflow-hidden">
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-sm" />
+        <div className="relative z-10">
+          <AlertCircle className="inline-block w-4 h-4 mr-2" />
+          🎯 LIVE DEMO: This shows how FlowSight transforms YOUR finances in 60 seconds!
+          <Link to="/auth" className="underline ml-2 font-semibold hover:text-white/80">
+            Get your real analysis →
+          </Link>
+        </div>
       </div>
 
       {/* Navigation */}
