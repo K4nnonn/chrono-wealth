@@ -20,6 +20,7 @@ import Terms from "./pages/Terms";
 import Pricing from "./pages/Pricing";
 import Demo from "./pages/Demo";
 import Onboarding from "./pages/Onboarding";
+import { Health } from "./pages/Health";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -97,6 +98,14 @@ function App() {
                 <ProtectedRoute>
                   <Navigation />
                   <Onboarding />
+                </ProtectedRoute>
+              } />
+              
+              {/* Health monitoring route */}
+              <Route path="/health" element={
+                <ProtectedRoute>
+                  <Navigation />
+                  <Health />
                 </ProtectedRoute>
               } />
               

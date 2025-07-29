@@ -8,3 +8,12 @@ verify_jwt = true
 
 [functions.customer-portal]
 verify_jwt = true
+
+[functions.health-check]
+verify_jwt = false
+
+[functions.audit-report]
+verify_jwt = true
+
+[functions.backup-data]
+verify_jwt = true

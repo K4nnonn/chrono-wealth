@@ -27,11 +27,29 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     
-    // In production, send error to monitoring service
-    if (process.env.NODE_ENV === 'production') {
-      // Example: Sentry, LogRocket, etc.
-      // captureException(error, { extra: errorInfo });
-    }
+    // Import and use monitoring
+    import('@/lib/monitoring').then(({ logError }) => {
+      logError(error, {
+        componentStack: errorInfo.componentStack,
+        errorBoundary: true,
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+      });
+    });
+
+    // Import and use compliance logging
+    import('@/lib/compliance').then(({ auditLogger }) => {
+      auditLogger.log({
+        action: 'error_boundary_triggered',
+        resource: 'application',
+        sensitivity: 'high',
+        metadata: {
+          errorMessage: error.message,
+          errorStack: error.stack,
+          componentStack: errorInfo.componentStack,
+        },
+      });
+    });
   }
 
   retry = () => {

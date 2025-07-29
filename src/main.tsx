@@ -9,6 +9,10 @@ import { AuthProvider } from './hooks/useAuth'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 import { SkipLink } from './components/Accessibility.tsx'
 import { checkRequiredEnvVars } from './utils/envChecker'
+import { initializeProductionServices } from './lib/production'
+
+// Initialize all production services
+initializeProductionServices();
 
 // Check environment variables on startup
 checkRequiredEnvVars();
