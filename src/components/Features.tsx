@@ -13,38 +13,38 @@ import {
 const features = [
   {
     icon: Brain,
-    title: "AI Forecast Engine",
-    description: "Project future balances, net worth, and savings paths using advanced AI simulations based on your spending patterns.",
+    title: "AI Budget Optimizer",
+    description: "Analyze spending patterns and automatically create personalized budgets that adapt to your lifestyle and goals.",
     gradient: "bg-gradient-primary"
   },
   {
     icon: AlertTriangle,
     title: "Crisis Simulator", 
-    description: "Model 'what if' scenarios like job loss, market crashes, or unexpected expenses to prepare for anything.",
+    description: "Model scenarios like job loss, unexpected expenses, or income changes to prepare emergency plans.",
     gradient: "bg-gradient-hero"
   },
   {
     icon: Target,
     title: "Smart Goal Tracker",
-    description: "Visualize and track your financial goals with AI-powered insights on the fastest path to achievement.",
+    description: "Visualize and track savings goals with AI-powered insights on the fastest path to achievement.",
     gradient: "bg-gradient-success"
   },
   {
     icon: Zap,
     title: "Smart Nudges",
-    description: "Get behavioral insights like 'You'll run out of funds in 12 days' or 'Your income is trending down'.",
+    description: "Get behavioral insights like 'You'll exceed your budget in 12 days' or 'Your spending is trending up'.",
     gradient: "bg-gradient-forecast"
   },
   {
     icon: BarChart3,
-    title: "Banking & Crypto Aggregator",
-    description: "Connect and sync real-time data from all your accounts including crypto wallets and investments.",
+    title: "Banking Aggregator",
+    description: "Connect and sync real-time data from all your bank accounts for comprehensive expense tracking.",
     gradient: "bg-gradient-card"
   },
   {
     icon: MessageSquare,
     title: "AI Financial Copilot",
-    description: "ChatGPT-like assistant for personal finance questions and scenario planning.",
+    description: "ChatGPT-like assistant for budgeting questions, savings strategies, and financial planning.",
     gradient: "bg-gradient-primary"
   }
 ];
@@ -67,8 +67,8 @@ const Features = () => {
             <span className="block text-primary">Financial Management</span>
           </h2>
           <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Enterprise-grade AI that doesn't just track your money—it predicts, optimizes, and transforms 
-            your financial future with scientific precision and institutional-level intelligence.
+            Enterprise-grade AI that doesn't just track your money—it analyzes, optimizes, and transforms 
+            your financial future through smart budgeting and expense management.
           </p>
         </div>
 
@@ -142,11 +142,11 @@ const Features = () => {
                 <div className="p-4 bg-gradient-card rounded-xl border border-primary/20">
                   <div className="font-semibold text-primary text-lg mb-4">FlowSightFi Enterprise</div>
                   <div className="text-sm space-y-3">
-                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Predict financial flows with AI</div>
-                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Navigate future scenarios</div>
-                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Institutional-grade optimization</div>
-                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Proactive wealth building</div>
-                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Real-time market intelligence</div>
+                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Predict spending patterns with AI</div>
+                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Navigate financial scenarios</div>
+                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Enterprise-grade budget optimization</div>
+                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Proactive savings strategies</div>
+                    <div className="flex items-center gap-2"><span className="text-accent-success">✓</span> Real-time expense tracking</div>
                   </div>
                 </div>
               </div>

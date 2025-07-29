@@ -52,8 +52,8 @@ export function HeroSection() {
 
           {/* Premium value proposition */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-md">
-            Join <span className="text-white font-semibold">100,000+ financial leaders</span> using enterprise-grade AI to build wealth, 
-            optimize portfolios, and achieve financial independence with scientific precision.
+            Join <span className="text-white font-semibold">100,000+ financial leaders</span> using enterprise-grade AI to build wealth through smart budgeting, 
+            expense optimization, and achieve financial independence with scientific precision.
           </p>
 
           {/* Enterprise CTA Section */}
@@ -119,7 +119,7 @@ export function HeroSection() {
                   </div>
                   <div className="text-center card-enterprise p-4 rounded-xl">
                     <div className="text-4xl font-bold text-gradient-wealth mb-1">94</div>
-                    <div className="text-sm text-muted-foreground font-medium">Wealth Health Score</div>
+                    <div className="text-sm text-muted-foreground font-medium">Financial Health Score</div>
                     <div className="text-xs text-accent-success">+12% vs last quarter</div>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export function HeroSection() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="card-enterprise p-6 hover-enterprise group">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm font-semibold text-muted-foreground tracking-wide">TOTAL PORTFOLIO VALUE</span>
+                      <span className="text-sm font-semibold text-muted-foreground tracking-wide">TOTAL SAVINGS</span>
                       <div className="flex items-center gap-2">
                         <span className="text-accent-success text-sm font-bold">+24.7%</span>
                         <div className="w-6 h-6 bg-gradient-wealth rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -183,7 +183,7 @@ export function HeroSection() {
                   <div className="card-enterprise p-6 hover-enterprise">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <span className="text-sm font-semibold text-muted-foreground tracking-wide">AI MARKET INSIGHTS</span>
+                        <span className="text-sm font-semibold text-muted-foreground tracking-wide">AI BUDGET INSIGHTS</span>
                         <div className="w-8 h-8 bg-gradient-forecast rounded-lg flex items-center justify-center">
                           <span className="text-sm">📊</span>
                         </div>
@@ -191,13 +191,13 @@ export function HeroSection() {
                       <span className="text-xs text-accent-info font-medium px-2 py-1 bg-accent-info/10 rounded-full">LIVE</span>
                     </div>
                     <p className="text-sm text-foreground font-medium mb-2">
-                      Fed policy shifts detected: 73% probability of rate cut by Q2 2025
+                      Spending pattern analysis: You can save 15% by optimizing subscriptions
                     </p>
                     <p className="text-xs text-muted-foreground mb-4">
-                      AI recommends rebalancing 12% towards growth assets. Potential 6-month impact: +$47,230
+                      AI recommends consolidating streaming services and switching grocery stores. Potential monthly savings: $340
                     </p>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="h-7 text-xs hover-enterprise">Analyze Impact</Button>
+                      <Button variant="outline" size="sm" className="h-7 text-xs hover-enterprise">View Savings Plan</Button>
                       <Button variant="ghost" size="sm" className="h-7 text-xs">Remind Later</Button>
                     </div>
                   </div>
