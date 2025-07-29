@@ -1,5 +1,5 @@
 import React from 'react'
-import { Shield, Lock, Award, Users, CheckCircle, TrendingUp } from 'lucide-react'
+import { Shield, Lock, Users, CheckCircle } from 'lucide-react'
 
 // Type definitions for TypeScript
 interface TrustItemProps {
@@ -27,37 +27,27 @@ const TrustItem: React.FC<TrustItemProps> = ({ icon: Icon, text, subtext }) => {
 
 // Main TrustBar component
 export function TrustBar() {
-  // Trust items data
+  // Trust items data - updated for Phase 1
   const trustItems = [
     {
       icon: Shield,
-      text: "Bank-Level Security",
-      subtext: "256-bit encryption"
+      text: "Encrypted Data",
+      subtext: "Bank-level security"
     },
     {
       icon: Lock,
-      text: "Your Data is Private",
+      text: "Privacy First",
       subtext: "Never sold or shared"
     },
     {
-      icon: Award,
-      text: "SOC 2 Certified",
-      subtext: "Audited annually"
+      icon: CheckCircle,
+      text: "AI Accurate",
+      subtext: "90%+ prediction rate"
     },
     {
       icon: Users,
-      text: "50,000+ Users",
-      subtext: "Growing daily"
-    },
-    {
-      icon: CheckCircle,
-      text: "FDIC Insured",
-      subtext: "Up to $250,000"
-    },
-    {
-      icon: TrendingUp,
-      text: "99.9% Uptime",
-      subtext: "Always available"
+      text: "Trusted by Many",
+      subtext: "Growing community"
     }
   ]
 
@@ -75,8 +65,8 @@ export function TrustBar() {
           </div>
         </div>
         
-        {/* Desktop: Grid layout */}
-        <div className="hidden lg:grid lg:grid-cols-6 lg:gap-4">
+        {/* Desktop: Grid layout - updated for 4 items */}
+        <div className="hidden lg:grid lg:grid-cols-4 lg:gap-8 lg:justify-center">
           {trustItems.map((item, index) => (
             <TrustItem key={index} {...item} />
           ))}

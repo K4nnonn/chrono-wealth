@@ -41,38 +41,47 @@ export function HeroSection() {
             <span className="ml-2 px-2 py-1 bg-green-400/20 text-green-300 text-xs rounded-full font-bold">LIVE</span>
           </div>
 
-          {/* Hero headline with enterprise typography */}
+          {/* Hero headline with updated messaging */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[0.9] tracking-tight">
-            <span className="block text-white mb-2 drop-shadow-lg">Transform Your</span>
-            <span className="block text-white mb-4 drop-shadow-lg">Financial Future</span>
+            <span className="block text-white mb-2 drop-shadow-lg">See 90 Days Ahead</span>
+            <span className="block text-white mb-4 drop-shadow-lg">of Your Money</span>
             <span className="block text-2xl sm:text-3xl md:text-4xl font-medium text-white/90 drop-shadow-md">
-              with AI-Powered Precision
+              AI simulations for income, bills, crypto—minus the judgment
             </span>
           </h1>
 
-          {/* Premium value proposition */}
+          {/* Updated value proposition */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed font-light drop-shadow-md">
-            Join <span className="text-white font-semibold">100,000+ financial leaders</span> using enterprise-grade AI to build wealth through smart budgeting, 
-            expense optimization, and achieve financial independence with scientific precision.
+            See exactly where your money will be in 90 days. <span className="text-white font-semibold">No guesswork, no spreadsheets</span>—just clear AI insights 
+            that help you make confident financial decisions without the complexity.
           </p>
 
-          {/* Enterprise CTA Section */}
+          {/* Updated CTA Section */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12 animate-scale-in" style={{animationDelay: '0.3s'}}>
-            <Button asChild size="lg" className="h-14 px-8 text-lg bg-gradient-primary hover:shadow-glow hover-enterprise border-0 group">
-              <Link to="/demo">
-                <PlayCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
-                Experience Live Demo
-                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-              </Link>
+            <Button 
+              size="lg" 
+              className="h-14 px-8 text-lg bg-gradient-primary hover:shadow-glow hover-enterprise border-0 group"
+              onClick={() => window.dispatchEvent(new Event('openDemoModal'))}
+            >
+              <PlayCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+              Try Simulation
+              <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
             </Button>
             
             <Button asChild variant="outline" size="lg" className="h-14 px-8 text-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/5 hover-enterprise group">
               <Link to="/auth">
-                <span className="mr-3">🚀</span>
-                Start Enterprise Trial
+                <span className="mr-3">✨</span>
+                Get Started
                 <span className="ml-3 opacity-60 group-hover:opacity-100 transition-opacity">Free</span>
               </Link>
             </Button>
+          </div>
+
+          {/* Trust text below buttons */}
+          <div className="text-center mb-8 animate-fade-in" style={{animationDelay: '0.4s'}}>
+            <p className="text-white/80 text-lg font-medium">
+              🔒 Secure • 🤖 AI-Powered • 👀 Free Preview
+            </p>
           </div>
 
           {/* Premium trust indicators */}

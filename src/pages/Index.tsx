@@ -9,9 +9,11 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { LoadingPage } from "@/components/LoadingPage";
 import { LiveActivityFeed } from "@/components/UrgencyEngagement";
 import { MoneyBackGuarantee } from "@/components/TrustSignals";
+import { SimpleDemoModal } from "@/components/SimpleDemoModal";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     // Simulate initial load time and ensure critical components are ready
@@ -20,6 +22,20 @@ const Index = () => {
     }, 500);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // Listen for demo modal trigger from hero section
+    const handleDemoTrigger = () => {
+      setIsDemoModalOpen(true);
+    };
+
+    // Add global event listener for demo modal
+    window.addEventListener('openDemoModal', handleDemoTrigger);
+    
+    return () => {
+      window.removeEventListener('openDemoModal', handleDemoTrigger);
+    };
   }, []);
 
   if (isLoading) {
@@ -46,6 +62,12 @@ const Index = () => {
       
       {/* Live Activity Feed */}
       <LiveActivityFeed />
+      
+      {/* Interactive Demo Modal */}
+      <SimpleDemoModal 
+        isOpen={isDemoModalOpen} 
+        onClose={() => setIsDemoModalOpen(false)} 
+      />
     </div>
   );
 };
