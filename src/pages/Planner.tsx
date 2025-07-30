@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Navigation from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,10 +9,13 @@ import {
   Target,
   AlertTriangle,
   Lightbulb,
-  Clock
+  Clock,
+  Mic
 } from "lucide-react";
 
-const chatHistory = [
+// Sample chat history data structure (commented out for now)
+/*
+const _chatHistory = [
   {
     id: 1,
     type: "user" as const,
@@ -49,6 +51,7 @@ const chatHistory = [
     ]
   }
 ];
+*/
 
 const quickPrompts = [
   "What happens if I lose my job for 3 months?",

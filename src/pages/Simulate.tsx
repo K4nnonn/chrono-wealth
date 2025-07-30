@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Navigation from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,14 +8,10 @@ import { Label } from "@/components/ui/label";
 import { 
   Brain, 
   TrendingUp, 
-  Calendar,
-  DollarSign,
-  Target,
   Zap,
   Save,
   RotateCcw,
-  Play,
-  Pause
+  Play
 } from "lucide-react";
 
 const Simulate = () => {

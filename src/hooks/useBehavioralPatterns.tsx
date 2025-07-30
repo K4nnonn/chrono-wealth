@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useMemo } from 'react';
 import { usePlaidData } from './usePlaidData';
 import { useProfile } from './useProfile';
@@ -30,7 +29,7 @@ interface PatternInsight {
 }
 
 export const useBehavioralPatterns = () => {
-  const { plaidData } = usePlaidData();
+  const { plaidData: _plaidData } = usePlaidData();
   const { financialData } = useProfile();
 
   // Simulate transaction data for pattern analysis

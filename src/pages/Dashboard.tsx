@@ -1,10 +1,8 @@
-// @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SignalStrip } from '@/components/SignalStrip';
 import { PulseTile } from '@/components/PulseTile';
@@ -18,25 +16,17 @@ import { AIFinancialChat } from "@/components/AIFinancialChat";
 import { FinancialHealthDashboard } from "@/components/FinancialHealthDashboard";
 import { PlaidDashboard } from "@/components/PlaidDashboard";
 import { PlaidLink } from "@/components/PlaidLink";
-import { MetricCard, StatusCard, InsightCard } from "@/components/ui/enhanced-cards";
+import { StatusCard } from "@/components/ui/enhanced-cards";
 import { CallToActionSection } from "@/components/CallToActionSection";
 import { 
   DollarSign, 
-  TrendingUp, 
   Target,
-  ArrowRight,
-  Sparkles,
-  BarChart3,
   PiggyBank,
   Shield,
   Brain,
-  Zap,
-  CreditCard,
-  AlertTriangle,
   Eye,
   Activity,
-  Route,
-  MessageSquare
+  Route
 } from 'lucide-react';
 
 interface Goal {
@@ -206,7 +196,7 @@ export const Dashboard = () => {
                     title="Active Goals"
                     value={goals.length}
                     trend="up"
-                    trendValue={`${goals.filter(g => (g.current_amount / g.target_amount) * 100 >= 100).length} completed`}
+                    trendValue={`${goals.filter(g => ((g.current_amount || 0) / g.target_amount) * 100 >= 100).length} completed`}
                     icon={Target}
                     variant="default"
                   />
@@ -318,7 +308,7 @@ export const Dashboard = () => {
                       id={goal.id}
                       title={goal.name}
                       targetAmount={goal.target_amount}
-                      currentAmount={goal.current_amount}
+                      currentAmount={goal.current_amount || 0}
                       targetDate={goal.target_date || new Date().toISOString()}
                       category={goal.category || 'General'}
                       riskLevel="medium"

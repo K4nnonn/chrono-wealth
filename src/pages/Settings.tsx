@@ -1,9 +1,8 @@
-// @ts-nocheck
 import Navigation from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Settings as SettingsIcon, User, Bell, Shield, Palette } from "lucide-react";
+import { User, Shield } from "lucide-react";
 
 const Settings = () => {
   return (

@@ -17,7 +17,7 @@ interface TimelineChartProps {
 }
 
 export const TimelineChart = ({ data, className = "" }: TimelineChartProps) => {
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [_selectedYear, setSelectedYear] = useState<number | null>(null);
 
   // Generate sample data if none provided
   const chartData = data || generateSampleData();
@@ -197,7 +197,7 @@ function generateSampleData() {
   
   // Current spending behavior (simulated)
   const currentMonthlySavings = 1250; // $1,250 monthly surplus
-  const currentSavingsRate = 0.235; // 23.5% savings rate
+  // const currentSavingsRate = 0.235; // 23.5% savings rate (placeholder for future use)
   
   for (let i = 0; i <= 30; i++) {
     const year = currentYear + i;
