@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * FlowSightFi Behavioral Intelligence Engine
  * Core mathematical logic for behavioral pattern detection and trajectory forecasting
@@ -77,9 +76,9 @@ export class FlowSightFiEngine {
   }
 
   /**
-   * Calculate moving average for smooth trend detection
+   * Calculate moving average for smooth trend detection (used in trajectory calculations)
    */
-  private movingAverage(values: number[], window: number): number[] {
+  private calculateMovingAverage(values: number[], window: number): number[] {
     const result: number[] = [];
     for (let i = window - 1; i < values.length; i++) {
       const slice = values.slice(i - window + 1, i + 1);
@@ -330,7 +329,6 @@ export class FlowSightFiEngine {
    */
   private calculateSavingsStreak(): number {
     // Simulate weekly savings analysis
-    const weeklySavings = [];
     const avgMonthlyExpenses = this.currentExpenses;
     const weeklyBudget = avgMonthlyExpenses / 4.33; // weeks per month
 
@@ -379,8 +377,10 @@ export class FlowSightFiEngine {
       // FlowSightFi Core Formulas
       const P_week = S * 0.9; // Account for volatility
       
-      // Moving average simulation (using smoothed surplus)
-      const MA_S = S * (1 + Math.sin(week * 0.1) * 0.1); // Simulate 4-week MA with variation
+      // Moving average simulation (using smoothed surplus with actual MA calculation)
+      const recentWeeks = Math.min(week + 1, 4);
+      const maValues = Array(recentWeeks).fill(0).map((_, i) => S * (1 + Math.sin((week - i) * 0.1) * 0.1));
+      const MA_S = this.calculateMovingAverage(maValues, Math.min(recentWeeks, 4))[0] || S;
       const P_month = MA_S * (1 + behaviorDelta * 0.25);
       
       const P_quarter = P_month * (1 + 0.15); // 15% compound quarterly effect

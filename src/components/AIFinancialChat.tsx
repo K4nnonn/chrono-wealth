@@ -1,11 +1,9 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { Bot, User, Send, Loader2 } from 'lucide-react';
@@ -37,7 +35,6 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { user } = useAuth();
   const { profile, financialData } = useProfile();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -131,7 +128,7 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
   };
 
   // Intelligent fallback responses based on user input and financial data
-  const getIntelligentResponse = (message: string, profile: any, financialData: any): string => {
+  const getIntelligentResponse = (message: string, _profile: any, financialData: any): string => {
     const lowerMessage = message.toLowerCase();
     const monthlyIncome = financialData?.annual_salary ? Math.round(financialData.annual_salary / 12) : 0;
     const monthlyExpenses = (financialData?.monthly_rent || 0) + (financialData?.monthly_subscriptions || 0);

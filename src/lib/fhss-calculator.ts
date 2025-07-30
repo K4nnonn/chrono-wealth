@@ -1,4 +1,3 @@
-// @ts-nocheck
 // Financial Health Scorecard Score (FHSS) Calculation Engine
 // Real-time client-side calculations with confidence intervals
 
@@ -98,7 +97,6 @@ export function calculateLiquidityScore(
   incomeStability: number
 ): number {
   const emergencyFundRatio = liquidSavings / (monthlyExpenses || 1);
-  const stabilityMultiplier = incomeStability / 10;
   
   // Target emergency fund months based on income stability
   const targetMonths = Math.max(3, 9 - incomeStability);
@@ -118,7 +116,7 @@ export function calculateDebtScore(
   monthlyDebtPayments: number,
   monthlyIncome: number,
   creditUtilization: number,
-  totalDebt: number
+  _totalDebt: number
 ): number {
   const dti = monthlyDebtPayments / (monthlyIncome || 1);
   
