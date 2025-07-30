@@ -296,6 +296,51 @@ export type Database = {
         }
         Relationships: []
       }
+      user_transactions: {
+        Row: {
+          account_id: string | null
+          amount: number
+          category: string
+          created_at: string
+          date: string
+          description: string | null
+          id: string
+          merchant: string | null
+          time: string | null
+          transaction_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          amount: number
+          category: string
+          created_at?: string
+          date: string
+          description?: string | null
+          id?: string
+          merchant?: string | null
+          time?: string | null
+          transaction_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string | null
+          amount?: number
+          category?: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          merchant?: string | null
+          time?: string | null
+          transaction_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

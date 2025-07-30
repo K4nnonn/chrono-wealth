@@ -1,14 +1,17 @@
 import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from './useAuth';
 import { usePlaidData } from './usePlaidData';
 import { useProfile } from './useProfile';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Transaction {
   id: string;
   amount: number;
   date: string;
   category: string;
-  merchant: string;
-  time?: string;
+  merchant: string | null;
+  time?: string | null;
 }
 
 interface BehavioralMetrics {
@@ -29,57 +32,31 @@ interface PatternInsight {
 }
 
 export const useBehavioralPatterns = () => {
+  const { user } = useAuth();
   const { plaidData: _plaidData } = usePlaidData();
   const { financialData } = useProfile();
 
-  // Simulate transaction data for pattern analysis
-  const mockTransactions: Transaction[] = useMemo(() => {
-    const transactions = [];
-    const categories = ['Dining', 'Groceries', 'Transportation', 'Entertainment', 'Shopping', 'Subscriptions'];
-    const now = new Date();
-    
-    for (let i = 0; i < 90; i++) {
-      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      const dayOfWeek = date.getDay();
-      const dayOfMonth = date.getDate();
-      const hour = Math.floor(Math.random() * 24);
+  // Fetch real transaction data from Supabase
+  const { data: realTransactions = [], isLoading } = useQuery({
+    queryKey: ['transactions', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
       
-      // Create behavioral patterns
-      let amount = Math.random() * 100 + 10;
-      let category = categories[Math.floor(Math.random() * categories.length)];
+      const { data, error } = await supabase
+        .from('user_transactions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('date', { ascending: false })
+        .limit(200);
       
-      // Weekend dining spike pattern
-      if ((dayOfWeek === 0 || dayOfWeek === 6) && category === 'Dining') {
-        amount *= 1.8; // Weekend dining 80% higher
-      }
-      
-      // End-of-month savings pattern
-      if (dayOfMonth > 25 && category === 'Shopping') {
-        amount *= 0.6; // Less shopping at month end
-      }
-      
-      // Midweek impulse pattern
-      if (dayOfWeek >= 2 && dayOfWeek <= 4 && hour >= 21 && category === 'Shopping') {
-        amount *= 1.4; // Midweek evening impulse spending
-      }
-      
-      // Subscription regularity
-      if (category === 'Subscriptions' && dayOfMonth <= 5) {
-        amount = Math.floor(Math.random() * 50) + 10; // Monthly subscriptions
-      }
-      
-      transactions.push({
-        id: `tx_${i}`,
-        amount: Math.round(amount * 100) / 100,
-        date: date.toISOString().split('T')[0],
-        time: `${hour.toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-        category,
-        merchant: `Merchant_${Math.floor(Math.random() * 20)}`
-      });
-    }
-    
-    return transactions;
-  }, []);
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user?.id
+  });
+
+  // Use real transactions, fallback to empty array if no data
+  const transactions = realTransactions;
 
   const calculateEntropy = (values: number[]): number => {
     if (values.length === 0) return 0;
@@ -94,7 +71,7 @@ export const useBehavioralPatterns = () => {
 
   const calculateVolatility = (transactions: Transaction[], category: string): number => {
     const categoryTxns = transactions.filter(tx => tx.category === category);
-    const amounts = categoryTxns.map(tx => tx.amount);
+    const amounts = categoryTxns.map(tx => Number(tx.amount));
     
     if (amounts.length < 2) return 0;
     
@@ -134,7 +111,7 @@ export const useBehavioralPatterns = () => {
     
     transactions.forEach(tx => {
       const current = dailySpending.get(tx.date) || 0;
-      dailySpending.set(tx.date, current + tx.amount);
+      dailySpending.set(tx.date, current + Number(tx.amount));
     });
     
     const sortedDates = Array.from(dailySpending.keys()).sort();
@@ -160,13 +137,13 @@ export const useBehavioralPatterns = () => {
     const categories = ['Dining', 'Shopping', 'Transportation', 'Entertainment'];
     
     categories.forEach(category => {
-      const volatility = calculateVolatility(mockTransactions, category);
-      const timePattern = detectTimePatterns(mockTransactions, category);
-      const categoryTxns = mockTransactions.filter(tx => tx.category === category);
-      const totalAmount = categoryTxns.reduce((sum, tx) => sum + tx.amount, 0);
+      const volatility = calculateVolatility(transactions, category);
+      const timePattern = detectTimePatterns(transactions, category);
+      const categoryTxns = transactions.filter(tx => tx.category === category);
+      const totalAmount = categoryTxns.reduce((sum, tx) => sum + Number(tx.amount), 0);
       
       // Volatility insights
-      if (volatility > 1.5) {
+      if (volatility > 1.5 && totalAmount > 0) {
         insights.push({
           type: 'volatility_flag',
           category,
@@ -193,7 +170,7 @@ export const useBehavioralPatterns = () => {
     });
     
     // Savings streak insights
-    const savingsStreak = detectSavingsStreaks(mockTransactions);
+    const savingsStreak = detectSavingsStreaks(transactions);
     if (savingsStreak > 0) {
       insights.push({
         type: 'positive_streak',
@@ -207,7 +184,7 @@ export const useBehavioralPatterns = () => {
     }
     
     // Behavioral milestones
-    const monthlySpend = mockTransactions.reduce((sum, tx) => sum + tx.amount, 0) / 3; // 3 months of data
+    const monthlySpend = transactions.reduce((sum, tx) => sum + Number(tx.amount), 0) / 3; // 3 months of data
     const avgIncome = financialData?.annual_salary ? financialData.annual_salary / 12 : 5000;
     const savingsRate = (avgIncome - monthlySpend) / avgIncome;
     
@@ -227,14 +204,14 @@ export const useBehavioralPatterns = () => {
   };
 
   const analyzeBehavioralMetrics = (): BehavioralMetrics => {
-    const allAmounts = mockTransactions.map(tx => tx.amount);
+    const allAmounts = transactions.map(tx => Number(tx.amount));
     const entropy = calculateEntropy(allAmounts);
     const avgVolatility = ['Dining', 'Shopping', 'Entertainment']
-      .map(cat => calculateVolatility(mockTransactions, cat))
+      .map(cat => calculateVolatility(transactions, cat))
       .reduce((sum, vol) => sum + vol, 0) / 3;
     
     const consistency = Math.max(0, 1 - avgVolatility); // Higher consistency = lower volatility
-    const peakTime = detectTimePatterns(mockTransactions, 'Shopping');
+    const peakTime = detectTimePatterns(transactions, 'Shopping');
     
     return {
       entropy,
@@ -244,13 +221,14 @@ export const useBehavioralPatterns = () => {
     };
   };
 
-  const insights = useMemo(() => generatePatternInsights(), [mockTransactions, financialData]);
-  const metrics = useMemo(() => analyzeBehavioralMetrics(), [mockTransactions]);
+  const insights = useMemo(() => generatePatternInsights(), [transactions, financialData]);
+  const metrics = useMemo(() => analyzeBehavioralMetrics(), [transactions]);
 
   return {
     insights,
     metrics,
-    transactions: mockTransactions,
+    transactions,
+    isLoading,
     calculateEntropy,
     calculateVolatility,
     detectTimePatterns,

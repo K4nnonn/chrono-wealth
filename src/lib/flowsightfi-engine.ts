@@ -9,9 +9,9 @@ export interface Transaction {
   id: string;
   amount: number;
   date: string;
-  time: string;
+  time?: string | null;
   category: string;
-  merchant: string;
+  merchant: string | null;
 }
 
 export interface BehavioralMetrics {
@@ -190,7 +190,7 @@ export class FlowSightFiEngine {
 
     transactions.forEach(txn => {
       const date = new Date(txn.date);
-      const hour = parseInt(txn.time.split(':')[0]) || 12;
+      const hour = txn.time ? parseInt(txn.time.split(':')[0]) : 12;
       
       dayOfWeekCounts[date.getDay()]++;
       hourCounts[hour]++;
@@ -217,7 +217,7 @@ export class FlowSightFiEngine {
 
     transactions.forEach(txn => {
       const date = new Date(txn.date);
-      const hour = parseInt(txn.time.split(':')[0]) || 12;
+      const hour = txn.time ? parseInt(txn.time.split(':')[0]) : 12;
       const dayOfWeek = date.getDay();
       
       // Wednesday (3) or Thursday (4) between 9 PM and 11 PM

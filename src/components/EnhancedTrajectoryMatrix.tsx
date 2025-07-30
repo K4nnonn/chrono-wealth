@@ -5,8 +5,10 @@ import { Badge } from './ui/badge';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine } from 'recharts';
 import { Layers, Eye, EyeOff, Zap, TrendingUp, AlertTriangle, Calculator } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
 import { useFinancialForecasting } from '@/hooks/useFinancialForecasting';
-import { FlowSightFiEngine, Transaction } from '@/lib/flowsightfi-engine';
+import { FlowSightFiEngine } from '@/lib/flowsightfi-engine';
+import { supabase } from '@/integrations/supabase/client';
 
 export const EnhancedTrajectoryMatrix = () => {
   const { currentMetrics } = useFinancialForecasting();
@@ -14,51 +16,25 @@ export const EnhancedTrajectoryMatrix = () => {
   const [showBehaviorShifts, setShowBehaviorShifts] = useState(true);
   const [showMathModal, setShowMathModal] = useState(false);
 
-  // Generate realistic transaction data for behavioral analysis
-  const mockTransactions = useMemo((): Transaction[] => {
-    const transactions = [];
-    const categories = ['Dining', 'Groceries', 'Transportation', 'Entertainment', 'Shopping', 'Subscriptions'];
-    const now = new Date();
-    
-    for (let i = 0; i < 90; i++) {
-      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      const dayOfWeek = date.getDay();
-      const dayOfMonth = date.getDate();
-      const hour = Math.floor(Math.random() * 24);
+  // Fetch real transaction data from Supabase
+  const { data: realTransactions = [] } = useQuery({
+    queryKey: ['enhanced-trajectory-transactions'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('user_transactions')
+        .select('*')
+        .order('date', { ascending: false })
+        .limit(200);
       
-      let amount = Math.random() * 100 + 10;
-      let category = categories[Math.floor(Math.random() * categories.length)];
-      
-      // Create real behavioral patterns
-      if ((dayOfWeek === 0 || dayOfWeek === 6) && category === 'Dining') {
-        amount *= 1.8; // Weekend dining spike
-      }
-      
-      if (dayOfMonth > 25 && category === 'Shopping') {
-        amount *= 0.6; // End-of-month restraint
-      }
-      
-      if (dayOfWeek >= 2 && dayOfWeek <= 4 && hour >= 21 && category === 'Shopping') {
-        amount *= 1.4; // Midweek impulse
-      }
-      
-      transactions.push({
-        id: `tx_${i}`,
-        amount: Math.round(amount * 100) / 100,
-        date: date.toISOString().split('T')[0],
-        time: `${hour.toString().padStart(2, '0')}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-        category,
-        merchant: `Merchant_${Math.floor(Math.random() * 20)}`
-      });
+      if (error) throw error;
+      return data || [];
     }
-    
-    return transactions;
-  }, []);
+  });
 
   // Initialize FlowSightFi engine with real data
   const engine = useMemo(() => 
-    new FlowSightFiEngine(mockTransactions, currentMetrics.monthlyIncome, currentMetrics.monthlyExpenses),
-    [mockTransactions, currentMetrics]
+    new FlowSightFiEngine(realTransactions, currentMetrics.monthlyIncome, currentMetrics.monthlyExpenses),
+    [realTransactions, currentMetrics]
   );
 
   // Generate real trajectory projections using FlowSightFi formulas
