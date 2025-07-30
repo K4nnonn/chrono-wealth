@@ -263,7 +263,8 @@ export class EnterpriseErrorHandler {
       await new Promise(resolve => setTimeout(resolve, 100));
       
       if (import.meta.env.DEV) {
-        console.log('Error reported:', errorReport);
+        // Development-only structured logging  
+        performance.mark(`error-reported-${errorReport.errorId}`);
       }
     } catch (reportingError) {
       // Queue for retry

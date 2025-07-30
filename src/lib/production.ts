@@ -30,7 +30,12 @@ export const initializeProductionServices = () => {
     },
   });
   
-  console.log('🚀 Production services initialized successfully');
+  auditLogger.log({
+    action: 'production_services_initialized',
+    resource: 'system',
+    sensitivity: 'low',
+    metadata: { message: 'Production services initialized successfully' }
+  });
 };
 
 // Graceful shutdown
@@ -47,7 +52,12 @@ export const shutdownProductionServices = () => {
     },
   });
   
-  console.log('📴 Production services shut down gracefully');
+  auditLogger.log({
+    action: 'production_services_shutdown',
+    resource: 'system',
+    sensitivity: 'low',
+    metadata: { message: 'Production services shut down gracefully' }
+  });
 };
 
 // Health check utilities

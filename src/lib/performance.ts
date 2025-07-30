@@ -1,5 +1,8 @@
 // Performance monitoring utilities for Core Web Vitals and custom metrics
 
+import { performanceManager } from '@/lib/enterprise-performance';
+import { auditLogger } from './compliance';
+
 export interface PerformanceMetrics {
   lcp?: number; // Largest Contentful Paint
   fid?: number; // First Input Delay
@@ -93,7 +96,12 @@ class PerformanceMonitor {
   }
 
   private reportMetric(name: string, value: number) {
-    console.log(`Performance Metric - ${name.toUpperCase()}: ${value.toFixed(2)}ms`);
+    performanceManager.recordMetric({
+      name: `performance_${name}`,
+      value,
+      timestamp: new Date(),
+      category: 'rendering'
+    });
     
     // In production, send to analytics service
     if (process.env.NODE_ENV === 'production') {
@@ -147,7 +155,12 @@ export const measureResourceTiming = () => {
       averageLoadTime: resources.reduce((sum, r) => sum + r.duration, 0) / resources.length,
     };
 
-    console.log('Resource Performance Analysis:', analysis);
+    auditLogger.log({
+      action: 'resource_performance_analysis',
+      resource: 'system',
+      sensitivity: 'low',
+      metadata: analysis
+    });
     return analysis;
   }
 };
@@ -164,7 +177,12 @@ export const analyzeBundleSize = () => {
       domComplete: navigation.domComplete - navigation.fetchStart,
     };
 
-    console.log('Bundle Performance Analysis:', analysis);
+    auditLogger.log({
+      action: 'bundle_performance_analysis',
+      resource: 'system',
+      sensitivity: 'low',
+      metadata: analysis
+    });
     return analysis;
   }
 };

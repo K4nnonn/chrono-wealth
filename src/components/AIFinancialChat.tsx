@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
+import { errorHandler } from '@/lib/enterprise-error-handling';
 import { Bot, User, Send, Loader2 } from 'lucide-react';
 
 interface ChatMessage {
@@ -81,7 +82,13 @@ export const AIFinancialChat = ({ currentScores, className = '' }: AIFinancialCh
         }
       } catch (aiError) {
         // AI service unavailable, use fallback
-        console.log('AI service unavailable, using fallback responses');
+        errorHandler.handleError(new Error('AI service unavailable'), {
+          feature: 'ai_chat',
+          action: 'openai_api_call',
+          severity: 'medium',
+          timestamp: new Date().toISOString(),
+          metadata: { error: aiError }
+        });
       }
 
       // Use fallback responses if AI service failed

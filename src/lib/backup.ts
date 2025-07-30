@@ -2,6 +2,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logError } from './monitoring';
+import { auditLogger } from './compliance';
 
 export interface BackupMetadata {
   id: string;
@@ -137,7 +138,12 @@ export class BackupScheduler {
     this.intervalId = setInterval(async () => {
       try {
         const integrity = await validateDataIntegrity();
-        console.log('Automated backup check:', integrity);
+        auditLogger.log({
+          action: 'automated_backup_check',
+          resource: 'system',
+          sensitivity: 'low',
+          metadata: { integrity, timestamp: Date.now() }
+        });
         
         if (integrity.status === 'error') {
           logError(new Error('Data integrity check failed'), {

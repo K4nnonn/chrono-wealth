@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react';
 import { ENV } from '@/config/env';
+import { performanceManager } from '@/lib/enterprise-performance';
 
 // Initialize Sentry for error tracking and performance monitoring
 export const initializeMonitoring = () => {
@@ -42,17 +43,27 @@ export const logError = (error: Error, context?: Record<string, any>) => {
 };
 
 // Performance monitoring
-export const startTransaction = (name: string, operation: string) => {
+export const startTransaction = (name: string, _operation: string) => {
   if (ENV.IS_PRODUCTION) {
     // Use Sentry performance monitoring when available
-    console.log(`Starting transaction: ${name} (${operation})`);
+    performanceManager.recordMetric({
+      name: `transaction_${name}`,
+      value: performance.now(),
+      timestamp: new Date(),
+      category: 'network'
+    });
   }
   return null;
 };
 
 // Custom metrics tracking
 export const trackMetric = (name: string, value: number, tags?: Record<string, string>) => {
-  console.log(`Metric: ${name} = ${value}`, tags);
+  performanceManager.recordMetric({
+    name,
+    value,
+    timestamp: new Date(),
+    category: 'network'
+  });
   
   if (ENV.IS_PRODUCTION) {
     Sentry.addBreadcrumb({

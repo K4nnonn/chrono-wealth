@@ -82,7 +82,11 @@ class AuditLogger {
   private async sendToAuditService(event: AuditEvent): Promise<void> {
     try {
       // In production, send to external audit service like Splunk, ELK, etc.
-      console.log('Audit event logged:', event);
+      await fetch('/api/audit-service', {
+        method: 'POST',
+        body: JSON.stringify(event),
+        headers: { 'Content-Type': 'application/json' }
+      });
     } catch (error) {
       logError(error as Error, { context: 'audit_service_send', eventId: event.id });
     }

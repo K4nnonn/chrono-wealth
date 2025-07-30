@@ -1,6 +1,7 @@
 // Performance optimization utilities
 
 import { trackMetric } from './monitoring';
+import { auditLogger } from './compliance';
 
 // Debounce utility for performance optimization
 export const debounce = <T extends (...args: any[]) => any>(
@@ -134,7 +135,12 @@ export const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
     try {
       const registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered:', registration);
+      auditLogger.log({
+        action: 'service_worker_registered',
+        resource: 'system',
+        sensitivity: 'low',
+        metadata: { registrationScope: registration.scope }
+      });
       
       trackMetric('service_worker_registered', 1);
       return registration;
