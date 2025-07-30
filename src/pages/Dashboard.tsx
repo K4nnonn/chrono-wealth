@@ -117,17 +117,17 @@ export const Dashboard = () => {
         action={{
           label: pulseStatus === 'critical' ? 'Fix Now' : 'Optimize',
           onClick: () => {
-            if (import.meta.env.DEV) console.log('Signal action clicked');
+            // Signal action implementation
           }
         }}
         onDismiss={() => {
-          if (import.meta.env.DEV) console.log('Signal dismissed');
+          // Signal dismiss implementation
         }}
         onSnooze={() => {
-          if (import.meta.env.DEV) console.log('Signal snoozed');
+          // Signal snooze implementation
         }}
         onBookmark={() => {
-          if (import.meta.env.DEV) console.log('Signal bookmarked');
+          // Signal bookmark implementation
         }}
       />
 
@@ -220,8 +220,8 @@ export const Dashboard = () => {
 
                 {/* Dual-Axis Financial Timeline */}
                 <DualAxisTimeline 
-                  onTimeChange={(year) => {
-                    if (import.meta.env.DEV) console.log('Time changed to:', year);
+                  onTimeChange={(_year) => {
+                    // Time change implementation
                   }}
                 />
 
@@ -313,8 +313,8 @@ export const Dashboard = () => {
                       category={goal.category || 'General'}
                       riskLevel="medium"
                       milestones={sampleMilestones}
-                      onActionPlan={(goalId) => {
-                        if (import.meta.env.DEV) console.log('Action plan for goal:', goalId);
+                      onActionPlan={(_goalId) => {
+                        // Action plan implementation
                       }}
                     />
                   ))}
@@ -348,16 +348,16 @@ export const Dashboard = () => {
         {/* Contextual Action Orb */}
         <ContextualActionOrb 
           onNewGoal={() => {
-            if (import.meta.env.DEV) console.log('New goal from orb');
+            // New goal implementation
           }}
           onWhatIfScenario={() => {
-            if (import.meta.env.DEV) console.log('What-if scenario from orb');
+            // What-if scenario implementation
           }}
           onCrisisDrill={() => {
-            if (import.meta.env.DEV) console.log('Crisis drill from orb');
+            // Crisis drill implementation
           }}
           onAIChat={() => {
-            if (import.meta.env.DEV) console.log('AI chat from orb');
+            // AI chat implementation
           }}
         />
       </div>

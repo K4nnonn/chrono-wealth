@@ -88,7 +88,7 @@ export const ContextualActionOrb = ({
       description: 'Set a new financial milestone',
       icon: Target,
       urgency: 'medium',
-      onClick: onNewGoal || (() => console.log('New goal'))
+      onClick: onNewGoal || (() => {})
     },
     {
       id: 'whatif',
@@ -96,7 +96,7 @@ export const ContextualActionOrb = ({
       description: 'Explore financial outcomes',
       icon: Calculator,
       urgency: 'low',
-      onClick: onWhatIfScenario || (() => console.log('What-if scenario'))
+      onClick: onWhatIfScenario || (() => {})
     },
     {
       id: 'crisis',
@@ -104,7 +104,7 @@ export const ContextualActionOrb = ({
       description: 'Test financial resilience',
       icon: AlertTriangle,
       urgency: 'high',
-      onClick: onCrisisDrill || (() => console.log('Crisis drill'))
+      onClick: onCrisisDrill || (() => {})
     },
     {
       id: 'ai',
@@ -112,7 +112,7 @@ export const ContextualActionOrb = ({
       description: 'Get personalized advice',
       icon: MessageSquare,
       urgency: 'medium',
-      onClick: onAIChat || (() => console.log('AI chat'))
+      onClick: onAIChat || (() => {})
     }
   ];
 

@@ -9,6 +9,8 @@ import { ContextRibbon } from '@/components/ContextRibbon';
 import { DemoTrajectoryMatrix } from '@/components/DemoTrajectoryMatrix';
 import { DemoBehavioralInsightEngine } from '@/components/DemoBehavioralInsightEngine';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
+import { useFinancialForecasting } from '@/hooks/useFinancialForecasting';
+import { useBehavioralPatterns } from '@/hooks/useBehavioralPatterns';
 import { 
   DollarSign, 
   TrendingUp, 
@@ -41,6 +43,10 @@ export const Dashboard = () => {
     inflationAdjusted: true
   });
 
+  // Real financial data hooks
+  const { currentMetrics, generateForecastInsights } = useFinancialForecasting();
+  const { insights: behavioralInsights } = useBehavioralPatterns();
+
   useEffect(() => {
     fetchGoals();
   }, []);
@@ -64,31 +70,26 @@ export const Dashboard = () => {
     }
   };
 
-  // Sample financial data for sophisticated preview
-  const monthlyIncome = 6800;
-  const monthlyExpenses = 4200;
-  const monthlySavings = monthlyIncome - monthlyExpenses;
+  // Real financial calculations
+  const monthlyIncome = currentMetrics.monthlyIncome || 0;
+  const monthlySavings = currentMetrics.monthlySavings || 0;
+  const netWorth = currentMetrics.currentNetWorth || 0;
 
-  // Advanced insight detection (simulated)
+  // Real insights from behavioral patterns and forecasting
+  const forecastInsights = generateForecastInsights();
   const insights = [
-    {
-      id: "weekend-spending",
-      text: "Weekend spending +32% vs weekdays — dining accounts for 67% of variance",
-      significance: 0.89,
+    ...behavioralInsights.slice(0, 2).map(insight => ({
+      id: insight.type,
+      text: insight.description,
+      significance: insight.confidence / 100,
       icon: TrendingUp
-    },
-    {
-      id: "grocery-optimization", 
-      text: "Switching grocery stores last month saved $127 — projected annual impact: $1,524",
-      significance: 0.76,
+    })),
+    ...forecastInsights.slice(0, 1).map((insight, index) => ({
+      id: `forecast-${index}`,
+      text: insight,
+      significance: 0.85,
       icon: Sparkles
-    },
-    {
-      id: "automation-opportunity",
-      text: "You save mostly in salary-deposit week — automating transfers could smooth volatility",
-      significance: 0.82,
-      icon: Zap
-    }
+    }))
   ];
 
   return (
@@ -121,44 +122,44 @@ export const Dashboard = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <AnimatedKPITile
             title="Monthly Income"
-            pastValue={6200}
+            pastValue={Math.round(monthlyIncome * 0.9)}
             currentValue={monthlyIncome}
-            nextMilestone={7500}
+            nextMilestone={Math.round(monthlyIncome * 1.15)}
             icon={DollarSign}
             variant="default"
-            lastUpdated="2024-07-23T10:30:00Z"
+            lastUpdated={new Date().toISOString()}
           />
 
           <AnimatedKPITile
             title="Savings Power"
-            pastValue={2100}
+            pastValue={Math.round(monthlySavings * 0.8)}
             currentValue={monthlySavings}
-            nextMilestone={3000}
+            nextMilestone={Math.round(monthlySavings * 1.3)}
             icon={PiggyBank}
             variant="success"
-            lastUpdated="2024-07-23T10:30:00Z"
+            lastUpdated={new Date().toISOString()}
           />
 
           <AnimatedKPITile
-            title="Goals Velocity"
-            pastValue={2}
-            currentValue={3}
-            nextMilestone={5}
+            title="Net Worth"
+            pastValue={Math.round(netWorth * 0.95)}
+            currentValue={netWorth}
+            nextMilestone={Math.round(netWorth + monthlySavings * 12)}
             unit=""
             icon={Target}
             variant="default"
-            lastUpdated="2024-07-22T15:45:00Z"
+            lastUpdated={new Date().toISOString()}
           />
 
           <AnimatedKPITile
-            title="Resilience Score"
-            pastValue={72}
-            currentValue={85}
-            nextMilestone={95}
-            unit="/100"
+            title="Savings Rate"
+            pastValue={Math.round((currentMetrics.savingsRate * 0.8) * 100)}
+            currentValue={Math.round(currentMetrics.savingsRate * 100)}
+            nextMilestone={Math.round((currentMetrics.savingsRate * 1.2) * 100)}
+            unit="%"
             icon={Shield}
             variant="success"
-            lastUpdated="2024-07-23T08:15:00Z"
+            lastUpdated={new Date().toISOString()}
           />
         </div>
 
@@ -210,10 +211,14 @@ export const Dashboard = () => {
                     </div>
                     
                     <div className="text-center py-8">
-                      <div className="text-3xl font-bold text-accent-success mb-2">38.2%</div>
-                      <div className="text-sm text-muted-foreground">Current 30-day rate</div>
+                      <div className="text-3xl font-bold text-accent-success mb-2">
+                        {(currentMetrics.savingsRate * 100).toFixed(1)}%
+                      </div>
+                      <div className="text-sm text-muted-foreground">Current savings rate</div>
                       <div className="mt-4 text-xs text-muted-foreground">
-                        Pattern: "Back-Half Saver" — surplus appears in last 10 days
+                        {currentMetrics.savingsRate > 0.2 ? "Strong Saver" : 
+                         currentMetrics.savingsRate > 0.1 ? "Steady Builder" : 
+                         "Growth Opportunity"}
                       </div>
                     </div>
                   </CardContent>

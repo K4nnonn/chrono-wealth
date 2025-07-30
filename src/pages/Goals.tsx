@@ -115,10 +115,10 @@ const Goals = () => {
                       status={goal.status}
                       icon={goal.icon}
                       onClick={() => {
-                        if (import.meta.env.DEV) console.log('View goal:', goal.id);
+                        // View goal implementation
                       }}
                       onEdit={() => {
-                        if (import.meta.env.DEV) console.log('Edit goal:', goal.id);
+                        // Edit goal implementation
                       }}
                     />
                   ))}
@@ -142,7 +142,7 @@ const Goals = () => {
                         status={goal.status}
                         icon={goal.icon}
                         onClick={() => {
-                          if (import.meta.env.DEV) console.log('View goal:', goal.id);
+                          // View goal implementation
                         }}
                       />
                     ))}
@@ -163,10 +163,10 @@ const Goals = () => {
                         status={goal.status}
                         icon={goal.icon}
                         onClick={() => {
-                          if (import.meta.env.DEV) console.log('View goal:', goal.id);
+                          // View goal implementation
                         }}
                         onEdit={() => {
-                          if (import.meta.env.DEV) console.log('Edit goal:', goal.id);
+                          // Edit goal implementation
                         }}
                       />
                     ))}

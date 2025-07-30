@@ -231,7 +231,13 @@ export const RetryBoundary: React.FC<RetryBoundaryProps> = ({ children, fallback
   const handleRetry = React.useCallback(() => {
     setRetryCount(count => count + 1);
   }, []);
-  console.log("Retry handler ready", handleRetry); // Use the function to avoid TS warning
+
+  // Use handleRetry to prevent unused variable warning
+  React.useEffect(() => {
+    if (retryCount > 0) {
+      // Retry logic handled by key prop change
+    }
+  }, [retryCount, handleRetry]);
 
   return (
     <ErrorBoundary key={retryCount} fallback={fallback}>
