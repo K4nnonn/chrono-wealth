@@ -6,9 +6,24 @@ import ErrorBoundary from './components/ErrorBoundary.tsx'
 import { SkipLink } from './components/Accessibility.tsx'
 import { checkRequiredEnvVars } from './utils/envChecker'
 import { initializeProductionServices } from './lib/production'
+import { performanceManager } from './lib/enterprise-performance'
+import { mlEngine } from './lib/enterprise-ml-engine'
+import { enterpriseSecurity } from './lib/enterprise-security'
 
-// Initialize all production services
+// Initialize all enterprise production services
 initializeProductionServices();
+
+// Initialize enterprise systems with real monitoring
+performanceManager.recordMetric({
+  name: 'system_initialization', 
+  value: performance.now(),
+  timestamp: new Date(),
+  category: 'memory'
+});
+
+// Pre-warm enterprise engines
+mlEngine;
+enterpriseSecurity.performSecurityScan();
 
 // Check environment variables on startup
 checkRequiredEnvVars();
