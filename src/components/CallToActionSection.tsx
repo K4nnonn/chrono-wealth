@@ -1,4 +1,5 @@
 import React from 'react';
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -27,39 +28,64 @@ interface CTASection {
   badge?: string;
 }
 
-const ctaSections: CTASection[] = [
-  {
-    type: 'primary',
-    title: 'Start Your Financial Journey',
-    description: 'Get personalized AI insights and start building your financial future today.',
-    buttonText: 'Join Private Beta',
-    onClick: () => window.open('mailto:hello@flowsightfi.com?subject=Private Beta Access Request', '_blank'),
-    icon: Zap,
-    features: ['AI-powered financial health scoring', 'Real-time bank connectivity', 'Crisis simulation tools'],
-    badge: 'Limited Access'
-  },
-  {
-    type: 'demo',
-    title: 'See FlowSightFi in Action',
-    description: 'Book a personalized 20-minute demo to see how our AI can transform your financial planning.',
-    buttonText: 'Book Demo',
-    onClick: () => window.open('https://calendly.com/flowsightfi-demo', '_blank'),
-    icon: Brain,
-    features: ['Live dashboard walkthrough', 'Custom scenario planning', 'Implementation roadmap'],
-  },
-  {
-    type: 'secondary',
-    title: 'For Financial Advisors',
-    description: 'Powerful tools to enhance client relationships and provide data-driven recommendations.',
-    buttonText: 'Download API Guide',
-    onClick: () => window.open('/api/financial-advisor-guide.pdf', '_blank'),
-    icon: Users,
-    features: ['White-label solutions', 'Client portfolio management', 'Compliance-ready reporting'],
-    badge: 'Professional'
-  }
-];
-
 export const CallToActionSection: React.FC = () => {
+  const { toast } = useToast();
+
+  const ctaSections: CTASection[] = [
+    {
+      type: 'primary',
+      title: 'Start Your Financial Journey',
+      description: 'Get personalized AI insights and start building your financial future today.',
+      buttonText: 'Join Private Beta',
+      onClick: () => {
+        toast({
+          title: "Beta Access Request",
+          description: "Opening email client...",
+        });
+        window.location.href = 'mailto:hello@flowsightfi.com?subject=Private Beta Access Request';
+      },
+      icon: Zap,
+      features: ['AI-powered financial health scoring', 'Real-time bank connectivity', 'Crisis simulation tools'],
+      badge: 'Limited Access'
+    },
+    {
+      type: 'demo',
+      title: 'See FlowSightFi in Action',
+      description: 'Book a personalized 20-minute demo to see how our AI can transform your financial planning.',
+      buttonText: 'Book Demo',
+      onClick: () => {
+        toast({
+          title: "Opening Demo Scheduler",
+          description: "Taking you to our calendar...",
+        });
+        window.open('https://calendly.com/flowsightfi-demo', '_blank');
+      },
+      icon: Brain,
+      features: ['Live dashboard walkthrough', 'Custom scenario planning', 'Implementation roadmap'],
+    },
+    {
+      type: 'secondary',
+      title: 'For Financial Advisors',
+      description: 'Powerful tools to enhance client relationships and provide data-driven recommendations.',
+      buttonText: 'Download API Guide',
+      onClick: () => {
+        toast({
+          title: "Download Starting",
+          description: "API guide will be downloaded shortly...",
+        });
+        // Create a download link for a PDF (placeholder)
+        const link = document.createElement('a');
+        link.href = '/api/financial-advisor-guide.pdf';
+        link.download = 'flowsightfi-api-guide.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      icon: Users,
+      features: ['White-label solutions', 'Client portfolio management', 'Compliance-ready reporting'],
+      badge: 'Professional'
+    }
+  ];
   return (
     <section className="py-16 bg-gradient-to-br from-background via-muted/30 to-background">
       <div className="container mx-auto px-6">
@@ -190,7 +216,13 @@ export const CallToActionSection: React.FC = () => {
             <Button 
               variant="secondary" 
               size="sm"
-              onClick={() => window.open('mailto:hello@flowsightfi.com?subject=Getting Started', '_blank')}
+              onClick={() => {
+                toast({
+                  title: "Getting Started",
+                  description: "Opening email client...",
+                });
+                window.location.href = 'mailto:hello@flowsightfi.com?subject=Getting Started';
+              }}
               className="hover:scale-105 transition-transform"
             >
               Get Started

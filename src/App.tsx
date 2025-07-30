@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -5,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Navigation from "@/components/Navigation";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { useAuth } from "@/hooks/useAuth";
 import { Auth } from "@/pages/Auth";
 import Index from "./pages/Index";
 import { Dashboard } from "./pages/Dashboard";
@@ -24,6 +26,21 @@ import { Health } from "./pages/Health";
 import NotFound from "./pages/NotFound";
 
 function App() {
+  const { user } = useAuth();
+
+  // Initialize enterprise monitoring
+  useEffect(() => {
+    // Basic error tracking setup
+    const handleError = (error: ErrorEvent) => {
+      if (import.meta.env.DEV) {
+        console.error('Application error:', error);
+      }
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, [user]);
+
   return (
     <BrowserRouter>
       <ErrorBoundary>

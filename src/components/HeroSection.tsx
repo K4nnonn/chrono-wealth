@@ -1,10 +1,14 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ArrowRight, CheckCircle, PlayCircle } from 'lucide-react'
 import { Button } from './ui/button'
+import { SimpleDemoModal } from './SimpleDemoModal'
 import { FloatingSecurityBadge, LiveUserCounter } from './TrustSignals'
 import { UrgencyTimer } from './UrgencyEngagement'
+import { useState } from 'react'
 
 export function HeroSection() {
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <section className="relative overflow-hidden bg-gradient-hero min-h-screen flex items-center">
       {/* Trust Signals */}
@@ -61,19 +65,22 @@ export function HeroSection() {
             <Button 
               size="lg" 
               className="h-14 px-8 text-lg bg-gradient-primary hover:shadow-glow hover-enterprise border-0 group"
-              onClick={() => window.dispatchEvent(new Event('openDemoModal'))}
+              onClick={() => setIsModalOpen(true)}
             >
               <PlayCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
               Try Simulation
               <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
             </Button>
             
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 text-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/5 hover-enterprise group">
-              <Link to="/auth">
-                <span className="mr-3">✨</span>
-                Get Started
-                <span className="ml-3 opacity-60 group-hover:opacity-100 transition-opacity">Free</span>
-              </Link>
+            <Button 
+              size="lg" 
+              className="h-14 px-8 text-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/5 hover-enterprise group"
+              variant="outline"
+              onClick={() => navigate('/auth')}
+            >
+              <span className="mr-3">✨</span>
+              Get Started
+              <span className="ml-3 opacity-60 group-hover:opacity-100 transition-opacity">Free</span>
             </Button>
           </div>
 
@@ -242,6 +249,11 @@ export function HeroSection() {
           </div>
         </div>
       </div>
+
+      <SimpleDemoModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </section>
   )
 }

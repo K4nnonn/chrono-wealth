@@ -8,11 +8,13 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
+import { PlaidLink } from "@/components/PlaidLink";
 import { Brain, DollarSign, Home, GraduationCap, Shield, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 
 const steps = [
   { title: "Income & Job Info", description: "Tell us about your income sources" },
   { title: "Monthly Expenses", description: "Your regular spending patterns" },
+  { title: "Connect Your Bank", description: "Securely link your bank account for real-time insights" },
   { title: "Life Goals", description: "What are you working toward?" },
   { title: "Risk Profile", description: "How do you handle surprises?" },
   { title: "Preferences", description: "Customize your experience" }
@@ -247,8 +249,39 @@ const Onboarding = () => {
             </div>
           )}
 
-          {/* Step 3: Life Goals */}
+          {/* Step 3: Connect Your Bank */}
           {currentStep === 2 && (
+            <div className="space-y-6">
+              <Card className="p-6">
+                <div className="text-center mb-6">
+                  <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold mb-2 text-white">Secure Bank Connection</h3>
+                  <p className="text-white/80">
+                    Bank-level 256-bit encryption. We never store your login credentials.
+                  </p>
+                </div>
+                
+                <PlaidLink 
+                  onSuccess={() => {
+                    toast({ title: "Bank Connected Successfully!" });
+                    nextStep();
+                  }}
+                  className="w-full"
+                />
+                
+                <Button 
+                  variant="ghost" 
+                  onClick={nextStep}
+                  className="w-full mt-4 text-white hover:bg-white/10"
+                >
+                  Skip for Now
+                </Button>
+              </Card>
+            </div>
+          )}
+
+          {/* Step 4: Life Goals */}
+          {currentStep === 3 && (
             <div className="space-y-6">
               <p className="text-white/80 text-sm">Select all that apply:</p>
               
@@ -283,8 +316,8 @@ const Onboarding = () => {
             </div>
           )}
 
-          {/* Step 4: Risk Profile */}
-          {currentStep === 3 && (
+          {/* Step 5: Risk Profile */}
+          {currentStep === 4 && (
             <div className="space-y-6">
               <div className="space-y-4">
                 <Label className="text-white">How would you handle a surprise $1,000 expense?</Label>
@@ -314,8 +347,8 @@ const Onboarding = () => {
             </div>
           )}
 
-          {/* Step 5: Preferences */}
-          {currentStep === 4 && (
+          {/* Step 6: Preferences */}
+          {currentStep === 5 && (
             <div className="space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

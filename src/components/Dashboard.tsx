@@ -9,6 +9,7 @@ import { ContextRibbon } from '@/components/ContextRibbon';
 import { DemoTrajectoryMatrix } from '@/components/DemoTrajectoryMatrix';
 import { DemoBehavioralInsightEngine } from '@/components/DemoBehavioralInsightEngine';
 import { AIFinancialChat } from "@/components/AIFinancialChat";
+import { PlaidDashboard } from '@/components/PlaidDashboard';
 import { useFinancialForecasting } from '@/hooks/useFinancialForecasting';
 import { useBehavioralPatterns } from '@/hooks/useBehavioralPatterns';
 import { 
@@ -166,7 +167,7 @@ export const Dashboard = () => {
         {/* Progressive Intelligence Tabs */}
         <div className="w-full">
           <Tabs defaultValue="trajectory" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 h-14 bg-muted/50 rounded-xl p-1">
+            <TabsList className="grid w-full grid-cols-5 h-14 bg-muted/50 rounded-xl p-1">
               <TabsTrigger value="trajectory" className="rounded-lg font-medium flex flex-col gap-1">
                 <Eye className="w-4 h-4" />
                 <span className="text-xs">Trajectory</span>
@@ -178,6 +179,13 @@ export const Dashboard = () => {
               <TabsTrigger value="intelligence" className="rounded-lg font-medium flex flex-col gap-1">
                 <Brain className="w-4 h-4" />
                 <span className="text-xs">Intelligence</span>
+              </TabsTrigger>
+              <TabsTrigger value="connect" className="rounded-lg font-medium flex flex-col gap-1 relative">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4" />
+                  <span className="text-xs">Connect Banks</span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
               </TabsTrigger>
               <TabsTrigger value="journeys" className="rounded-lg font-medium flex flex-col gap-1">
                 <Route className="w-4 h-4" />
@@ -284,6 +292,17 @@ export const Dashboard = () => {
                 </p>
               </div>
               <AIFinancialChat />
+            </TabsContent>
+
+            <TabsContent value="connect" className="space-y-8 mt-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold mb-2">Connect Your Banks</h2>
+                <p className="text-muted-foreground">
+                  Connect your bank accounts to get real-time financial insights and AI-powered recommendations.
+                </p>
+              </div>
+              
+              <PlaidDashboard />
             </TabsContent>
 
             <TabsContent value="journeys" className="space-y-6 mt-8">
