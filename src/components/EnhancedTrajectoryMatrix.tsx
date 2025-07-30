@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, ReferenceLine } from 'recharts';
-import { Layers, Target, Eye, EyeOff, Zap, TrendingUp, AlertTriangle, Calculator } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine } from 'recharts';
+import { Layers, Eye, EyeOff, Zap, TrendingUp, AlertTriangle, Calculator } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFinancialForecasting } from '@/hooks/useFinancialForecasting';
 import { FlowSightFiEngine, Transaction } from '@/lib/flowsightfi-engine';
@@ -87,9 +86,8 @@ export const EnhancedTrajectoryMatrix = () => {
     { id: 'P_year', name: 'Yearly Optimistic', color: 'hsl(var(--accent-coral))', formula: 'P_year = P_quarter × (1 + R × 0.4)', visible: true, dashPattern: '20 15' }
   ];
 
-  const toggleLayer = (layerId: string) => {
-    // Toggle layer visibility functionality would go here
-  };
+  // Toggle layer functionality implementation placeholder
+  // const toggleLayer = (layerId: string) => { ... };
 
   // Generate intelligent insight based on detected patterns
   const generateInsight = () => {

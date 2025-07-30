@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react";
 import { X, Clock, Bookmark, AlertTriangle, Info, CheckCircle2 } from "lucide-react";
 import { Button } from "./ui/button";
@@ -20,7 +19,7 @@ export const SignalStrip = ({
   urgency, 
   message, 
   action, 
-  onDismiss, 
+  onDismiss: _onDismiss, 
   onSnooze, 
   onBookmark 
 }: SignalStripProps) => {

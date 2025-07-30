@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, RadialBarChart, RadialBar, ComposedChart } from 'recharts';
@@ -7,8 +6,6 @@ import { useFinancialForecasting } from '@/hooks/useFinancialForecasting';
 import { formatCurrency } from '@/lib/utils';
 import { 
   TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
   Target, 
   DollarSign,
   Calculator,
@@ -20,16 +17,11 @@ import {
 export const AdvancedForecasting: React.FC = () => {
   const { 
     analyzeScenario, 
-    generateForecastInsights, 
-    calculateWhatIfScenario,
     currentMetrics 
   } = useFinancialForecasting();
 
-  // Generate all scenarios
+  // Generate current scenario for data visualization
   const currentScenario = analyzeScenario('current');
-  const optimisticScenario = analyzeScenario('optimistic');
-  const conservativeScenario = analyzeScenario('conservative');
-  const crisisScenario = analyzeScenario('crisis');
 
   // Create sophisticated dashboard data
   const savingsRateData = [

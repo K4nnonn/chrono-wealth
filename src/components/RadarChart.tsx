@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { FHSSSubScores } from '@/lib/fhss-calculator';
@@ -138,7 +137,7 @@ export const RadarChart = ({ data, width = 300, height = 300, className = '' }: 
     }
 
     // Draw the filled area with enhanced styling
-    const path = svg
+    svg
       .append('path')
       .datum(dataPoints as [number, number][])
       .attr('d', line)
@@ -153,7 +152,7 @@ export const RadarChart = ({ data, width = 300, height = 300, className = '' }: 
     // Draw data points
     const pointsGroup = svg.append('g').attr('class', 'data-points');
 
-    axes.forEach((axis, i) => {
+    axes.forEach((axis) => {
       const value = data[axis.key as keyof FHSSSubScores];
       const x = centerX + Math.cos(axis.angle - Math.PI / 2) * radiusScale(value);
       const y = centerY + Math.sin(axis.angle - Math.PI / 2) * radiusScale(value);
@@ -196,7 +195,7 @@ export const RadarChart = ({ data, width = 300, height = 300, className = '' }: 
             .attr('class', 'tooltip')
             .attr('transform', `translate(${x}, ${y - 35})`);
 
-          const tooltipBg = tooltip
+          tooltip
             .append('rect')
             .attr('x', -45)
             .attr('y', -25)

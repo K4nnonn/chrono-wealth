@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -18,7 +17,7 @@ interface ContextRibbonProps {
 
 export const ContextRibbon = ({ 
   assumptions, 
-  onAdjust,
+  onAdjust: _onAdjust,
   className 
 }: ContextRibbonProps) => {
   const [isExpanded, setIsExpanded] = useState(false);

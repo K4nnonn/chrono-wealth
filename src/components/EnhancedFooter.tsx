@@ -1,5 +1,3 @@
-// @ts-nocheck
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { Shield, Lock, CreditCard, FileText } from 'lucide-react'
 

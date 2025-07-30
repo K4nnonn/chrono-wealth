@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,6 @@ import {
   Activity,
   Route,
   Zap,
-  AlertTriangle,
   Sparkles
 } from 'lucide-react';
 
@@ -35,8 +33,7 @@ interface Goal {
 }
 
 export const Dashboard = () => {
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [timeHorizon, setTimeHorizon] = useState<1 | 3 | 5 | 10>(5);
+  const [_goals, setGoals] = useState<Goal[]>([]);
   const [macroAssumptions, setMacroAssumptions] = useState({
     cpi: 3.1,
     fedFunds: 4.75,
@@ -71,7 +68,6 @@ export const Dashboard = () => {
   const monthlyIncome = 6800;
   const monthlyExpenses = 4200;
   const monthlySavings = monthlyIncome - monthlyExpenses;
-  const savingsRate = (monthlySavings / monthlyIncome) * 100;
 
   // Advanced insight detection (simulated)
   const insights = [

@@ -1,10 +1,9 @@
-// @ts-nocheck
-import React, { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, ReferenceLine } from 'recharts';
-import { Layers, Target, Eye, EyeOff, Zap, TrendingUp, AlertTriangle, Calculator } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine } from 'recharts';
+import { Layers, Eye, EyeOff, Zap, TrendingUp, AlertTriangle, Calculator } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Demo data specifically for landing page showcase

@@ -1,11 +1,9 @@
-// @ts-nocheck
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Brain, Mail, Sparkles } from "lucide-react";
+import { Mail, Sparkles } from "lucide-react";
 
 interface EmailCaptureModalProps {
   isOpen: boolean;
