@@ -9,8 +9,7 @@ import {
   Target,
   AlertTriangle,
   Lightbulb,
-  Clock,
-  Mic
+  Clock
 } from "lucide-react";
 
 // Sample chat history data structure (commented out for now)
@@ -189,9 +188,9 @@ const Planner = () => {
                 <h3 className="font-semibold mb-4">Voice Assistant</h3>
                 
                 <div className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Mic className="w-4 h-4 mr-2" />
-                    Hold to Speak
+                  <Button variant="outline" className="w-full justify-start" disabled>
+                    <span className="w-4 h-4 mr-2">🎤</span>
+                    Voice Coming Soon
                   </Button>
                   
                   <div className="text-xs text-muted-foreground">
